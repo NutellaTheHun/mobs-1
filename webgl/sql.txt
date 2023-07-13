@@ -1,9 +1,0 @@
-CREATE VIEW postSurveyResponsesView3 AS SELECT id, postSurveyResponses FROM postSurveyResponses;
-CREATE VIEW preSurveyResponsesView3 AS SELECT id, preSurveyResponses FROM preSurveyResponses;
-
-CREATE TABLE hostileAgent3 AS ( SELECT *    FROM users t1   INNER JOIN personalityResponses t2 USING(id)   INNER JOIN preSurveyResponsesView3 t3 USING(id)  INNER JOIN userStats t4 USING(id)   INNER JOIN postSurveyResponsesView3 t5 USING(id) );
-
-
-
-
-

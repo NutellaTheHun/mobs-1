@@ -5,7 +5,7 @@ mergeInto(LibraryManager.library, {
           receiveDemographicsFromUnity(UTF8ToString(gender), age, UTF8ToString(nationality), familiarity);
     },
 
-    SendSurveyToPage: function(type, quality, responses, size, crowdPersonality){
+    SendSurveyToPage: function(type, responses, size, crowdPersonality){
 
         var arr=new Array();
         for(var i=0;i<size;i++){
@@ -13,19 +13,18 @@ mergeInto(LibraryManager.library, {
             
         }
 
-          receiveSurveyFromUnity(UTF8ToString(type), quality, arr, crowdPersonality);
+          receiveSurveyFromUnity(UTF8ToString(type), arr, crowdPersonality);
     },
 
     
-    SendUserStatsToPage: function( timeSpent,  fightCnt, punchCnt,  avgSpeed,  totalDist,  collectedItemCnt,  stolenItemCnt, finalItemCnt, crowdPersonality){
-        receiveUserStatsFromUnity(timeSpent,  fightCnt,  punchCnt, avgSpeed,  totalDist,  collectedItemCnt,  stolenItemCnt, finalItemCnt, crowdPersonality);
+    SendUserStatsToPage: function( timeSpent,  fightCnt, punchCnt,  avgSpeed,  totalDist,  collectedItemCnt,  totalItemCnt, crowdPersonality){
+        receiveUserStatsFromUnity(timeSpent,  fightCnt,  punchCnt, avgSpeed,  totalDist,  collectedItemCnt,  totalItemCnt, crowdPersonality);
     },
 
 
     SendMissionMessageToPage: function(message){
         receiveMissionMessageFromUnity(UTF8ToString(message));
     },
-
 
     SendCompletedToPage: function(){
         receiveCompletedFromUnity();

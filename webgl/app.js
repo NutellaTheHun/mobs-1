@@ -7,7 +7,7 @@
 //local
 //var ws = new WebSocket("ws://localhost:3000");
 
-var ws = new ReconnectingWebSocket("wss://vrlab.cs.umb.edu");
+var ws = new WebSocket("wss://vrlab.cs.umb.edu");
 let userId = "";
 
 
@@ -17,19 +17,21 @@ function receiveMissionMessageFromUnity(message) {
     elem.innerHTML = message;
 }
 
+var timerID = 0;
+function keepAlive() {
+    var timeout = 1000;
+    if (ws.readyState == ws.OPEN) {
+        ws.send('');
 
-
-
-//ws.addEventListener('ping', () => {
-//    console.log('WebSocket received ping');
-//});
-
-//ws.addEventListener('pong', () => {
-//    console.log('WebSocket received pong');
-//});
-
-
-
+    }
+    timerId = setTimeout(keepAlive, timeout);
+}
+function cancelKeepAlive() {
+    if (timerId) {
+        clearTimeout(timerId);
+    }
+}
+keepAlive();
 
 function receiveDemographicsFromUnity(gender, age, nationality, familiarity) {
 
@@ -44,34 +46,33 @@ function receiveDemographicsFromUnity(gender, age, nationality, familiarity) {
     msg.familiarity = familiarity;
 
     
+
+
     ws.send(JSON.stringify(msg));
 
 
     
 }
-function receiveCompletedFromUnity() {  
+function receiveCompletedFromUnity() {
 	var message = { data: "completed" };
 	window.parent.postMessage(message, "*");
 }
 
-function receiveSurveyFromUnity(surveyType, quality, responses, crowdPersonality) {
+function receiveSurveyFromUnity(surveyType, responses, crowdPersonality) {
     let msg = {};
 
     msg.type = surveyType;
-    msg.quality = quality;    
     msg.id = getParamFromURL('workerId');
- 
     msg.responses = JSON.stringify(responses);    
     msg.crowdPersonality = crowdPersonality;
 
     ws.send(JSON.stringify(msg));
-
-// if(surveyType == 'postStudy')
-	//receiveCompletedFromUnity();
+ if(surveyType == 'postStudy')
+	receiveCompletedFromUnity();
 }
 
 
-function receiveUserStatsFromUnity(timeSpent, fightCnt, punchCnt, avgSpeed, totalDist, collectedItemCnt, stolenItemCnt, finalItemCnt, crowdPersonality) {
+function receiveUserStatsFromUnity(timeSpent, fightCnt, punchCnt, avgSpeed, totalDist, collectedItemCnt, totalItemCnt, crowdPersonality) {
 
     let msg = {};
 
@@ -83,8 +84,7 @@ function receiveUserStatsFromUnity(timeSpent, fightCnt, punchCnt, avgSpeed, tota
     msg.avgSpeed = avgSpeed;
     msg.totalDist = totalDist;
     msg.collectedItemCnt = collectedItemCnt;
-    msg.stolenItemCnt = stolenItemCnt;
-    msg.finalItemCnt = finalItemCnt;
+    msg.totalItemCnt = totalItemCnt;
     msg.crowdPersonality = crowdPersonality;
 
     ws.send(JSON.stringify(msg));
@@ -93,53 +93,14 @@ function receiveUserStatsFromUnity(timeSpent, fightCnt, punchCnt, avgSpeed, tota
 
 
 
-//function sendUserId() {
-
-//    var userId = getParamFromURL('workerId');
-//    console.log(userId);
-//    console.log(MyUnityInstance);
-
-//    MyUnityInstance.SendMessage("RealPlayerMannequinFP", "ReceiveUserIdFromPage", userId);
-    
-//}
-
-
-//var timerID = 0;
-//function keepAlive() {
-//    var timeout = 1000;
-//    if (ws.readyState == ws.OPEN) {
-//        ws.send('');
-
-//    }
-//    timerId = setTimeout(keepAlive, timeout);
-//}
-//function cancelKeepAlive() {
-//    if (timerId) {
-//        clearTimeout(timerId);
-//    }
-//}
-//keepAlive();
-
-
-function ping() {
-    ws.send('ping');
-    console.log("ping");
-    tm = setTimeout(function () {
-
-        /// ---connection closed ///
-
-        ws.close();
-    }, 5000);
+function sendUserId(userId) {
+    myGameInstance.SendMessage("UserInfo", "ReceiveMessageFromPage", userId);
 }
 
-function pong() {
-    //console.log('pong');
-    clearTimeout(tm);
-}
 
 ws.onopen = function (event) {
     console.log('Connection is open ...');
-    setInterval(ping, 10000);
+
     
     //ws.send(msg);
 };
@@ -147,23 +108,7 @@ ws.onerror = function (err) {
     console.log('err: ', err);
 }
 ws.onmessage = function (event) {
-
-    var msg = event.data;
-    if (msg == 'pong') {
-        pong();
-        return;
-    }
-
-
-    console.log(msg);
-
-    if (msg== "completed")
-        receiveCompletedFromUnity();
-
-    //if (event.data.userId != "") { //I received the userId from Mturk
-    //    //wait till unity is loaded
-    //    sendUserId();
-    //}
+    console.log(event.data);
 };
 ws.onclose = function () {
     console.log("Connection is closed...");

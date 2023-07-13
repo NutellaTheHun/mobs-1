@@ -1,0 +1,1445 @@
+fileFormatVersion: 2
+guid: b67233c2096b5ff49b7310b522005a1b
+ModelImporter:
+  serializedVersion: 22103
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: solder_mesh
+  - first:
+      1: 100004
+    second: soldier:Head
+  - first:
+      1: 100006
+    second: soldier:HeadTop_End
+  - first:
+      1: 100008
+    second: soldier:Hips
+  - first:
+      1: 100010
+    second: soldier:LeftArm
+  - first:
+      1: 100012
+    second: soldier:LeftFoot
+  - first:
+      1: 100014
+    second: soldier:LeftFootToeBase_End
+  - first:
+      1: 100016
+    second: soldier:LeftForeArm
+  - first:
+      1: 100018
+    second: soldier:LeftHand
+  - first:
+      1: 100020
+    second: soldier:LeftHandIndex1
+  - first:
+      1: 100022
+    second: soldier:LeftHandIndex2
+  - first:
+      1: 100024
+    second: soldier:LeftHandIndex3
+  - first:
+      1: 100026
+    second: soldier:LeftHandIndex4
+  - first:
+      1: 100028
+    second: soldier:LeftHandMiddle1
+  - first:
+      1: 100030
+    second: soldier:LeftHandMiddle2
+  - first:
+      1: 100032
+    second: soldier:LeftHandMiddle3
+  - first:
+      1: 100034
+    second: soldier:LeftHandMiddle4
+  - first:
+      1: 100036
+    second: soldier:LeftHandPinky1
+  - first:
+      1: 100038
+    second: soldier:LeftHandPinky2
+  - first:
+      1: 100040
+    second: soldier:LeftHandPinky3
+  - first:
+      1: 100042
+    second: soldier:LeftHandPinky4
+  - first:
+      1: 100044
+    second: soldier:LeftHandRing1
+  - first:
+      1: 100046
+    second: soldier:LeftHandRing2
+  - first:
+      1: 100048
+    second: soldier:LeftHandRing3
+  - first:
+      1: 100050
+    second: soldier:LeftHandRing4
+  - first:
+      1: 100052
+    second: soldier:LeftHandThumb1
+  - first:
+      1: 100054
+    second: soldier:LeftHandThumb2
+  - first:
+      1: 100056
+    second: soldier:LeftHandThumb3
+  - first:
+      1: 100058
+    second: soldier:LeftHandThumb4
+  - first:
+      1: 100060
+    second: soldier:LeftLeg
+  - first:
+      1: 100062
+    second: soldier:LeftShoulder
+  - first:
+      1: 100064
+    second: soldier:LeftToeBase
+  - first:
+      1: 100066
+    second: soldier:LeftUpLeg
+  - first:
+      1: 100068
+    second: soldier:Neck
+  - first:
+      1: 100070
+    second: soldier:Neck1
+  - first:
+      1: 100072
+    second: soldier:RightArm
+  - first:
+      1: 100074
+    second: soldier:RightFoot
+  - first:
+      1: 100076
+    second: soldier:RightFootToeBase_End
+  - first:
+      1: 100078
+    second: soldier:RightForeArm
+  - first:
+      1: 100080
+    second: soldier:RightHand
+  - first:
+      1: 100082
+    second: soldier:RightHandIndex1
+  - first:
+      1: 100084
+    second: soldier:RightHandIndex2
+  - first:
+      1: 100086
+    second: soldier:RightHandIndex3
+  - first:
+      1: 100088
+    second: soldier:RightHandIndex4
+  - first:
+      1: 100090
+    second: soldier:RightHandMiddle1
+  - first:
+      1: 100092
+    second: soldier:RightHandMiddle2
+  - first:
+      1: 100094
+    second: soldier:RightHandMiddle3
+  - first:
+      1: 100096
+    second: soldier:RightHandMiddle4
+  - first:
+      1: 100098
+    second: soldier:RightHandPinky1
+  - first:
+      1: 100100
+    second: soldier:RightHandPinky2
+  - first:
+      1: 100102
+    second: soldier:RightHandPinky3
+  - first:
+      1: 100104
+    second: soldier:RightHandPinky4
+  - first:
+      1: 100106
+    second: soldier:RightHandRing1
+  - first:
+      1: 100108
+    second: soldier:RightHandRing2
+  - first:
+      1: 100110
+    second: soldier:RightHandRing3
+  - first:
+      1: 100112
+    second: soldier:RightHandRing4
+  - first:
+      1: 100114
+    second: soldier:RightHandThumb1
+  - first:
+      1: 100116
+    second: soldier:RightHandThumb2
+  - first:
+      1: 100118
+    second: soldier:RightHandThumb3
+  - first:
+      1: 100120
+    second: soldier:RightHandThumb4
+  - first:
+      1: 100122
+    second: soldier:RightLeg
+  - first:
+      1: 100124
+    second: soldier:RightShoulder
+  - first:
+      1: 100126
+    second: soldier:RightToeBase
+  - first:
+      1: 100128
+    second: soldier:RightUpLeg
+  - first:
+      1: 100130
+    second: soldier:Spine
+  - first:
+      1: 100132
+    second: soldier:Spine1
+  - first:
+      1: 100134
+    second: soldier:Spine2
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: solder_mesh
+  - first:
+      4: 400004
+    second: soldier:Head
+  - first:
+      4: 400006
+    second: soldier:HeadTop_End
+  - first:
+      4: 400008
+    second: soldier:Hips
+  - first:
+      4: 400010
+    second: soldier:LeftArm
+  - first:
+      4: 400012
+    second: soldier:LeftFoot
+  - first:
+      4: 400014
+    second: soldier:LeftFootToeBase_End
+  - first:
+      4: 400016
+    second: soldier:LeftForeArm
+  - first:
+      4: 400018
+    second: soldier:LeftHand
+  - first:
+      4: 400020
+    second: soldier:LeftHandIndex1
+  - first:
+      4: 400022
+    second: soldier:LeftHandIndex2
+  - first:
+      4: 400024
+    second: soldier:LeftHandIndex3
+  - first:
+      4: 400026
+    second: soldier:LeftHandIndex4
+  - first:
+      4: 400028
+    second: soldier:LeftHandMiddle1
+  - first:
+      4: 400030
+    second: soldier:LeftHandMiddle2
+  - first:
+      4: 400032
+    second: soldier:LeftHandMiddle3
+  - first:
+      4: 400034
+    second: soldier:LeftHandMiddle4
+  - first:
+      4: 400036
+    second: soldier:LeftHandPinky1
+  - first:
+      4: 400038
+    second: soldier:LeftHandPinky2
+  - first:
+      4: 400040
+    second: soldier:LeftHandPinky3
+  - first:
+      4: 400042
+    second: soldier:LeftHandPinky4
+  - first:
+      4: 400044
+    second: soldier:LeftHandRing1
+  - first:
+      4: 400046
+    second: soldier:LeftHandRing2
+  - first:
+      4: 400048
+    second: soldier:LeftHandRing3
+  - first:
+      4: 400050
+    second: soldier:LeftHandRing4
+  - first:
+      4: 400052
+    second: soldier:LeftHandThumb1
+  - first:
+      4: 400054
+    second: soldier:LeftHandThumb2
+  - first:
+      4: 400056
+    second: soldier:LeftHandThumb3
+  - first:
+      4: 400058
+    second: soldier:LeftHandThumb4
+  - first:
+      4: 400060
+    second: soldier:LeftLeg
+  - first:
+      4: 400062
+    second: soldier:LeftShoulder
+  - first:
+      4: 400064
+    second: soldier:LeftToeBase
+  - first:
+      4: 400066
+    second: soldier:LeftUpLeg
+  - first:
+      4: 400068
+    second: soldier:Neck
+  - first:
+      4: 400070
+    second: soldier:Neck1
+  - first:
+      4: 400072
+    second: soldier:RightArm
+  - first:
+      4: 400074
+    second: soldier:RightFoot
+  - first:
+      4: 400076
+    second: soldier:RightFootToeBase_End
+  - first:
+      4: 400078
+    second: soldier:RightForeArm
+  - first:
+      4: 400080
+    second: soldier:RightHand
+  - first:
+      4: 400082
+    second: soldier:RightHandIndex1
+  - first:
+      4: 400084
+    second: soldier:RightHandIndex2
+  - first:
+      4: 400086
+    second: soldier:RightHandIndex3
+  - first:
+      4: 400088
+    second: soldier:RightHandIndex4
+  - first:
+      4: 400090
+    second: soldier:RightHandMiddle1
+  - first:
+      4: 400092
+    second: soldier:RightHandMiddle2
+  - first:
+      4: 400094
+    second: soldier:RightHandMiddle3
+  - first:
+      4: 400096
+    second: soldier:RightHandMiddle4
+  - first:
+      4: 400098
+    second: soldier:RightHandPinky1
+  - first:
+      4: 400100
+    second: soldier:RightHandPinky2
+  - first:
+      4: 400102
+    second: soldier:RightHandPinky3
+  - first:
+      4: 400104
+    second: soldier:RightHandPinky4
+  - first:
+      4: 400106
+    second: soldier:RightHandRing1
+  - first:
+      4: 400108
+    second: soldier:RightHandRing2
+  - first:
+      4: 400110
+    second: soldier:RightHandRing3
+  - first:
+      4: 400112
+    second: soldier:RightHandRing4
+  - first:
+      4: 400114
+    second: soldier:RightHandThumb1
+  - first:
+      4: 400116
+    second: soldier:RightHandThumb2
+  - first:
+      4: 400118
+    second: soldier:RightHandThumb3
+  - first:
+      4: 400120
+    second: soldier:RightHandThumb4
+  - first:
+      4: 400122
+    second: soldier:RightLeg
+  - first:
+      4: 400124
+    second: soldier:RightShoulder
+  - first:
+      4: 400126
+    second: soldier:RightToeBase
+  - first:
+      4: 400128
+    second: soldier:RightUpLeg
+  - first:
+      4: 400130
+    second: soldier:Spine
+  - first:
+      4: 400132
+    second: soldier:Spine1
+  - first:
+      4: 400134
+    second: soldier:Spine2
+  - first:
+      43: 4300000
+    second: solder_mesh
+  - first:
+      74: 7400000
+    second: mixamo.com
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: solder_mesh
+  externalObjects: {}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: "\nClip 'mixamo.com' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'soldier:Spine2' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\t'soldier:Neck1' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n"
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: mixamo.com
+      takeName: mixamo.com
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 58
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: solder_mesh
+        weight: 0
+      - path: soldier:Hips
+        weight: 1
+      - path: soldier:Hips/soldier:LeftUpLeg
+        weight: 1
+      - path: soldier:Hips/soldier:LeftUpLeg/soldier:LeftLeg
+        weight: 1
+      - path: soldier:Hips/soldier:LeftUpLeg/soldier:LeftLeg/soldier:LeftFoot
+        weight: 1
+      - path: soldier:Hips/soldier:LeftUpLeg/soldier:LeftLeg/soldier:LeftFoot/soldier:LeftToeBase
+        weight: 1
+      - path: soldier:Hips/soldier:LeftUpLeg/soldier:LeftLeg/soldier:LeftFoot/soldier:LeftToeBase/soldier:LeftFootToeBase_End
+        weight: 0
+      - path: soldier:Hips/soldier:RightUpLeg
+        weight: 1
+      - path: soldier:Hips/soldier:RightUpLeg/soldier:RightLeg
+        weight: 1
+      - path: soldier:Hips/soldier:RightUpLeg/soldier:RightLeg/soldier:RightFoot
+        weight: 1
+      - path: soldier:Hips/soldier:RightUpLeg/soldier:RightLeg/soldier:RightFoot/soldier:RightToeBase
+        weight: 1
+      - path: soldier:Hips/soldier:RightUpLeg/soldier:RightLeg/soldier:RightFoot/soldier:RightToeBase/soldier:RightFootToeBase_End
+        weight: 0
+      - path: soldier:Hips/soldier:Spine
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandIndex1
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandIndex1/soldier:LeftHandIndex2
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandIndex1/soldier:LeftHandIndex2/soldier:LeftHandIndex3
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandIndex1/soldier:LeftHandIndex2/soldier:LeftHandIndex3/soldier:LeftHandIndex4
+        weight: 0
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandMiddle1
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandMiddle1/soldier:LeftHandMiddle2
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandMiddle1/soldier:LeftHandMiddle2/soldier:LeftHandMiddle3
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandMiddle1/soldier:LeftHandMiddle2/soldier:LeftHandMiddle3/soldier:LeftHandMiddle4
+        weight: 0
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandPinky1
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandPinky1/soldier:LeftHandPinky2
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandPinky1/soldier:LeftHandPinky2/soldier:LeftHandPinky3
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandPinky1/soldier:LeftHandPinky2/soldier:LeftHandPinky3/soldier:LeftHandPinky4
+        weight: 0
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandRing1
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandRing1/soldier:LeftHandRing2
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandRing1/soldier:LeftHandRing2/soldier:LeftHandRing3
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandRing1/soldier:LeftHandRing2/soldier:LeftHandRing3/soldier:LeftHandRing4
+        weight: 0
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandThumb1
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandThumb1/soldier:LeftHandThumb2
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandThumb1/soldier:LeftHandThumb2/soldier:LeftHandThumb3
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:LeftShoulder/soldier:LeftArm/soldier:LeftForeArm/soldier:LeftHand/soldier:LeftHandThumb1/soldier:LeftHandThumb2/soldier:LeftHandThumb3/soldier:LeftHandThumb4
+        weight: 0
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:Neck
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:Neck/soldier:Neck1
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:Neck/soldier:Neck1/soldier:Head
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:Neck/soldier:Neck1/soldier:Head/soldier:HeadTop_End
+        weight: 0
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandIndex1
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandIndex1/soldier:RightHandIndex2
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandIndex1/soldier:RightHandIndex2/soldier:RightHandIndex3
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandIndex1/soldier:RightHandIndex2/soldier:RightHandIndex3/soldier:RightHandIndex4
+        weight: 0
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandMiddle1
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandMiddle1/soldier:RightHandMiddle2
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandMiddle1/soldier:RightHandMiddle2/soldier:RightHandMiddle3
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandMiddle1/soldier:RightHandMiddle2/soldier:RightHandMiddle3/soldier:RightHandMiddle4
+        weight: 0
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandPinky1
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandPinky1/soldier:RightHandPinky2
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandPinky1/soldier:RightHandPinky2/soldier:RightHandPinky3
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandPinky1/soldier:RightHandPinky2/soldier:RightHandPinky3/soldier:RightHandPinky4
+        weight: 0
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandRing1
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandRing1/soldier:RightHandRing2
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandRing1/soldier:RightHandRing2/soldier:RightHandRing3
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandRing1/soldier:RightHandRing2/soldier:RightHandRing3/soldier:RightHandRing4
+        weight: 0
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandThumb1
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandThumb1/soldier:RightHandThumb2
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandThumb1/soldier:RightHandThumb2/soldier:RightHandThumb3
+        weight: 1
+      - path: soldier:Hips/soldier:Spine/soldier:Spine1/soldier:Spine2/soldier:RightShoulder/soldier:RightArm/soldier:RightForeArm/soldier:RightHand/soldier:RightHandThumb1/soldier:RightHandThumb2/soldier:RightHandThumb3/soldier:RightHandThumb4
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human:
+    - boneName: soldier:Hips
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftUpLeg
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightUpLeg
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftLeg
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightLeg
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftFoot
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightFoot
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:Spine
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:Spine1
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:Neck
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:Head
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftShoulder
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightShoulder
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftArm
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightArm
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftForeArm
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightForeArm
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHand
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHand
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftToeBase
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightToeBase
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandThumb1
+      humanName: Left Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandThumb2
+      humanName: Left Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandThumb3
+      humanName: Left Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandIndex1
+      humanName: Left Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandIndex2
+      humanName: Left Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandIndex3
+      humanName: Left Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandMiddle1
+      humanName: Left Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandMiddle2
+      humanName: Left Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandMiddle3
+      humanName: Left Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandRing1
+      humanName: Left Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandRing2
+      humanName: Left Ring Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandRing3
+      humanName: Left Ring Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandPinky1
+      humanName: Left Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandPinky2
+      humanName: Left Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:LeftHandPinky3
+      humanName: Left Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandThumb1
+      humanName: Right Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandThumb2
+      humanName: Right Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandThumb3
+      humanName: Right Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandIndex1
+      humanName: Right Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandIndex2
+      humanName: Right Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandIndex3
+      humanName: Right Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandMiddle1
+      humanName: Right Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandMiddle2
+      humanName: Right Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandMiddle3
+      humanName: Right Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandRing1
+      humanName: Right Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandRing2
+      humanName: Right Ring Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandRing3
+      humanName: Right Ring Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandPinky1
+      humanName: Right Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandPinky2
+      humanName: Right Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: soldier:RightHandPinky3
+      humanName: Right Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: smash_1(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: solder_mesh
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:Hips
+      parentName: 
+      position: {x: 0, y: 0.963794, z: 0.03985525}
+      rotation: {x: 0, y: -0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftUpLeg
+      parentName: 
+      position: {x: -0.09633789, y: -0.032732543, z: -0.000000007152557}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftLeg
+      parentName: 
+      position: {x: -0, y: -0.4173, z: -0.017299652}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftFoot
+      parentName: 
+      position: {x: -0.00012604713, y: -0.39189997, z: -0.008476867}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftToeBase
+      parentName: 
+      position: {x: 0.0018328666, y: -0.12185701, z: 0.082822636}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftFootToeBase_End
+      parentName: 
+      position: {x: -0, y: 0, z: 0.118}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightUpLeg
+      parentName: 
+      position: {x: 0.09633789, y: -0.032732543, z: -0.000000007152557}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightLeg
+      parentName: 
+      position: {x: -0, y: -0.4173, z: -0.017299652}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightFoot
+      parentName: 
+      position: {x: -0.00012606621, y: -0.39189997, z: -0.008476867}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightToeBase
+      parentName: 
+      position: {x: 0.0018330956, y: -0.12185701, z: 0.082822636}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightFootToeBase_End
+      parentName: 
+      position: {x: -0.00003194809, y: 0, z: 0.118}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:Spine
+      parentName: 
+      position: {x: 2.646978e-25, y: 0.092263184, z: 0.015771331}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:Spine1
+      parentName: 
+      position: {x: -0, y: 0.16254029, z: -0.0016560555}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:Spine2
+      parentName: 
+      position: {x: -0, y: 0.13639648, z: -0.01292305}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftShoulder
+      parentName: 
+      position: {x: -0.06144226, y: 0.10187011, z: -0.037932433}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftArm
+      parentName: 
+      position: {x: -0.12319092, y: -0.01112976, z: -0.01793457}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftForeArm
+      parentName: 
+      position: {x: -0.2768701, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHand
+      parentName: 
+      position: {x: -0.27873778, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandIndex1
+      parentName: 
+      position: {x: -0.103945345, y: 0.0061476063, z: 0.027054923}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandIndex2
+      parentName: 
+      position: {x: -0.055492897, y: -2.842171e-16, z: 4.440904e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandIndex3
+      parentName: 
+      position: {x: -0.033911195, y: -5.684342e-16, z: -2.2204212e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandIndex4
+      parentName: 
+      position: {x: -0.027579233, y: 2.842171e-16, z: 1.4791142e-33}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandMiddle1
+      parentName: 
+      position: {x: -0.10463907, y: 0.006147605, z: 0.0042978725}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandMiddle2
+      parentName: 
+      position: {x: -0.057920903, y: 1.9411755e-25, z: 4.440892e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandMiddle3
+      parentName: 
+      position: {x: -0.03713173, y: -9.705878e-26, z: -2.220446e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandMiddle4
+      parentName: 
+      position: {x: -0.027579233, y: 2.842171e-16, z: 1.4791142e-33}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandPinky1
+      parentName: 
+      position: {x: -0.10012992, y: -0.0007834791, z: -0.039671414}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandPinky2
+      parentName: 
+      position: {x: -0.03676256, y: 5.8235265e-25, z: 1.3322676e-17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandPinky3
+      parentName: 
+      position: {x: -0.028113425, y: -9.705878e-26, z: -2.220446e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandPinky4
+      parentName: 
+      position: {x: -0.019254642, y: 2.842171e-16, z: 1.4791142e-33}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandRing1
+      parentName: 
+      position: {x: -0.103251636, y: 0.0032113248, z: -0.01875542}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandRing2
+      parentName: 
+      position: {x: -0.054452322, y: -2.842171e-16, z: 4.440904e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandRing3
+      parentName: 
+      position: {x: -0.03713173, y: -2.9117633e-25, z: -6.661338e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandRing4
+      parentName: 
+      position: {x: -0.027579233, y: 2.842171e-16, z: 1.4791142e-33}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandThumb1
+      parentName: 
+      position: {x: -0.023785133, y: -0.010028993, z: 0.026209358}
+      rotation: {x: -0.04343979, y: 0.028132902, z: -0.041498497, w: 0.9977973}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandThumb2
+      parentName: 
+      position: {x: -0.033623688, y: -0.010028992, z: 0.028397717}
+      rotation: {x: -0.024530359, y: 0.081993245, z: -0.000087719316, w: 0.99633104}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandThumb3
+      parentName: 
+      position: {x: -0.045017947, y: -0.013444998, z: 0.021782676}
+      rotation: {x: 0.03962765, y: 0.005827045, z: 0.085494556, w: 0.9955333}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:LeftHandThumb4
+      parentName: 
+      position: {x: -0.03214381, y: 0, z: 0.014898986}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:Neck
+      parentName: 
+      position: {x: -0, y: 0.13877441, z: -0.043541867}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:Neck1
+      parentName: 
+      position: {x: -0, y: 0.04340027, z: 0.009268952}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:Head
+      parentName: 
+      position: {x: -1.0587912e-24, y: 0.04026611, z: 0.008585205}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:HeadTop_End
+      parentName: 
+      position: {x: -5.1704583e-18, y: 0.17886597, z: 0.0012312889}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightShoulder
+      parentName: 
+      position: {x: 0.061401974, y: 0.10187011, z: -0.037932433}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightArm
+      parentName: 
+      position: {x: 0.123231195, y: -0.01112976, z: -0.01793457}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightForeArm
+      parentName: 
+      position: {x: 0.2768701, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHand
+      parentName: 
+      position: {x: 0.27873778, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandIndex1
+      parentName: 
+      position: {x: 0.10466505, y: 0.0048958063, z: 0.02711963}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandIndex2
+      parentName: 
+      position: {x: 0.053767666, y: 3.847193e-11, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandIndex3
+      parentName: 
+      position: {x: 0.03385469, y: -9.705876e-26, z: -6.661338e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandIndex4
+      parentName: 
+      position: {x: 0.027730547, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandMiddle1
+      parentName: 
+      position: {x: 0.107596025, y: 0.0048958054, z: 0.004277988}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandMiddle2
+      parentName: 
+      position: {x: 0.056167677, y: 3.8471646e-11, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandMiddle3
+      parentName: 
+      position: {x: 0.03736354, y: 2.842171e-16, z: -3.330669e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandMiddle4
+      parentName: 
+      position: {x: 0.028802594, y: 5.684342e-16, z: -2.220446e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandPinky1
+      parentName: 
+      position: {x: 0.09971459, y: -0.001191439, z: -0.03954005}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandPinky2
+      parentName: 
+      position: {x: 0.03652758, y: 3.8471646e-11, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandPinky3
+      parentName: 
+      position: {x: 0.027820332, y: -5.684342e-16, z: -2.2204212e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandPinky4
+      parentName: 
+      position: {x: 0.022766756, y: -2.842171e-16, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandRing1
+      parentName: 
+      position: {x: 0.10470213, y: 0.003878717, z: -0.019362805}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandRing2
+      parentName: 
+      position: {x: 0.05401276, y: 3.8471646e-11, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandRing3
+      parentName: 
+      position: {x: 0.033915963, y: 2.842171e-16, z: -2.220446e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandRing4
+      parentName: 
+      position: {x: 0.029664857, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandThumb1
+      parentName: 
+      position: {x: 0.025177661, y: -0.00936667, z: 0.025136683}
+      rotation: {x: -0.043864332, y: -0.01902334, z: 0.041284546, w: 0.9980028}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandThumb2
+      parentName: 
+      position: {x: 0.032637868, y: -0.010869652, z: 0.0296688}
+      rotation: {x: -0.028151397, y: -0.098989666, z: -0.005297815, w: 0.99467605}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandThumb3
+      parentName: 
+      position: {x: 0.044165276, y: -0.0137026245, z: 0.021350233}
+      rotation: {x: 0.030147424, y: -0.045425013, z: -0.09151731, w: 0.99430996}
+      scale: {x: 1, y: 1, z: 1}
+    - name: soldier:RightHandThumb4
+      parentName: 
+      position: {x: 0.034761865, y: -0.00052037067, z: 0.01170946}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 0.01
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 3
+  humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
