@@ -252,7 +252,7 @@ private void OnTriggerExit(Collider collider) {
 
 
         
-        if(desiredObjInHand){ /* Input.GetKey(KeyCode.C)*/
+        if(desiredObjInHand){    /* Input.GetKey(KeyCode.C)*/
             if (!_desiredObj) { //update only if the object is not being taken
                 float minDist = 10000;
                 foreach(Collider col in _ipadColliders) {
@@ -273,6 +273,8 @@ private void OnTriggerExit(Collider collider) {
                 //_animator.SetTrigger("PickUp"); Not needed for VR
 
                 Stats.CollectedItemCnt++;
+
+                StartCoroutine(ObjPickupSuccessDelayed(0.5f)); //Nathan Brilmayer: Added for VR
 
                 _humanComponent.HandPos = _desiredObj.position;
 
@@ -312,6 +314,11 @@ private void OnTriggerExit(Collider collider) {
 
         }
 
+    }
+
+    public int getCollectedCount()
+    {
+        return Stats.CollectedItemCnt;
     }
 
     //Arrange positions of object
@@ -393,6 +400,12 @@ private void OnTriggerExit(Collider collider) {
     public void DesiredObjectDropped()
     {
         desiredObjInHand = false;
+    }
+
+    IEnumerator ObjPickupSuccessDelayed(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _desiredObj.GetComponent<ObjComponent>().ObjPickupSuccess();
     }
 
     //**************************************

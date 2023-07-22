@@ -203,6 +203,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\Biped IK\Scripts\BipedIKvsAnimatorIK.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\FPSCharacter.cs" />
     <Compile Include="Assets\_Scripts\Behavior\FightBehavior.cs" />
+    <Compile Include="Assets\_Scripts\UI\VR\aquiredObjUI.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\LazySingleton.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKMappingBone.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\InteractionSystem.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\InteractionTrigger.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\PickUpBox.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Components\FABRIK.cs" />
+    <Compile Include="Assets\_Scripts\UI\VR\playerAquiredObjUI.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Rotation Limits\RotationLimitSpline.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\Posers\Poser.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\CharacterAnimationThirdPersonIK.cs" />
@@ -256,6 +258,7 @@
     <Compile Include="Assets\RootMotion\Shared Scripts\Singleton.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverVRArm.cs" />
     <Compile Include="Assets\_Scripts\Camera\CameraControlScript.cs" />
+    <Compile Include="Assets\_Scripts\UI\VR\aquiredObjCanvasManager.cs" />
     <Compile Include="Assets\RootMotion\Shared Demo Assets\Scripts\Character Controllers\CharacterThirdPerson.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Tools\BodyTilt.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Components\ArmIK.cs" />

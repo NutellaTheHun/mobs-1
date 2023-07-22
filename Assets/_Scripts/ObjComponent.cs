@@ -1,11 +1,19 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class ObjComponent : MonoBehaviour {
     [SerializeField]
     private bool _achieved = false;
 
-    
+    //Mesh Renderer
+    MeshRenderer _meshRenderer;
+    //XR Grab Interactable
+    XRGrabInteractable _interactable;
+    //RigidBody
+    Rigidbody _rigidbody;
+    //Box Collider
+    BoxCollider _boxCollider;
     public bool Achieved {
         get { return _achieved; }
         set { _achieved = value; }
@@ -25,9 +33,10 @@ public class ObjComponent : MonoBehaviour {
 
     private void Start() {
         _collidingAgents = new ArrayList();
-
-
-   
+        _meshRenderer = GetComponent<MeshRenderer>();
+        _interactable = GetComponent<XRGrabInteractable>();
+        _rigidbody = GetComponent<Rigidbody>();
+        _boxCollider = GetComponent<BoxCollider>();
     }
 
     private void Update()
@@ -87,5 +96,14 @@ public class ObjComponent : MonoBehaviour {
         }
     }
 
-	
+     public void ObjPickupSuccess()
+    {
+        _meshRenderer.enabled = false;
+        _interactable.enabled = false;
+        _rigidbody.isKinematic = true;
+        _rigidbody.detectCollisions = false;
+        _boxCollider.enabled = false;
+
+    }
+
 }

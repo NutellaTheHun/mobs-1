@@ -3,15 +3,16 @@ using System.Collections;
 
 public struct VR_Shelf {  //shelves that hold the objects
     public Vector3 v1,v2,v3,v4;
+    
 };
 
 public  class VR_ShelfComponent:MonoBehaviour {
     
 
     public  Shelf[] Shelves;
-    float _halfShelfWidth = 1.5f;//0.55f;
-    float _halfShelfLength = 5.5f;
-
+    float _halfShelfWidth = 0.5f;//0.55f; //previous val: 1.5f
+    float _halfShelfLength = 6.8f; //previos val 5.5f
+    public int[] shopperInIsleCount = new int[12]; //12 for the 12 isles in ShopperWorld
     void  Start() {
         Shelves = new Shelf[11]; //not actually shelves but the area in the middle of two shelves
         Transform sh = GameObject.Find("Shelf0").transform;
@@ -83,5 +84,18 @@ public  class VR_ShelfComponent:MonoBehaviour {
         return cp;
 
     }
-      
+    public void incrementShopper(int isleID)
+    {
+        shopperInIsleCount[isleID]++;
+    }
+
+    public int getShopperCount(int isleID) 
+    {
+        int shopperCount = 0;
+        for(int i = 0; i <= isleID; i++)
+        {
+            shopperCount += shopperInIsleCount[i];
+        }
+        return shopperCount;
+    }
 }

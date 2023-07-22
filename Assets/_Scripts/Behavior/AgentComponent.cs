@@ -361,7 +361,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 	public void SteerTo(Vector3 pos)
 	{
 		//pos.y = 0f;//_navMeshAgent.transform.position.y; //always assume they are on the same level
-        _navMeshAgent.SetDestination(pos);
+		_navMeshAgent.SetDestination(pos);
 	}
 
 	///Steer away from the location pos

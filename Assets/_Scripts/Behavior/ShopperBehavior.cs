@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using JetBrains.Annotations;
 
 public class ShopperBehavior : MonoBehaviour
 {
@@ -39,11 +39,20 @@ public class ShopperBehavior : MonoBehaviour
 	private Vector3 _closestShelfPos;
 	[SerializeField]
 	private int _shelfInd;
-	int[] _shelfOrder; //shelf visiting order
+    [SerializeField]
+    int[] _shelfOrder; //shelf visiting order
 	private AnimationSelector _animationSelector;
 	private GUIHandler _guiHandler;
 
-	[SerializeField]
+	//Variables made by Nathan Brilmayer
+	private const int numberOfIsles = 12; //hard coded for shopper world
+    private const int totalShoppers = 21; //hard coded for shopper world
+    
+	//Author: Nathan Brilmayer, used for floating counter above AI for aquired objects
+	aquiredObjUI _aquiredObjUI;
+    aquiredObjCanvasManager _aquiredObjCanvasManager;
+
+    [SerializeField]
 	private int _state;
 	public int State
 	{
@@ -62,19 +71,23 @@ public class ShopperBehavior : MonoBehaviour
 		Exiting
 	}
 
-
-	// Use this for initialization
-	void Start()
+    private void Awake() //neccessary that all shoppers have first isle set before createShelfOrder() is run
+    {
+        _shelfComp = GameObject.Find("Shelves").GetComponent<VR_ShelfComponent>(); //Changed from ShelfComponent to VR_ShelfComponent
+        initializeFirstShelf();
+    }
+    // Use this for initialization
+    void Start()
 	{
 		_appraisal = GetComponent<Appraisal>();
 		_agentComponent = GetComponent<AgentComponent>();
 		_affectComponent = GetComponent<AffectComponent>();
 		_navmeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 		_animationSelector = GetComponent<AnimationSelector>();
-		_shelfComp = GameObject.Find("Shelves").GetComponent<VR_ShelfComponent>(); //Changed from ShelfComponent to VR_ShelfComponent
+        _shelfComp = GameObject.Find("Shelves").GetComponent<VR_ShelfComponent>(); //Changed from ShelfComponent to VR_ShelfComponent
 
 
-		_guiHandler = FindObjectOfType(typeof(GUIHandler)) as GUIHandler;
+        _guiHandler = FindObjectOfType(typeof(GUIHandler)) as GUIHandler;
 
 
 		_allObjs = new GameObject[_shelfComp.transform.childCount];
@@ -112,10 +125,11 @@ public class ShopperBehavior : MonoBehaviour
 		Random.InitState(_agentComponent.Id);
 
 
-		int randInd = Random.Range(0, 6);
+		//int randInd = Random.Range(0, 11);
 
-		_shelfOrder = new int[6];
-		if (randInd == 0)
+		
+        createShelfOrder();
+        /*if (randInd == 0)
 		{
 			_shelfOrder[0] = 0; _shelfOrder[1] = 1; _shelfOrder[2] = 2; _shelfOrder[3] = 3; _shelfOrder[4] = 4; _shelfOrder[5] = 5;
 		}
@@ -138,10 +152,10 @@ public class ShopperBehavior : MonoBehaviour
 		else if (randInd == 5)
 		{
 			_shelfOrder[0] = 5; _shelfOrder[1] = 4; _shelfOrder[2] = 3; _shelfOrder[3] = 2; _shelfOrder[4] = 1; _shelfOrder[5] = 0;
-		}
+		}*/
 
 
-		_objs = GameObject.Find("Objects" + _shelfOrder[0]);
+        _objs = GameObject.Find("Objects" + _shelfOrder[0]);
 
 
 		State = (int)ShoppingState.GoingToObject;
@@ -153,11 +167,90 @@ public class ShopperBehavior : MonoBehaviour
 
 		CurrentObjs = new GameObject("AchievedObjects");
 		CurrentObjs.transform.parent = this.transform;
+        
+		_aquiredObjCanvasManager = GameObject.Find("Canvas").GetComponentInChildren<aquiredObjCanvasManager>();
 
-
+        _aquiredObjCanvasManager.initializeShopperCounterUI(this);
+    }
+	public void setAquiredUI(aquiredObjUI aou)
+	{
+		_aquiredObjUI = aou;
+    }
+    public int getAquiredObjCount()
+	{
+		return _acquiredObjCnt;
 	}
+    private void initializeFirstShelf() //ensures all shoppers have shelf[0] set so shelfComponents index of shoppers per isle is set
+	{
+        _shelfOrder = new int[12]; //Randomize shelf order for now
+        _shelfOrder[0] = Random.Range(0, 12);
+        _shelfComp.incrementShopper(_shelfOrder[0]);
+    }
+    private void createShelfOrder()
+	{
+		float Normalized_goLeft_p = ((_shelfOrder[0] / numberOfIsles) + (_shelfComp.getShopperCount(_shelfOrder[0]) / totalShoppers))/2;
 
-	public IEnumerator WaitAtEntrance(int seconds)
+		if(Normalized_goLeft_p < Random.Range(0f,1f))
+		{
+			goLeftwards();
+		}
+		else
+		{
+			goRightwards();
+		}
+    }
+	private void goLeftwards()
+	{
+		int StartIsleID = _shelfOrder[0];
+        int nextIsle = StartIsleID - 1;
+
+        for (int i = 1; i < numberOfIsles; i++)
+        {
+			if(i < StartIsleID) //Go Leftwards
+			{
+                _shelfOrder[i] = nextIsle;
+                nextIsle = _shelfOrder[i] - 1;
+            }
+			if (i == StartIsleID) //set next isle to go right
+			{
+				nextIsle = StartIsleID + 1;
+            }
+            if (i > StartIsleID) //Go Rigtwards
+            {
+                _shelfOrder[i] = nextIsle;
+                nextIsle = _shelfOrder[i] + 1;
+            }
+
+        }
+    }
+
+    private void goRightwards()
+    {
+        int StartIsleID = _shelfOrder[0];
+        int nextIsle = StartIsleID + 1;
+
+        for (int i = 1; i < numberOfIsles; i++)
+        {
+            if (i > StartIsleID) //Go Rigtwards
+            {
+                _shelfOrder[i] = nextIsle;
+                nextIsle = _shelfOrder[i] + 1;
+            }
+            
+            if (i == StartIsleID) //set next isle to go left
+            {
+                nextIsle = StartIsleID - 1;
+            }
+            if (i < StartIsleID) //Go Leftwards
+            {
+                _shelfOrder[i] = nextIsle;
+                nextIsle = _shelfOrder[i] - 1;
+            }
+        }
+    }
+
+
+    public IEnumerator WaitAtEntrance(int seconds)
 	{
 		_finishedWaitingAtEntrance = false;
 		yield return new WaitForSeconds(seconds);
@@ -315,28 +408,31 @@ public class ShopperBehavior : MonoBehaviour
 				{
 					//Find closest object with the least effective density
 					Transform closestObj = null;
-					for (int i = 0; i < _objs.transform.childCount; i++)
-					{ //find closest object
-						Transform obj = _objs.transform.GetChild(i);
-						if (obj.gameObject.activeInHierarchy == false || obj.GetComponent<ObjComponent>().Achieved == true)
-							continue;
-						_totalObjCnt++;
-						// if the object is too crowded and I am not the closest person wait in this state and I am not hopeful
-						if (_affectComponent.Emotion[(int)EType.Hope] < 0.3f && obj.GetComponent<ObjComponent>().Density > 20 && obj.GetComponent<ObjComponent>().ClosestAgent != this.gameObject)
-						{
-							_agentComponent.LookAt(obj.transform.position, 0.01f); //just look at the object
-							_navmeshAgent.updateRotation = true;
-							continue;
-						}
 
-						float dist = Vector3.Distance(obj.transform.position, transform.position);
-						if (dist < minDist)
-						{
-							minDist = dist;
-							closestObj = obj;
-						}
-					}
-					_desiredObj = closestObj;
+                        for (int i = 0; i < _objs.transform.childCount; i++)
+                        { //find closest object
+                            Transform obj = _objs.transform.GetChild(i);
+                            if (obj.gameObject.activeInHierarchy == false || obj.GetComponent<ObjComponent>().Achieved == true)
+                                continue;
+                            _totalObjCnt++;
+                            // if the object is too crowded and I am not the closest person wait in this state and I am not hopeful
+                            if (_affectComponent.Emotion[(int)EType.Hope] < 0.3f && obj.GetComponent<ObjComponent>().Density > 20 && obj.GetComponent<ObjComponent>().ClosestAgent != this.gameObject)
+                            {
+                                _agentComponent.LookAt(obj.transform.position, 0.01f); //just look at the object
+                                _navmeshAgent.updateRotation = true;
+                                continue;
+                            }
+
+                            float dist = Vector3.Distance(obj.transform.position, transform.position);
+                            if (dist < minDist)
+                            {
+                                minDist = dist;
+                                closestObj = obj;
+                            }
+                        }
+                        _desiredObj = closestObj;
+
+					
 					if (_desiredObj != null)
 					{
 						_agentComponent.SteerTo(_desiredObj.transform.position);
@@ -345,7 +441,6 @@ public class ShopperBehavior : MonoBehaviour
 						if (dist < 1f)
 						{//Pick up object                        
 							State = (int)ShoppingState.PickingUpObject;
-
 						}
 
 					}
@@ -355,7 +450,7 @@ public class ShopperBehavior : MonoBehaviour
 						{ //all objects in my shelf are consumed
 							_shelfInd++;
 							// if ( _affectComponent.Ekman[(int)EkmanType.Afraid] > 0.5) {
-							if (_shelfInd >= 5)
+							if (_shelfInd > 11) //change to 12 for superstore, NATHAN
 							{ //all objects in the store are consumed
 								_allConsumed = true;
 
@@ -422,10 +517,14 @@ public class ShopperBehavior : MonoBehaviour
 						_desiredObj.GetComponent<ObjComponent>().AchievingAgent = this.gameObject;
 						_desiredObj.GetComponent<ObjComponent>().Achieved = true;
 						_acquiredObjCnt++;
-						//    _agentComponent.HandPos = _desiredObj.position + Vector3.up * 0.1f;
+
+						_aquiredObjUI.setAquiredObjCount(_acquiredObjCnt); //Added by Nathan Brilmayer for floating aquiredObj count UI
+
+                        _desiredObj.GetComponent<ObjComponent>().ObjPickupSuccess();
+                        //    _agentComponent.HandPos = _desiredObj.position + Vector3.up * 0.1f;
 
 
-					}
+                    }
 					else //it is achieved
 					     //FUNDA: Why?
 					     //_agentComponent.LookAt(_desiredObj.GetComponent<ObjComponent>().AchievingAgent.transform.position, 0.01f);
@@ -708,4 +807,6 @@ public class ShopperBehavior : MonoBehaviour
 			   Gizmos.DrawLine(_shelves[i].v4, _shelves[i].v1);
 		       }*/
 	}
+
+
 }
