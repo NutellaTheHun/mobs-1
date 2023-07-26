@@ -6,7 +6,9 @@ using JetBrains.Annotations;
 
 public class ShopperBehavior : MonoBehaviour
 {
-	Appraisal _appraisal;
+	public bool goneLeft = false;
+    public bool goneRight = false;
+    Appraisal _appraisal;
 	AgentComponent _agentComponent;
 	AffectComponent _affectComponent;
 	UnityEngine.AI.NavMeshAgent _navmeshAgent;
@@ -45,7 +47,7 @@ public class ShopperBehavior : MonoBehaviour
 	private GUIHandler _guiHandler;
 
 	//Variables made by Nathan Brilmayer
-	private const int numberOfIsles = 12; //hard coded for shopper world
+	private const int numberOfIsles = 11; //hard coded for shopper world
     private const int totalShoppers = 21; //hard coded for shopper world
     
 	//Author: Nathan Brilmayer, used for floating counter above AI for aquired objects
@@ -182,70 +184,73 @@ public class ShopperBehavior : MonoBehaviour
 	}
     private void initializeFirstShelf() //ensures all shoppers have shelf[0] set so shelfComponents index of shoppers per isle is set
 	{
-        _shelfOrder = new int[12]; //Randomize shelf order for now
-        _shelfOrder[0] = Random.Range(0, 12);
+        _shelfOrder = new int[numberOfIsles]; //Randomize shelf order for now
+		_shelfOrder[0] = Random.Range(0, 10);
+		//_shelfOrder[0] = 1;
         _shelfComp.incrementShopper(_shelfOrder[0]);
     }
     private void createShelfOrder()
 	{
-		float Normalized_goLeft_p = ((_shelfOrder[0] / numberOfIsles) + (_shelfComp.getShopperCount(_shelfOrder[0]) / totalShoppers))/2;
-
-		if(Normalized_goLeft_p < Random.Range(0f,1f))
-		{
-			goLeftwards();
-		}
-		else
-		{
-			goRightwards();
-		}
+		float isleP = (float)_shelfOrder[0] / (float)numberOfIsles;
+		float shopperP = (float)_shelfComp.getShopperCount(_shelfOrder[0]) / (float)totalShoppers;
+        float Normalized_goLeft_p = (isleP + shopperP) /2;
+		float randomF = Random.Range(0f, 1f);
+         if (Normalized_goLeft_p < randomF)
+         {
+             goLeftwards();
+			goneLeft = true;
+         }
+         else
+         {
+             goRightwards();
+			goneRight = true;
+         }
     }
 	private void goLeftwards()
 	{
-		int StartIsleID = _shelfOrder[0];
-        int nextIsle = StartIsleID - 1;
-
-        for (int i = 1; i < numberOfIsles; i++)
-        {
-			if(i < StartIsleID) //Go Leftwards
-			{
-                _shelfOrder[i] = nextIsle;
-                nextIsle = _shelfOrder[i] - 1;
-            }
-			if (i == StartIsleID) //set next isle to go right
-			{
-				nextIsle = StartIsleID + 1;
-            }
-            if (i > StartIsleID) //Go Rigtwards
+        if (_shelfOrder[0] == _shelfOrder.Length - 1)
+		{
+            for (int i = 1; i < _shelfOrder[0]; i++)
             {
-                _shelfOrder[i] = nextIsle;
-                nextIsle = _shelfOrder[i] + 1;
+                _shelfOrder[i] = _shelfOrder[0] - i;
             }
+			return;
+        }
 
+        for (int i = 1; i <= _shelfOrder[0]; i++)
+		{
+			_shelfOrder[i] = _shelfOrder[0] - i;
+        }
+
+        int temp = 1;
+        for (int i = _shelfOrder[0]+1; i < numberOfIsles; i++)
+        {
+            _shelfOrder[i] = _shelfOrder[0] + temp;
+            temp++;
         }
     }
 
     private void goRightwards()
     {
-        int StartIsleID = _shelfOrder[0];
-        int nextIsle = StartIsleID + 1;
+        if (_shelfOrder[0] == 0)
+		{
+            for (int i = 1; i < numberOfIsles; i++)
+            {
+                _shelfOrder[i] = _shelfOrder[0] + i;
+            }
+			return;
+        }
 
-        for (int i = 1; i < numberOfIsles; i++)
+        for (int i = 1; i < numberOfIsles - _shelfOrder[0]; i++)
+		{
+			_shelfOrder[i] = _shelfOrder[0] + i;
+        }
+
+		int temp = 1;
+        for (int i = numberOfIsles - _shelfOrder[0]; i < numberOfIsles; i++)
         {
-            if (i > StartIsleID) //Go Rigtwards
-            {
-                _shelfOrder[i] = nextIsle;
-                nextIsle = _shelfOrder[i] + 1;
-            }
-            
-            if (i == StartIsleID) //set next isle to go left
-            {
-                nextIsle = StartIsleID - 1;
-            }
-            if (i < StartIsleID) //Go Leftwards
-            {
-                _shelfOrder[i] = nextIsle;
-                nextIsle = _shelfOrder[i] - 1;
-            }
+            _shelfOrder[i] = _shelfOrder[0] - temp;
+			temp++;
         }
     }
 
@@ -410,25 +415,28 @@ public class ShopperBehavior : MonoBehaviour
 					Transform closestObj = null;
 
                         for (int i = 0; i < _objs.transform.childCount; i++)
-                        { //find closest object
+                        {	//find closest object
                             Transform obj = _objs.transform.GetChild(i);
-                            if (obj.gameObject.activeInHierarchy == false || obj.GetComponent<ObjComponent>().Achieved == true)
-                                continue;
-                            _totalObjCnt++;
-                            // if the object is too crowded and I am not the closest person wait in this state and I am not hopeful
-                            if (_affectComponent.Emotion[(int)EType.Hope] < 0.3f && obj.GetComponent<ObjComponent>().Density > 20 && obj.GetComponent<ObjComponent>().ClosestAgent != this.gameObject)
-                            {
-                                _agentComponent.LookAt(obj.transform.position, 0.01f); //just look at the object
-                                _navmeshAgent.updateRotation = true;
-                                continue;
-                            }
+							if(obj.CompareTag("Ipad"))
+							{
+								if (obj.gameObject.activeInHierarchy == false || obj.GetComponent<ObjComponent>().Achieved == true)
+									continue;
+								_totalObjCnt++;
+								// if the object is too crowded and I am not the closest person wait in this state and I am not hopeful
+								if (_affectComponent.Emotion[(int)EType.Hope] < 0.3f && obj.GetComponent<ObjComponent>().Density > 20 && obj.GetComponent<ObjComponent>().ClosestAgent != this.gameObject)
+								{
+									_agentComponent.LookAt(obj.transform.position, 0.01f); //just look at the object
+									_navmeshAgent.updateRotation = true;
+									continue;
+								}
 
-                            float dist = Vector3.Distance(obj.transform.position, transform.position);
-                            if (dist < minDist)
-                            {
-                                minDist = dist;
-                                closestObj = obj;
-                            }
+								float dist = Vector3.Distance(obj.transform.position, transform.position);
+								if (dist < minDist)
+								{
+									minDist = dist;
+									closestObj = obj;
+								}
+							}
                         }
                         _desiredObj = closestObj;
 
@@ -450,7 +458,7 @@ public class ShopperBehavior : MonoBehaviour
 						{ //all objects in my shelf are consumed
 							_shelfInd++;
 							// if ( _affectComponent.Ekman[(int)EkmanType.Afraid] > 0.5) {
-							if (_shelfInd > 11) //change to 12 for superstore, NATHAN
+							if (_shelfInd > 10) //change to 12 for superstore, NATHAN
 							{ //all objects in the store are consumed
 								_allConsumed = true;
 
@@ -588,7 +596,7 @@ public class ShopperBehavior : MonoBehaviour
 				break;
 
 			case (int)ShoppingState.ShelfChanging:
-				_closestShelfPos = _shelfComp.FindClosestShelfPos(transform.position, _shelfOrder[_shelfInd]);
+				_closestShelfPos = _shelfComp.FindClosestIsleWaypoint(transform.position, _shelfOrder[_shelfInd]);
 
 
 				_agentComponent.SteerTo(_closestShelfPos);
@@ -599,7 +607,9 @@ public class ShopperBehavior : MonoBehaviour
 
 
 				if (Vector3.Distance(_closestShelfPos, transform.position) < 2f) //close enough
-					State = (int)ShoppingState.GoingToObject;
+				{
+                    State = (int)ShoppingState.GoingToObject;
+                }
 				break;
 
 		}

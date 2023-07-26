@@ -21,6 +21,11 @@ public class playerAquiredObjUI : MonoBehaviour
     [SerializeField] float handOffset;
     [SerializeField] float travelDistance;
     [SerializeField] float travelDuration;
+    [Range(0,1f)]
+    [SerializeField] float fadeDuration;
+    private float originalOffset;
+    private float time = 0;
+    private bool activated = false;
     //[SerializeField] float fadeRate;
 
     private void Awake()
@@ -31,25 +36,32 @@ public class playerAquiredObjUI : MonoBehaviour
     void Start()
     {
         mainCam = Camera.main.transform;
-
+        originalOffset = handOffset;
+        text.enabled = false;
     }
 
     void Update()
     {
         offset = new Vector3(0, handOffset, 0);
         transform.rotation = Quaternion.LookRotation(transform.position - mainCam.transform.position);
-        transform.position = target.transform.position - offset;
+        transform.position = target.transform.position + offset;
+        if(activated) 
+        {
+            handOffset = Mathf.Lerp(originalOffset, originalOffset + travelDistance, time / travelDuration);
+            time += Time.deltaTime;
+            //Debug.Log(handOffset);
+        }
     }
 
     public void handUILabelActivation(int newTotal)
     {
-        text.text = "+" + newTotal.ToString();
+        text.text = "+" + (newTotal).ToString(); //+1 because when this function is called in InteractableIsTag, HumanShoppingBehavior.cs hasn't incremented the total yet.
 
         //AI goal to collect 20 Ipads, not realistic anyone will get 20 so 10 is "max" for colorization of quantity
         text.color = Color32.Lerp(startColor, endColor, (newTotal / 10f));
-        text.transform.position = Vector3.Lerp(offset, offset + new Vector3(0, travelDistance,0), Time.time / travelDuration);
-        StartCoroutine(fade());
-        resetPosition();
+        activated = true;
+        text.enabled = true;
+        StartCoroutine(fade(fadeDuration));
     }
 
     public void setTarget(GameObject newTarget)
@@ -62,14 +74,15 @@ public class playerAquiredObjUI : MonoBehaviour
         text = newText;
     }
 
-    IEnumerator fade()
+    IEnumerator fade(float fadeDuration)
     {
-        Color32 c = text.color;
-        for(float a = 255f; a >= 0; a -= 7.5f) //7.5f is rough estimate for ~.75s fade
+        for(float a = 1f; a >= 0; a -= fadeDuration)
         {
             text.alpha = a;
+            //Debug.Log(text.alpha);
             yield return null;
         }
+        resetUI();
     }
 
     public void setValues(float offset, float distance, float duration)
@@ -79,9 +92,12 @@ public class playerAquiredObjUI : MonoBehaviour
         travelDuration = duration;
     }
 
-    private void resetPosition()
+    private void resetUI()
     {
-        text.transform.position = offset;
-        text.alpha = 255f;
+        handOffset = originalOffset;
+        text.alpha = 1f;
+        text.enabled = false;
+        activated = false;
+        time = 0;
     }
 }

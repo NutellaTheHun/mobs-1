@@ -8,16 +8,12 @@ public class InteractableIsTag : MonoBehaviour
     [SerializeField] HumanShoppingBehavior humanShopBehv;
     private playerAquiredObjUI _playerAquiredObjUI;
     private aquiredObjCanvasManager _playerAquiredObjCanvasManager;
+    private bool ipadInHand = false;
     void Start()
     {
         interactor = GetComponent<XRDirectInteractor>();
-        _playerAquiredObjCanvasManager = GetComponent<aquiredObjCanvasManager>();
+        _playerAquiredObjCanvasManager = GameObject.Find("Canvas").GetComponentInChildren<aquiredObjCanvasManager>();
         _playerAquiredObjCanvasManager.initializePlayerShopperCounterUI(this);
-    }
-
-    void Update()
-    {
-        if(interactor.hasSelection) { checkTag(); }
     }
 
     public void setPlayerAquiredUI(playerAquiredObjUI paou)
@@ -31,13 +27,20 @@ public class InteractableIsTag : MonoBehaviour
         {
             if (c.transform.gameObject.CompareTag(targetTag))
             {
-                //Debug.Log(c.transform.gameObject.tag);
-                humanShopBehv.DesiredObjectPickedUp();
+                humanShopBehv.DesiredObjectPickedUp(c.transform.gameObject);
                 _playerAquiredObjUI.handUILabelActivation(humanShopBehv.getCollectedCount());
+                ipadInHand = true;
+                return;
             }
-            else { humanShopBehv.DesiredObjectDropped();}
         }
     }
-
-
+    public void onIpadRelease()
+    {
+        if(ipadInHand)
+        {
+            humanShopBehv.DesiredObjectDropped();
+            ipadInHand = false;
+        }
+        
+    }
 }

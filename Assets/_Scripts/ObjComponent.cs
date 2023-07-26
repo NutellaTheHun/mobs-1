@@ -103,7 +103,6 @@ public class ObjComponent : MonoBehaviour {
         _rigidbody.isKinematic = true;
         _rigidbody.detectCollisions = false;
         _boxCollider.enabled = false;
-
     }
 
 }

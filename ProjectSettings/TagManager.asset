@@ -9,11 +9,12 @@ TagManager:
   - RealPlayer
   - Ipad
   - PaymentBubble
+  - AisleWaypoint
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PostProcessing
   - Water
   - UI
   - Agent

@@ -192,7 +192,7 @@ public class HumanShoppingBehavior : MonoBehaviour {
         if(collider.CompareTag("PaymentZone")) {
             if(Input.GetKey(KeyCode.P)) { //What for VR?
             
-                if(_currSceneName == "Warmup" && CurrentObjs.transform.childCount >= _missionItemCnt || _currSceneName == "Sales") {
+                if(_currSceneName == "Warmup" && CurrentObjs.transform.childCount >= _missionItemCnt || _currSceneName == "Sales" || _currSceneName == "SuperStore") {
                     _hasPaid = true;
                     _missionMsg = "Payment complete. \nYou may exit the store.";
 
@@ -249,71 +249,6 @@ private void OnTriggerExit(Collider collider) {
             CurrentObjs.SetActive(false); //don't show items when fighting
         else
             CurrentObjs.SetActive(true); //don't show items when fighting
-
-
-        
-        if(desiredObjInHand){    /* Input.GetKey(KeyCode.C)*/
-            if (!_desiredObj) { //update only if the object is not being taken
-                float minDist = 10000;
-                foreach(Collider col in _ipadColliders) {
-                    if(!col.GetComponent<ObjComponent>().Achieved) {
-                        float dist = Vector3.Distance(col.transform.position, transform.position);
-                        if(dist < minDist) {
-                            minDist = dist;
-                            _desiredObj = col.transform;
-                        }
-                    }
-                }
-            }
-        }
-        //human is inside the object's trigger zone
-        if (_desiredObj) {
-            if(_humanComponent.StartedWaiting == false) {
-
-                //_animator.SetTrigger("PickUp"); Not needed for VR
-
-                Stats.CollectedItemCnt++;
-
-                StartCoroutine(ObjPickupSuccessDelayed(0.5f)); //Nathan Brilmayer: Added for VR
-
-                _humanComponent.HandPos = _desiredObj.position;
-
-                _humanComponent.StartedWaiting = true;
-                _humanComponent.FinishedWaiting = false;
-
-            }
-            else if(_humanComponent.StartedWaiting && !_humanComponent.FinishedWaiting && _desiredObj.GetComponent<ObjComponent>().Achieved == false) { //started waiting -- playing animation
-                if(_desiredObj.GetComponent<ObjComponent>().ClosestAgent.Equals(this.gameObject)) {
-                    _desiredObj.position = _rightHand.position + Vector3.up * 0.05f;
-                }
-
-                //_humanComponent.HandPos = _desiredObj.position;//+ Vector3.up * 0.1f;
-
-            }
-
-            if(_humanComponent.FinishedWaiting) {
-
-                if(_desiredObj.GetComponent<ObjComponent>().Achieved == false) { //make sure someone else didn't pick it before me                
-
-                    _desiredObj.parent = CurrentObjs.transform;
-                    _desiredObj.position = CurrentObjs.transform.position - 0.05f * Vector3.up + (CurrentObjs.transform.childCount - 1) * 0.05f * Vector3.up;
-
-                    _desiredObj.GetComponent<ObjComponent>().AchievingAgent = this.gameObject;
-                    _desiredObj.GetComponent<ObjComponent>().Achieved = true;
-
-
-                    _ipadColliders.Remove(_desiredObj.GetComponent<Collider>());
-                }
-
-
-                _humanComponent.StartedWaiting = false;
-
-
-                _desiredObj = null;
-            }
-
-        }
-
     }
 
     public int getCollectedCount()
@@ -393,19 +328,29 @@ private void OnTriggerExit(Collider collider) {
     }
 
     //Author Nathan Brilmayer, Methods for VR stuff
-    public void DesiredObjectPickedUp()
+    public void DesiredObjectPickedUp(GameObject desiredObj)
     {
-        desiredObjInHand = true;
+        ObjComponent oc = desiredObj.GetComponent<ObjComponent>();
+        oc.AchievingAgent = this.gameObject;
+        oc.Achieved = true;
+
+        Stats.CollectedItemCnt++;
+        
+        StartCoroutine(ObjPickupSuccessDelayed(desiredObj, 0.5f));
+
+        _ipadColliders.Remove(desiredObj.GetComponent<Collider>());
+
+        //desiredObjInHand = true;
     }
     public void DesiredObjectDropped()
     {
-        desiredObjInHand = false;
+        //desiredObjInHand = false;
     }
 
-    IEnumerator ObjPickupSuccessDelayed(float time)
+    IEnumerator ObjPickupSuccessDelayed(GameObject desiredObj, float time)
     {
         yield return new WaitForSeconds(time);
-        _desiredObj.GetComponent<ObjComponent>().ObjPickupSuccess();
+        desiredObj.GetComponent<ObjComponent>().ObjPickupSuccess();
     }
 
     //**************************************
