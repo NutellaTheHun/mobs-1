@@ -56,6 +56,8 @@ public class HumanShoppingBehavior : MonoBehaviour {
 
     //Author Nathan Brilmayer, for VR to check if proper item is grabbed
     bool desiredObjInHand = false;
+    bool isPaying = false;
+    PaymentSystem _paymentSystem;
 
     [DllImport("__Internal")]
     private static extern void SendUserStatsToPage(float timeSpent, int fightCnt, int punchCnt, float avgSpeed, float totalDist, int collectedItemCnt, int totalItemCnt, int crowdPersonality);
@@ -124,6 +126,7 @@ public class HumanShoppingBehavior : MonoBehaviour {
 
         _rightHand = transform.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.RightHand);
         _leftHand = transform.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.LeftHand);
+        _paymentSystem = GameObject.Find("PaymentCollider").GetComponentInChildren<PaymentSystem>();
     }
 
     private void FixedUpdate() {
@@ -190,9 +193,10 @@ public class HumanShoppingBehavior : MonoBehaviour {
     private void OnTriggerStay(Collider collider) {
 
         if(collider.CompareTag("PaymentZone")) {
-            if(Input.GetKey(KeyCode.P)) { //What for VR?
-            
-                if(_currSceneName == "Warmup" && CurrentObjs.transform.childCount >= _missionItemCnt || _currSceneName == "Sales" || _currSceneName == "SuperStore") {
+            if(isPaying) //FOR VR, Is activated by PaymentSystem component
+            {//Input.GetKey(KeyCode.P)
+
+                if (_currSceneName == "Warmup" && CurrentObjs.transform.childCount >= _missionItemCnt || _currSceneName == "Sales" || _currSceneName == "SuperStore") {
                     _hasPaid = true;
                     _missionMsg = "Payment complete. \nYou may exit the store.";
 
@@ -335,7 +339,10 @@ private void OnTriggerExit(Collider collider) {
         oc.Achieved = true;
 
         Stats.CollectedItemCnt++;
-        
+        if (Stats.CollectedItemCnt == 1) 
+        {
+            _paymentSystem.enablePaymentSystem(); 
+        }
         StartCoroutine(ObjPickupSuccessDelayed(desiredObj, 0.5f));
 
         _ipadColliders.Remove(desiredObj.GetComponent<Collider>());
@@ -351,6 +358,11 @@ private void OnTriggerExit(Collider collider) {
     {
         yield return new WaitForSeconds(time);
         desiredObj.GetComponent<ObjComponent>().ObjPickupSuccess();
+    }
+
+    public void setIsPaying(bool val)
+    {
+        isPaying = val;
     }
 
     //**************************************
