@@ -1,9 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
-using static RootMotion.Demos.Turret;
 
 public class PaymentSystem : MonoBehaviour
 {
@@ -23,15 +21,13 @@ public class PaymentSystem : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("RealPlayer"))
+        if(other.CompareTag("PlayerHands"))
         {
-            //play sound or UI indicator?
             StartCoroutine(Wait(0.5f));
             hsb.setIsPaying(true);
             tmp.enabled = false;
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("RealPlayer"))
@@ -65,5 +61,12 @@ public class PaymentSystem : MonoBehaviour
         c.enabled = false;
         mr.enabled = false;
         vol.enabled = false;
+    }
+
+    public void playerPayingEvent()
+    {
+        StartCoroutine(Wait(0.5f));
+        hsb.setIsPaying(true);
+        tmp.enabled = false;
     }
 }

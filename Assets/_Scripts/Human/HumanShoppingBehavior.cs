@@ -193,18 +193,18 @@ public class HumanShoppingBehavior : MonoBehaviour {
     private void OnTriggerStay(Collider collider) {
 
         if(collider.CompareTag("PaymentZone")) {
-            if(isPaying) //FOR VR, Is activated by PaymentSystem component
-            {//Input.GetKey(KeyCode.P)
+            if(isPaying) //isPaying bool for VR, Is activated by PaymentSystem component
+            {
 
                 if (_currSceneName == "Warmup" && CurrentObjs.transform.childCount >= _missionItemCnt || _currSceneName == "Sales" || _currSceneName == "SuperStore") {
                     _hasPaid = true;
-                    _missionMsg = "Payment complete. \nYou may exit the store.";
+                    _missionMsg = "Payment  complete. \nYou may exit the store.";
 
                     collider.transform.Find("Dialog").gameObject.SetActive(true);
                 }
                 else {
                     _missionMsg = "Please collect all the " + _missionItemCnt + " iPads first.";
-
+                    _paymentSystem.enablePaymentSystem();
 
                 }
             }

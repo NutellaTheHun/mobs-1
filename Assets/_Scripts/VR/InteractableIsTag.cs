@@ -29,7 +29,7 @@ public class InteractableIsTag : MonoBehaviour
             {
                 humanShopBehv.DesiredObjectPickedUp(c.transform.gameObject);
                 _playerAquiredObjUI.handUILabelActivation(humanShopBehv.getCollectedCount());
-                ipadInHand = true;
+                //ipadInHand = true;
                 return;
             }
         }
@@ -39,7 +39,7 @@ public class InteractableIsTag : MonoBehaviour
         if(ipadInHand)
         {
             humanShopBehv.DesiredObjectDropped();
-            ipadInHand = false;
+            //ipadInHand = false;
         }
         
     }
