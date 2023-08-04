@@ -6,8 +6,6 @@ using JetBrains.Annotations;
 
 public class ShopperBehavior : MonoBehaviour
 {
-	public bool goneLeft = false;
-    public bool goneRight = false;
     Appraisal _appraisal;
 	AgentComponent _agentComponent;
 	AffectComponent _affectComponent;
@@ -125,37 +123,8 @@ public class ShopperBehavior : MonoBehaviour
 
 
 		Random.InitState(_agentComponent.Id);
-
-
-		//int randInd = Random.Range(0, 11);
-
 		
         createShelfOrder();
-        /*if (randInd == 0)
-		{
-			_shelfOrder[0] = 0; _shelfOrder[1] = 1; _shelfOrder[2] = 2; _shelfOrder[3] = 3; _shelfOrder[4] = 4; _shelfOrder[5] = 5;
-		}
-		else if (randInd == 1)
-		{
-			_shelfOrder[0] = 1; _shelfOrder[1] = 2; _shelfOrder[2] = 3; _shelfOrder[3] = 4; _shelfOrder[4] = 5; _shelfOrder[5] = 0;
-		}
-		else if (randInd == 2)
-		{
-			_shelfOrder[0] = 2; _shelfOrder[1] = 3; _shelfOrder[2] = 4; _shelfOrder[3] = 5; _shelfOrder[4] = 1; _shelfOrder[5] = 0;
-		}
-		else if (randInd == 3)
-		{
-			_shelfOrder[0] = 3; _shelfOrder[1] = 4; _shelfOrder[2] = 5; _shelfOrder[3] = 2; _shelfOrder[4] = 1; _shelfOrder[5] = 0;
-		}
-		else if (randInd == 4)
-		{
-			_shelfOrder[0] = 4; _shelfOrder[1] = 5; _shelfOrder[2] = 3; _shelfOrder[3] = 2; _shelfOrder[4] = 1; _shelfOrder[5] = 0;
-		}
-		else if (randInd == 5)
-		{
-			_shelfOrder[0] = 5; _shelfOrder[1] = 4; _shelfOrder[2] = 3; _shelfOrder[3] = 2; _shelfOrder[4] = 1; _shelfOrder[5] = 0;
-		}*/
-
 
         _objs = GameObject.Find("Objects" + _shelfOrder[0]);
 
@@ -198,12 +167,10 @@ public class ShopperBehavior : MonoBehaviour
          if (Normalized_goLeft_p < randomF)
          {
              goLeftwards();
-			goneLeft = true;
          }
          else
          {
              goRightwards();
-			goneRight = true;
          }
     }
 	private void goLeftwards()
@@ -620,7 +587,7 @@ public class ShopperBehavior : MonoBehaviour
 		//if (_currentObj != null) {
 		//for (int i = 0; i < CurrentObjs.Count; i++) {
 
-		CurrentObjs.transform.position = _leftHand.position;
+		//CurrentObjs.transform.position = _leftHand.position;
 		//   for (int i = 0; i < CurrentObjs.transform.childCount; i++) {
 		//CurrentObjs.transform.GetChild(i).position = _hand.position - 0.05f * Vector3.up + i * 0.05f * Vector3.up;
 		//CurrentObjs[i].position = _hand.position - 0.05f* Vector3.up + i * 0.05f * Vector3.up;
