@@ -84,7 +84,7 @@
     <Compile Include="Assets\RootMotion\Shared Scripts\V2Tools.cs" />
     <Compile Include="Assets\_Scripts\GroupBuilder.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\OffsetEffector.cs" />
-    <Compile Include="Assets\_Scripts\VR\InteractableIsTag.cs" />
+    <Compile Include="Assets\_Scripts\VR\player\InteractableIsTag.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\FBBIKHeadEffector.cs" />
     <Compile Include="Assets\_Scripts\Human\HumanFightBehavior.cs" />
     <Compile Include="Assets\ToggleControls.cs" />
@@ -92,7 +92,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\AnimatorController3rdPersonIK.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Tools\VRIKCalibrator.cs" />
     <Compile Include="Assets\_Scripts\AnimationSelector.cs" />
-    <Compile Include="Assets\_Scripts\VR\AnimationController.cs" />
+    <Compile Include="Assets\_Scripts\VR\Animation\AnimationController.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\FBIKBendGoal.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Tools\Inertia.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\BipedIK\BipedIK.cs" />
@@ -120,6 +120,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\Grounder\GrounderBipedIK.cs" />
     <Compile Include="Assets\_Scripts\Camera\CameraScript.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Components\IKExecutionOrder.cs" />
+    <Compile Include="Assets\_Scripts\VR\Animation\VRShopperAnimationController.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\Interp.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Finger Rig\FingerRig.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\SolverManager.cs" />
@@ -140,7 +141,7 @@
     <Compile Include="Assets\RootMotion\Shared Scripts\PropertyAttributes.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Tools\AimController.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\Aim IK\Scripts\TerrainOffset.cs" />
-    <Compile Include="Assets\_Scripts\VR\BindPositionToTarget.cs" />
+    <Compile Include="Assets\_Scripts\VR\player\BindPositionToTarget.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\Posers\HandPoser.cs" />
     <Compile Include="Assets\_Scripts\Camera\FlyingCamera.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolver.cs" />
@@ -150,7 +151,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\TransferMotion.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\HoldingHands.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Tools\CCDBendGoal.cs" />
-    <Compile Include="Assets\_Scripts\VR\IKTargetFollowVRRig.cs" />
+    <Compile Include="Assets\_Scripts\VR\player\IKTargetFollowVRRig.cs" />
     <Compile Include="Assets\RootMotion\Baker\_DEMOS\Scripts\FKOffset.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Constraints\ConstraintPositionOffset.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\EffectorOffset.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverFullBodyBiped.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Tools\OffsetPose.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\InteractionTarget.cs" />
+    <Compile Include="Assets\_Scripts\VR\Animation\GlobalAnimationManager.cs" />
     <Compile Include="Assets\_Scripts\GUIHandler.cs" />
     <Compile Include="Assets\_Scripts\ObjectLabel.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Components\FABRIKRoot.cs" />
@@ -223,6 +225,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\CharacterAnimationThirdPersonIK.cs" />
     <Compile Include="Assets\RootMotion\Baker\Scripts\Helpers\AvatarUtility.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\VRIK\Scripts\VRIKPlatform.cs" />
+    <Compile Include="Assets\_Scripts\Utilities.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Constraints\Constraint.cs" />
     <Compile Include="Assets\RootMotion\Baker\Scripts\Baker.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Components\IK.cs" />
@@ -236,7 +239,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\IK Components\AimIK.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\ResetInteractionObject.cs" />
     <Compile Include="Assets\_Scripts\Affect\AffectComponent.cs" />
-    <Compile Include="Assets\_Scripts\VR\PunchComponent.cs" />
+    <Compile Include="Assets\_Scripts\VR\player\PunchComponent.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\Aim IK\Scripts\SimpleAimingSystem.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\InteractionLookAt.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Constraints\Constraints.cs" />
@@ -270,7 +273,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverTrigonometric.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverVRLocomotion_Animated.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\FABRIKChain.cs" />
-    <Compile Include="Assets\_Scripts\VR\VR_ShelfComponent.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\VR_ShelfComponent.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\BipedReferences.cs" />
     <Compile Include="Assets\_Scripts\Camera\CameraAgent.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\Aim IK\Scripts\AimBoxing.cs" />
@@ -296,7 +299,7 @@
     <Compile Include="Assets\RootMotion\Shared Scripts\TriggerEventBroadcaster.cs" />
     <Compile Include="Assets\RootMotion\Shared Demo Assets\Scripts\Character Controllers\UserControlAI.cs" />
     <Compile Include="Assets\HealthBarHuman.cs" />
-    <Compile Include="Assets\_Scripts\VR\PaymentSystem.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\PaymentSystem.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\QuaTools.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Tools\HitReaction.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverCCD.cs" />

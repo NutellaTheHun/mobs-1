@@ -17,7 +17,8 @@ public class FightBehavior : MonoBehaviour
 	public float EndTime;
 	public List<GameObject> Watchers = new List<GameObject>();
 	public bool IsOver { get; set; }
-	private AnimationSelector _animationSelector;
+	//private AnimationSelector _animationSelector;
+	private VRShopperAnimationController _shopperAnimationController; //FOR VR
 	UnityEngine.AI.NavMeshAgent _navMeshAgent;
 	
 
@@ -30,13 +31,15 @@ public class FightBehavior : MonoBehaviour
 		InitAppraisalStatus();
 		Opponent = o;
 		_opponentComponent = Opponent.GetComponent<GeneralStateComponent>();
-		_animationSelector = GetComponent<AnimationSelector>();
-		_animationSelector.SelectAction("");
+		//_animationSelector = GetComponent<AnimationSelector>();
+		//_animationSelector.SelectAction("");
 		_navMeshAgent = GetComponent<NavMeshAgent>();
 		_navMeshAgent.updateRotation = false; //rotation is updated according to opponent's direction
 
-
-	}
+        //Added by Nathan Brilmayer FOR VR
+        _shopperAnimationController = GetComponent<VRShopperAnimationController>();
+		_shopperAnimationController.EnterFightState();
+    }
 
 
 
@@ -57,8 +60,8 @@ public class FightBehavior : MonoBehaviour
 			UpdateAppraisalStatus();
 			EndTime = Time.time;
 			FinishFight();
-			if (_agentComponent.IsDead() || _agentComponent.IsFallen)
-				_animationSelector.SelectAction("WRITHING");
+			/*if (_agentComponent.IsDead() || _agentComponent.IsFallen)
+				_animationSelector.SelectAction("WRITHING");*/
 		}
 		else
 		{
@@ -231,6 +234,9 @@ public class FightBehavior : MonoBehaviour
 
 			}
 		}
+
+		//FOR VR
+		_shopperAnimationController.EnterMovingState();
 
         _agentComponent.TimeLastFight = Time.time;
 		DestroyImmediate(this);

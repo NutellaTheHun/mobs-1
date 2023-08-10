@@ -11,8 +11,8 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 	UnityEngine.AI.NavMeshAgent _navMeshAgent;
 	Appraisal _appraisal;
 	AffectComponent _affectComponent;
-	private AnimationSelector _animationSelector;
-
+    //private AnimationSelector _animationSelector; //yelling in EmotionalBehaviorUpdate() commented out for VR switch, MType.Disdainful and MType.Bored commented out
+    private VRShopperAnimationController _shopperAnimationController;
 	//public GameObject IndicatorAgent;
 	//public GameObject IndicatorParticle;
 	//public GameObject IndicatorCircle;
@@ -63,7 +63,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 		if (!GetComponent<UnityEngine.AI.NavMeshAgent>())
 			gameObject.AddComponent<UnityEngine.AI.NavMeshAgent>();
 
-		_animationSelector = GetComponent<AnimationSelector>();
+		//_animationSelector = GetComponent<AnimationSelector>();
 		_navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 		_appraisal = GetComponent<Appraisal>();
 		_affectComponent = GetComponent<AffectComponent>();
@@ -89,24 +89,27 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 
 	void Start()
 	{
-		//IndicatorAgent = (GameObject)Instantiate(Resources.Load("Indicator"), transform.position + Vector3.up, transform.rotation);
-		//IndicatorParticle = (GameObject)Instantiate(Resources.Load("IndicatorParticle"), transform.position + Vector3.up *2.2f, transform.rotation);
-		//IndicatorCircle = (GameObject)Instantiate(Resources.Load("IndicatorCircle"), transform.position + Vector3.up * 2.3f , transform.rotation);
-		//IndicatorCircle.transform.parent = transform;
-		//IndicatorCircle.transform.localScale = new Vector3(_navMeshAgent.radius * 2, 0, _navMeshAgent.radius * 2);
+		//Added by Nathan Brilmayer FOR VR
+        _shopperAnimationController = GetComponent<VRShopperAnimationController>();
 
-		//IndicatorParticle.transform.Rotate(-90, 0, 0); //for the particle system to be parallel to the table plane
-		//IndicatorAgent.transform.parent = transform;        
-		//IndicatorParticle.transform.parent = transform;
-		//IndicatorAgent.transform.localScale = new Vector3(_navMeshAgent.radius, 1f, _navMeshAgent.radius); //height for seeing indicator
-		//_particleSystem = new ParticleSystem();
+        //IndicatorAgent = (GameObject)Instantiate(Resources.Load("Indicator"), transform.position + Vector3.up, transform.rotation);
+        //IndicatorParticle = (GameObject)Instantiate(Resources.Load("IndicatorParticle"), transform.position + Vector3.up *2.2f, transform.rotation);
+        //IndicatorCircle = (GameObject)Instantiate(Resources.Load("IndicatorCircle"), transform.position + Vector3.up * 2.3f , transform.rotation);
+        //IndicatorCircle.transform.parent = transform;
+        //IndicatorCircle.transform.localScale = new Vector3(_navMeshAgent.radius * 2, 0, _navMeshAgent.radius * 2);
 
-		//_particleSystem = IndicatorParticle.GetComponent<ParticleSystem>();
-		//IndicatorParticle.GetComponent<Renderer>().material.color = new Color(0f, 0f, 0f, 0f); //always invisible 
-		//IndicatorParticle.SetActive(false);
-		//_particleSystem.enableEmission = false;
-		//_expressionColor = new Color(1,1,1);
-		_timeLastPosChange = Time.time;
+        //IndicatorParticle.transform.Rotate(-90, 0, 0); //for the particle system to be parallel to the table plane
+        //IndicatorAgent.transform.parent = transform;        
+        //IndicatorParticle.transform.parent = transform;
+        //IndicatorAgent.transform.localScale = new Vector3(_navMeshAgent.radius, 1f, _navMeshAgent.radius); //height for seeing indicator
+        //_particleSystem = new ParticleSystem();
+
+        //_particleSystem = IndicatorParticle.GetComponent<ParticleSystem>();
+        //IndicatorParticle.GetComponent<Renderer>().material.color = new Color(0f, 0f, 0f, 0f); //always invisible 
+        //IndicatorParticle.SetActive(false);
+        //_particleSystem.enableEmission = false;
+        //_expressionColor = new Color(1,1,1);
+        _timeLastPosChange = Time.time;
 
 		//if(GetComponentInChildren<AnimationSelector>() &&  GetComponent<AnimationSelector>().enabled) {
 		//    IndicatorAgent.SetActive(false);
@@ -119,6 +122,10 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 		Random.InitState(Id);
 
 	}
+
+
+
+
 
 	public void Restart()
 	{
@@ -244,7 +251,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 				
 
 				//If still not fighting
-				if (!IsFighting())
+				/*if (!IsFighting())
 				{
 					int val = Random.Range(0, 2);
 					if (val == 0)
@@ -269,7 +276,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 					}
 				}
 				else //low anger
-					_navMeshAgent.speed = Mathf.Lerp(_navMeshAgent.speed, WalkingSpeed, Time.deltaTime);
+					_navMeshAgent.speed = Mathf.Lerp(_navMeshAgent.speed, WalkingSpeed, Time.deltaTime);*/
 				break;
 			case (int)MType.Exuberant:
 				if (IsShopper())
@@ -297,14 +304,14 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 				if (_affectComponent.GetExpressionRange() == EmotionRange.High)
 				{
 					_navMeshAgent.speed = Mathf.Lerp(_navMeshAgent.speed, WalkingSpeed, Time.deltaTime);
-					if (MathDefs.GetRandomNumber(5) > 3)
-						_animationSelector.SelectAction("DISAPPOINTED");
+					/*if (MathDefs.GetRandomNumber(5) > 3)
+						_animationSelector.SelectAction("DISAPPOINTED");*/
 				}
 				break;
 
 			case (int)MType.Disdainful:
-				if (_affectComponent.GetExpressionRange() == EmotionRange.High)
-					_animationSelector.SelectAction("DISAPPOINTED");
+				/*if (_affectComponent.GetExpressionRange() == EmotionRange.High)
+					_animationSelector.SelectAction("DISAPPOINTED");*/
 				break;
 		}
 
@@ -645,7 +652,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 		// }
 			if (other.CompareTag("RealPlayer"))
 			{
-				Debug.Log("fight");
+				//Debug.Log("fight");
 				return true;
 			}
 

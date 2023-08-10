@@ -461,7 +461,7 @@ public class ShopperBehavior : MonoBehaviour
 				{
 					_agentComponent.LookAt(_desiredObj.transform.position, 0.1f);
 					//   if(_desiredObj.GetComponent<ObjComponent>().Achieved == false && _desiredObj.GetComponent<ObjComponent>().ClosestAgent.Equals(this.gameObject)) {
-					_animationSelector.SelectAction("PICKUP");
+					_animationSelector.SelectAction("PICKUP"); //
 					_agentComponent.HandPos = _desiredObj.position; //+ Vector3.up * 0.1f;    
 											// }
 

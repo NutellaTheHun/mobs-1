@@ -431,6 +431,7 @@ GameObject:
   - component: {fileID: 1315829189080725192}
   - component: {fileID: 1315829189080725193}
   - component: {fileID: 1315829189080725194}
+  - component: {fileID: 7076399622734460000}
   m_Layer: 6
   m_Name: _VRShopperBase
   m_TagString: Player
@@ -807,6 +808,26 @@ MonoBehaviour:
   _shelfInd: 0
   _shelfOrder: 
   _state: 0
+--- !u!114 &7076399622734460000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315829189080725196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b134cd14311f5d74e82e8089117e5b60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _state: 0
+  handsAnimationFrequency: 0
+  waveAnimationFrequency: 0
+  headSetAnimationFrequency: 0
+  quickAnimationFrequency: 0
+  beginningAnimationFrequency: 0
+  IdleHandsCount: 3
+  IdleFightCount: 3
 --- !u!1 &1315829189151304332
 GameObject:
   m_ObjectHideFlags: 0
