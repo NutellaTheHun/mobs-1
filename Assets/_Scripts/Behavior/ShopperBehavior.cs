@@ -51,6 +51,8 @@ public class ShopperBehavior : MonoBehaviour
 	//Author: Nathan Brilmayer, used for floating counter above AI for aquired objects
 	aquiredObjUI _aquiredObjUI;
     aquiredObjCanvasManager _aquiredObjCanvasManager;
+	
+	VRShopperAnimationController _animationController;
 
     [SerializeField]
 	private int _state;
@@ -140,8 +142,8 @@ public class ShopperBehavior : MonoBehaviour
 		CurrentObjs.transform.parent = this.transform;
         
 		_aquiredObjCanvasManager = GameObject.Find("Canvas").GetComponentInChildren<aquiredObjCanvasManager>();
-
         _aquiredObjCanvasManager.initializeShopperCounterUI(this);
+        _animationController = GetComponent<VRShopperAnimationController>();
     }
 	public void setAquiredUI(aquiredObjUI aou)
 	{
@@ -461,8 +463,8 @@ public class ShopperBehavior : MonoBehaviour
 				{
 					_agentComponent.LookAt(_desiredObj.transform.position, 0.1f);
 					//   if(_desiredObj.GetComponent<ObjComponent>().Achieved == false && _desiredObj.GetComponent<ObjComponent>().ClosestAgent.Equals(this.gameObject)) {
-					_animationSelector.SelectAction("PICKUP"); //
-					_agentComponent.HandPos = _desiredObj.position; //+ Vector3.up * 0.1f;    
+					//_animationSelector.SelectAction("PICKUP"); //
+					//_agentComponent.HandPos = _desiredObj.position; //+ Vector3.up * 0.1f;    
 											// }
 
 
@@ -474,9 +476,9 @@ public class ShopperBehavior : MonoBehaviour
 
 				else if (_agentComponent.StartedWaiting && !_agentComponent.FinishedWaiting && _desiredObj.GetComponent<ObjComponent>().Achieved == false)
 				{ //started waiting
-					if (_desiredObj.GetComponent<ObjComponent>().ClosestAgent.Equals(this.gameObject))
-						_desiredObj.position = _rightHand.position;
-					_agentComponent.HandPos = _desiredObj.position;//+ Vector3.up * 0.1f;
+					//if (_desiredObj.GetComponent<ObjComponent>().ClosestAgent.Equals(this.gameObject))
+						//_desiredObj.position = _rightHand.position;
+					//_agentComponent.HandPos = _desiredObj.position;//+ Vector3.up * 0.1f;
 					PickedObject();
 				}
 
@@ -486,16 +488,15 @@ public class ShopperBehavior : MonoBehaviour
 					{ //make sure someone else didn't pick it before me                
 
 						//   CurrentObjs.Add(_desiredObj);
-						_desiredObj.parent = CurrentObjs.transform;
-						_desiredObj.position = CurrentObjs.transform.position - 0.05f * Vector3.up + (CurrentObjs.transform.childCount - 1) * 0.05f * Vector3.up;
+						//_desiredObj.parent = CurrentObjs.transform;
+						//_desiredObj.position = CurrentObjs.transform.position - 0.05f * Vector3.up + (CurrentObjs.transform.childCount - 1) * 0.05f * Vector3.up;
 						//  _desiredObj.position = _leftHand.position;
+						_animationController.PlayPickupAnimation(_desiredObj.GetComponent<ObjComponent>().height);
 						_desiredObj.GetComponent<ObjComponent>().AchievingAgent = this.gameObject;
 						_desiredObj.GetComponent<ObjComponent>().Achieved = true;
 						_acquiredObjCnt++;
-
 						_aquiredObjUI.setAquiredObjCount(_acquiredObjCnt); //Added by Nathan Brilmayer for floating aquiredObj count UI
-
-                        _desiredObj.GetComponent<ObjComponent>().ObjPickupSuccess();
+                        //HideAchievedObj();
                         //    _agentComponent.HandPos = _desiredObj.position + Vector3.up * 0.1f;
 
 
@@ -545,6 +546,7 @@ public class ShopperBehavior : MonoBehaviour
 
 				if (_agentComponent.FinishedWaiting)
 				{
+					_animationController.PlayPayingAnimation();
 					_navmeshAgent.updateRotation = true; //change after lookat
 					_counter.GetComponent<LineHandler>().GetOutLine(this.gameObject);
 					_agentComponent.StartedWaiting = false;
@@ -582,7 +584,13 @@ public class ShopperBehavior : MonoBehaviour
 		}
 
 	}
-	void LateUpdate()
+
+    private void HideAchievedObj()
+    {
+        _desiredObj.GetComponent<ObjComponent>().ObjPickupSuccess();
+    }
+
+    void LateUpdate()
 	{
 		//if (_currentObj != null) {
 		//for (int i = 0; i < CurrentObjs.Count; i++) {

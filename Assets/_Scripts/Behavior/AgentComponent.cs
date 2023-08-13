@@ -11,6 +11,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 	UnityEngine.AI.NavMeshAgent _navMeshAgent;
 	Appraisal _appraisal;
 	AffectComponent _affectComponent;
+	Animator _animator;
     //private AnimationSelector _animationSelector; //yelling in EmotionalBehaviorUpdate() commented out for VR switch, MType.Disdainful and MType.Bored commented out
     private VRShopperAnimationController _shopperAnimationController;
 	//public GameObject IndicatorAgent;
@@ -91,7 +92,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 	{
 		//Added by Nathan Brilmayer FOR VR
         _shopperAnimationController = GetComponent<VRShopperAnimationController>();
-
+        _animator = GetComponent<Animator>();
         //IndicatorAgent = (GameObject)Instantiate(Resources.Load("Indicator"), transform.position + Vector3.up, transform.rotation);
         //IndicatorParticle = (GameObject)Instantiate(Resources.Load("IndicatorParticle"), transform.position + Vector3.up *2.2f, transform.rotation);
         //IndicatorCircle = (GameObject)Instantiate(Resources.Load("IndicatorCircle"), transform.position + Vector3.up * 2.3f , transform.rotation);
@@ -140,7 +141,8 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 		if (IsFighting())
 		{
 			DestroyImmediate(GetComponent<FightBehavior>());
-		}
+			_shopperAnimationController.EnterMovingState();
+        }
 
 		_timeLastPosChange = Time.time;
 		IsWatchingFight = false;
@@ -173,7 +175,14 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 		//if (IsFallen) {
 		//   IndicatorAgent.transform.Rotate(90, 0, 0);
 		//}
-
+		if(_navMeshAgent.velocity.magnitude > 0)
+		{
+			_animator.SetBool("VRIK_IsMoving", true);
+		}
+		else
+		{
+            _animator.SetBool("VRIK_IsMoving", false);
+        }
 		if (Impact.magnitude > 0.2)
 		{
 			SteerTo(transform.position + Impact * Time.deltaTime);
@@ -369,6 +378,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 	{
 		//pos.y = 0f;//_navMeshAgent.transform.position.y; //always assume they are on the same level
 		_navMeshAgent.SetDestination(pos);
+		
 	}
 
 	///Steer away from the location pos

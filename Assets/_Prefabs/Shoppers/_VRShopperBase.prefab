@@ -476,7 +476,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 0604f05f8bcff764d93b0ef10cec7845, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -615,7 +615,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1315829189080725196}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36ba0eec932702247b2276d6b65e0d65, type: 3}
   m_Name: 
@@ -826,8 +826,6 @@ MonoBehaviour:
   headSetAnimationFrequency: 0
   quickAnimationFrequency: 0
   beginningAnimationFrequency: 0
-  IdleHandsCount: 3
-  IdleFightCount: 3
 --- !u!1 &1315829189151304332
 GameObject:
   m_ObjectHideFlags: 0

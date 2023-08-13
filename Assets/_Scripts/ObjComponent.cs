@@ -30,6 +30,16 @@ public class ObjComponent : MonoBehaviour {
     public ArrayList _collidingAgents;
     private float minDist = 10000f;
 
+    //FOR VR, reflects if on high, middle, or low shelves, used for calling correct grabbing animations in VRShopperAnimationControllers
+    public Height height;
+    public enum Height
+    { 
+        None,
+        High,
+        Mid,
+        Low
+    }
+
 
     private void Start() {
         _collidingAgents = new ArrayList();

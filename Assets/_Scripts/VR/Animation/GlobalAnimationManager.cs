@@ -4,21 +4,17 @@ using UnityEngine;
 public class AnimationChoice
 {
     public int index { get; set; }
-
     public string animationType { get; set; }
-
     public AnimationChoice(string _animationType, int _index)
     {
         animationType = _animationType;
         index = _index;
     }
-
     public string ConvertToString()
     {
         return animationType + index.ToString();//1 is added to index because animation files in assets are numbered starting at 1
     }
 }
-
 public class QuirkStack
 {
     Stack<int> green = new Stack<int>();
@@ -193,21 +189,12 @@ public class GlobalAnimationManager : MonoBehaviour
            
         };
 
-        // { "fighting_idle", fighting_idle_count }, //probably dont need idle handled here
-        // { "punch_left", punch_left_count },
-        //{ "punch_right", punch_right_count },
-        //{ "pay", pay_count },
-        // { "grab_high", highGrab_count },
-        //{ "grab_mid", midGrab_count },
-        //{ "grab_low", lowGrab_count }
-
+        //Gets all clips from a Shoppers animation controller to map their durations in a dictionary
         AnimationClip[] clips = shopperControllers[0].GetComponent<Animator>().runtimeAnimatorController.animationClips;
         animationDurations = new Dictionary<string, float>();
-
         for (int i = 0; i < clips.Length; i++)
         {
             animationDurations.Add(clips[i].name, clips[i].length);
-            //Debug.Log("Dict: " + clips[i].name + " , "+ clips[i].length);
         }
     }
 
