@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b67bf91fc221b3546a7c21530346d804, type: 3}
+  m_Name: AnimationData
+  m_EditorClassIdentifier: 
+  totalIdleHandsAnimations: 3
+  totalFightingIdleAnimations: 3
+  totalLeftPunchAnimations: 3
+  totalRightPunchAnimations: 3
+  totalPayAnimations: 5
+  totalLowGrabAnimations: 3
+  totalMidGrabAnimations: 3
+  totalHighGrabAnimations: 3
+  totalHandAnimations: 3
+  totalHeadsetAnimations: 2
+  totalWaveAnimations: 3
+  totalQuickAnimations: 5
+  totalBeginningAnimations: 6
+  quirkHands: quirk_hands
+  quirkHeadset: quirk_headset
+  quirkWave: quirk_wave
+  quirkQuick: quirk_quick
+  beginning: beginning
+  fightingIdle: fighting_idle
+  punchLeft: punch_left
+  punchRight: punch_right
+  pay: pay
+  grabHigh: grab_high
+  grabMid: grab_mid
+  grabLow: grab_low
+  indleHands: Idle_down
+  layer: UpperBody.

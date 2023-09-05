@@ -92,7 +92,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 	{
 		//Added by Nathan Brilmayer FOR VR
         _shopperAnimationController = GetComponent<VRShopperAnimationController>();
-        _animator = GetComponent<Animator>();
+        _animator = GetComponentInChildren<Animator>();
         //IndicatorAgent = (GameObject)Instantiate(Resources.Load("Indicator"), transform.position + Vector3.up, transform.rotation);
         //IndicatorParticle = (GameObject)Instantiate(Resources.Load("IndicatorParticle"), transform.position + Vector3.up *2.2f, transform.rotation);
         //IndicatorCircle = (GameObject)Instantiate(Resources.Load("IndicatorCircle"), transform.position + Vector3.up * 2.3f , transform.rotation);

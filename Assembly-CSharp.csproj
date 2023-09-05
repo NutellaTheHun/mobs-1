@@ -57,8 +57,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\FBBIKSettings.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\CountShoppersInIsle.cs" />
+    <Compile Include="Assets\_Scripts\VR\ScriptableObjects\scripts\IpadCountData.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\VRIK\Scripts\HitReactionVRIKTrigger.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\FBIKHandsOnProp.cs" />
+    <Compile Include="Assets\_Scripts\VR\ScriptableObjects\scripts\IsleCountData.cs" />
     <Compile Include="Assets\_Scripts\Human\HumanAnimationSelector.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\CharacterController3rdPerson.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverVRBodyPart.cs" />
@@ -87,6 +90,7 @@
     <Compile Include="Assets\_Scripts\VR\player\InteractableIsTag.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\FBBIKHeadEffector.cs" />
     <Compile Include="Assets\_Scripts\Human\HumanFightBehavior.cs" />
+    <Compile Include="Assets\_Scripts\VR\ScriptableObjects\scripts\AnimationData.cs" />
     <Compile Include="Assets\ToggleControls.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\MotionAbsorbCharacter.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\AnimatorController3rdPersonIK.cs" />
@@ -127,6 +131,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\Grounder\GrounderIK.cs" />
     <Compile Include="Assets\RootMotion\Shared Demo Assets\Scripts\Character Controllers\CharacterBase.cs" />
     <Compile Include="Assets\_Scripts\UI\UserPersonalitySurveyGUI.cs" />
+    <Compile Include="Assets\_Scripts\VR\Animation\QuirkStack.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\Aim IK\Scripts\SecondHandOnGun.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverVRSpine.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\TouchWalls.cs" />
@@ -136,6 +141,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverFullBody.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\InspectorComment.cs" />
     <Compile Include="Assets\_Scripts\Human\HumanShoppingBehavior.cs" />
+    <Compile Include="Assets\_Scripts\VR\Animation\AnimationChoice.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\DemoGUIMessage.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Tools\AimPoser.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\PropertyAttributes.cs" />
@@ -146,6 +152,7 @@
     <Compile Include="Assets\_Scripts\Camera\FlyingCamera.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolver.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Tools\OffsetModifierVRIK.cs" />
+    <Compile Include="Assets\_Scripts\VR\Audio\FootStep.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Grounder\GroundingLeg.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\CCD IK\Scripts\MechSpiderController.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\TransferMotion.cs" />
@@ -208,6 +215,7 @@
     <Compile Include="Assets\_Scripts\Behavior\FightBehavior.cs" />
     <Compile Include="Assets\_Scripts\UI\VR\aquiredObjUI.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\LazySingleton.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\FindClosestTargestCollision.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKMappingBone.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\InteractionSystem.cs" />
     <Compile Include="Assets\RootMotion\Shared Demo Assets\Scripts\Character Controllers\SimpleLocomotion.cs" />
@@ -215,6 +223,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\CCD IK\Scripts\MechSpider.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\FBIKBoxing.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\Hierarchy.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\GetShopperInPosition.cs" />
     <Compile Include="Assets\VR Body\AnimateOnInput.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\InteractionTrigger.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\PickUpBox.cs" />
@@ -231,6 +240,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\IK Components\IK.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverArm.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverFABRIK.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\IsleComponent.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\BipedIK\BipedIKSolvers.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\V3Tools.cs" />
     <Compile Include="Assets\_Scripts\UI\UserDemographicsGUI.cs" />
@@ -268,6 +278,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\Limb IK\Scripts\BendGoal.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Components\ArmIK.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverAim.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\ShopperBehindInLine.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\FPSAiming.cs" />
     <Compile Include="Assets\_Scripts\UI\UserPADStudySurveyGUI.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverTrigonometric.cs" />
@@ -280,6 +291,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKMappingLimb.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\Aim IK\Scripts\AimSwing.cs" />
     <Compile Include="Assets\_Scripts\ObjComponent.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\IsInIsleCheck.cs" />
     <Compile Include="Assets\_Scripts\Globals.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Grounder\Grounding.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Components\CCDIK.cs" />

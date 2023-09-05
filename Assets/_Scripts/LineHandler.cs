@@ -2,9 +2,21 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
+using System;
 
 public class LineHandler : MonoBehaviour
 {
+	//Queue<ShopperBehavior> queue = new Queue<ShopperBehavior>(); //.Enqueue adds to end of queue, .Dequeue returns and removes from beginning of queue
+	[SerializeField] public GameObject PayingPosition;
+	private GetShopperInPosition PayingCollider;
+	[SerializeField] public GameObject FrontOfLinePosition;
+    private GetShopperInPosition FrontOfLineCollider;
+    public ShopperBehavior ShopperAtEndOfLine;
+	public ShopperBehavior ShopperAtFrontOfLine;
+	public ShopperBehavior PayingShopper;
+	public int linesize;
+	public List<ShopperBehavior> LineList = new List<ShopperBehavior>();
+	public bool shoppersWaitingToPay = false;
 
 	public Vector3 LineEnd;
 	Vector3 _originalPos;
@@ -14,11 +26,44 @@ public class LineHandler : MonoBehaviour
 
 	void Start()
 	{
-		_originalPos = GameObject.Find("counter").transform.position;
+		PayingCollider = PayingPosition.GetComponent<GetShopperInPosition>();
+		FrontOfLineCollider = FrontOfLinePosition.GetComponent<GetShopperInPosition>();
+        _originalPos = GameObject.Find("counter").transform.position;
 		LineEnd = _originalPos;
+		linesize = 0;
+    }
+
+    private void Update()
+    {
+		if (ShopperAtFrontOfLine != null)
+		{
+			shoppersWaitingToPay = true;
+		}
+		else
+		{
+			shoppersWaitingToPay = false;
+			FrontOfLineCollider.enabled = true;
+        }
+		if(PayingShopper == null)
+		{
+			PayingCollider.enabled = false;
+		}
+
+		if (ShopperAtEndOfLine == null && ShopperAtFrontOfLine != null)
+		{
+			ShopperAtEndOfLine = ShopperAtFrontOfLine;
+		}
+
+		if (ShopperAtEndOfLine != null)
+		{
+			if (ShopperAtEndOfLine.ShopperBehindInLine != null)
+			{
+				ShopperAtEndOfLine = ShopperAtEndOfLine.ShopperBehindInLine;
+			}
+		}
 	}
 
-	void UpdateLineEnd()
+    void UpdateLineEnd()
 	{
 		if (LineEnd.x > -12) //update line in case
 			LineEnd = _originalPos + new Vector3(-AgentsInLine.Count * _agentSpace, 0, 0);
@@ -80,5 +125,39 @@ public class LineHandler : MonoBehaviour
 		Gizmos.DrawCube(LineEnd, new Vector3(1, 1, 1));
 	}
 
+    public Vector3 GoToLine()
+    {
+		if(PayingShopper == null)
+		{
+			return PayingPosition.transform.position;
+        }
+		if(ShopperAtFrontOfLine == null)
+		{
+			return FrontOfLinePosition.transform.position;
+        }
+		else
+		{
+			return ShopperAtEndOfLine.NextInLinePositionCollider.transform.position;
+        }
+       /* if(ShopperAtFrontOfLine == null)
+		{
+			return FrontOfLinePosition.transform.position;
+		}
+		else
+		{
+            return ShopperAtEndOfLine.NextInLinePositionCollider.transform.position;
+        }*/
+    }
 
+    public void SetNewFrontOfLineShopper(ShopperBehavior shopperBehavior)
+    {
+		FrontOfLineCollider.enabled = false;
+		ShopperAtFrontOfLine = shopperBehavior;
+    }
+
+    public void SetNewPayingShopper(ShopperBehavior shopperBehavior)
+    {
+		PayingCollider.enabled = false;
+        PayingShopper = shopperBehavior;
+    }
 }

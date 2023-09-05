@@ -47,12 +47,25 @@ public class ShopperBehavior : MonoBehaviour
 	//Variables made by Nathan Brilmayer
 	private const int numberOfIsles = 11; //hard coded for shopper world
     private const int totalShoppers = 21; //hard coded for shopper world
-    
-	//Author: Nathan Brilmayer, used for floating counter above AI for aquired objects
-	aquiredObjUI _aquiredObjUI;
-    aquiredObjCanvasManager _aquiredObjCanvasManager;
+
+	//Variables for LineHandling and Paying
+    LineHandler _LineHandler;
+    [SerializeField] public GameObject NextInLinePositionCollider;
+	public ShopperBehavior ShopperAheadInLine;
+	public ShopperBehavior ShopperBehindInLine;
+	//public GameObject PositionBehindSomeone;
+	public bool isWaitingBehindSomeone = false;
+	private GameObject paymentCollider;
+	public bool hasPaid = false;
+    [SerializeField] private GameObject FindClosestIpad;
 	
+
+    //Author: Nathan Brilmayer, used for floating counter above AI for aquired objects
+    aquiredObjUI _aquiredObjUI;
+    aquiredObjCanvasManager _aquiredObjCanvasManager;
 	VRShopperAnimationController _animationController;
+	[SerializeField] private IsleCountData _isleCountData;
+	[SerializeField] private IpadCountData _ipadCountData;
 
     [SerializeField]
 	private int _state;
@@ -62,7 +75,7 @@ public class ShopperBehavior : MonoBehaviour
 		set { _state = value; }
 	}
 
-	public enum ShoppingState
+    public enum ShoppingState
 	{
 		ShelfChanging,
 		Paying,
@@ -81,7 +94,10 @@ public class ShopperBehavior : MonoBehaviour
     // Use this for initialization
     void Start()
 	{
-		_appraisal = GetComponent<Appraisal>();
+		_LineHandler = GameObject.Find("counter").GetComponent<LineHandler>();
+		paymentCollider = GameObject.Find("PaymentCollider");
+
+        _appraisal = GetComponent<Appraisal>();
 		_agentComponent = GetComponent<AgentComponent>();
 		_affectComponent = GetComponent<AffectComponent>();
 		_navmeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -109,8 +125,8 @@ public class ShopperBehavior : MonoBehaviour
 
 		//IMPORTANT! We cannot use the same model twice because we are using the same avatar?? 
 
-		_rightHand = transform.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.RightHand);
-		_leftHand = transform.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.LeftHand);
+		//_rightHand = transform.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.RightHand);
+		//_leftHand = transform.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.LeftHand);
 
 
 		_acquiredObjCnt = 0;
@@ -131,11 +147,12 @@ public class ShopperBehavior : MonoBehaviour
         _objs = GameObject.Find("Objects" + _shelfOrder[0]);
 
 
-		State = (int)ShoppingState.GoingToObject;
+		//State = (int)ShoppingState.GoingToObject;
+		State = (int)ShoppingState.ShelfChanging;
 
 
 
-		_navmeshAgent.speed += 0.6f; //faster than usual
+        _navmeshAgent.speed += 0.6f; //faster than usual
 
 
 		CurrentObjs = new GameObject("AchievedObjects");
@@ -157,7 +174,6 @@ public class ShopperBehavior : MonoBehaviour
 	{
         _shelfOrder = new int[numberOfIsles]; //Randomize shelf order for now
 		_shelfOrder[0] = Random.Range(0, 10);
-		//_shelfOrder[0] = 1;
         _shelfComp.incrementShopper(_shelfOrder[0]);
     }
     private void createShelfOrder()
@@ -230,8 +246,6 @@ public class ShopperBehavior : MonoBehaviour
 		yield return new WaitForSeconds(seconds);
 
 		_finishedWaitingAtEntrance = true;
-
-
 		//Dont't forget to set started waiting to false before state change
 	}
 
@@ -254,16 +268,12 @@ public class ShopperBehavior : MonoBehaviour
 
 	void Update()
 	{
-
-
 		if (!_agentComponent.IsFighting())
 		{
 			UpdateState();
-			UpdateAppraisalStatus();
+            UpdateAppraisalStatus();
 
-
-
-			CurrentObjs.SetActive(true);
+            CurrentObjs.SetActive(true);
 
 			//Debug.Log("fighting");
 			//Check fighting
@@ -271,21 +281,17 @@ public class ShopperBehavior : MonoBehaviour
 			//Disapproved agents are the ones who achieve my desired object before me
 			foreach (GameObject c in _agentComponent.CollidingAgents)
 			{
-
 				if (c.GetComponent<ShopperBehavior>() != null && _agentComponent.IsGoodToFight(c, 5f))
 				{
 					_agentComponent.StartFight(c, true);
 					c.GetComponent<AgentComponent>().StartFight(this.gameObject, false);
-
 				}
-
 			}
-
 		}
 
-        else {
+        else 
+		{
 			CurrentObjs.SetActive(false); //don't show items when fighting
-
 		}
   //      else  if (GetComponent<FightBehavior>().Opponent.CompareTag("Player") )
   //      { //Fighting
@@ -327,36 +333,31 @@ public class ShopperBehavior : MonoBehaviour
 	//Arrange positions of object
 	public void SortObjects()
 	{
-
 		for (int i = 0; i < CurrentObjs.transform.childCount; i++)
 			CurrentObjs.transform.GetChild(i).transform.position = CurrentObjs.transform.position - 0.05f * Vector3.up + i * 0.05f * Vector3.up;
-
-
 	}
 
 	//Give all your objects to your opponent
 	public void YieldObjects(GameObject opponent)
 	{
-
 		List<Transform> children = new List<Transform>();
 		int childCnt = CurrentObjs.transform.childCount;
+
 		for(int i = 0; i < childCnt; i++)
 			children.Add(CurrentObjs.transform.GetChild(i));
 
-
-
 		foreach(Transform c in children) {
-			if(opponent.CompareTag("RealPlayer")) {
+			if(opponent.CompareTag("RealPlayer")) 
+			{
 				c.parent = opponent.GetComponent<HumanShoppingBehavior>().CurrentObjs.transform;
 				opponent.GetComponent<HumanShoppingBehavior>().SortObjects();
 			}
 			
-            else {
+            else 
+			{
 				c.parent = opponent.GetComponent<ShopperBehavior>().CurrentObjs.transform;
 				opponent.GetComponent<ShopperBehavior>().SortObjects();
-		
-		
-		}
+			}
 
 		
 		}
@@ -371,17 +372,20 @@ public class ShopperBehavior : MonoBehaviour
 
 	void UpdateState()
 	{
-		float minDist = 100000f;
-		_totalObjCnt = 0;
+		//float minDist = 100000f;
+		//_totalObjCnt = 0;
 
 
 
 		switch (State)
 		{
 			case (int)ShoppingState.GoingToObject:
-				{
+			{
+					_totalObjCnt = _ipadCountData.Isle[_shelfOrder[_shelfInd]];
+                    if (_desiredObj == null) { FindClosestIpad.SetActive(true); }
+					
 					//Find closest object with the least effective density
-					Transform closestObj = null;
+					/*Transform closestObj = null;
 
                         for (int i = 0; i < _objs.transform.childCount; i++)
                         {	//find closest object
@@ -407,19 +411,21 @@ public class ShopperBehavior : MonoBehaviour
 								}
 							}
                         }
-                        _desiredObj = closestObj;
+                        _desiredObj = closestObj;*/
 
 					
 					if (_desiredObj != null)
 					{
-						_agentComponent.SteerTo(_desiredObj.transform.position);
-						float dist = Vector2.Distance(new Vector2(_desiredObj.transform.position.x, _desiredObj.transform.position.z), new Vector2(transform.position.x, transform.position.z));
+                        _agentComponent.SteerTo(_desiredObj.transform.position);
+                        if (!transform.GetComponent<VRShopperAnimationController>().IsAnimated())
+						{
+                            float dist = Vector2.Distance(new Vector2(_desiredObj.transform.position.x, _desiredObj.transform.position.z), new Vector2(transform.position.x, transform.position.z));
 
-						if (dist < 1f)
-						{//Pick up object                        
-							State = (int)ShoppingState.PickingUpObject;
-						}
-
+                            if (dist < 1f)
+                            {//Pick up object                        
+                                State = (int)ShoppingState.PickingUpObject;
+                            }
+                        }
 					}
 					else
 					{
@@ -427,7 +433,7 @@ public class ShopperBehavior : MonoBehaviour
 						{ //all objects in my shelf are consumed
 							_shelfInd++;
 							// if ( _affectComponent.Ekman[(int)EkmanType.Afraid] > 0.5) {
-							if (_shelfInd > 10) //change to 12 for superstore, NATHAN
+							if (_shelfInd > 10)
 							{ //all objects in the store are consumed
 								_allConsumed = true;
 
@@ -455,11 +461,25 @@ public class ShopperBehavior : MonoBehaviour
 					}
 
 
-				}
+			}
 				break;
 			case (int)ShoppingState.PickingUpObject:
-
-				if (_agentComponent.StartedWaiting == false)
+				
+				if(_desiredObj != null)
+				{
+                    if (_desiredObj.GetComponent<ObjComponent>().Achieved == false && !transform.GetComponent<VRShopperAnimationController>().IsAnimated())
+                    {
+                        _desiredObj.GetComponent<ObjComponent>().AchievingAgent = this.gameObject;
+                        _desiredObj.GetComponent<ObjComponent>().Achieved = true;
+                        _agentComponent.LookAt(_desiredObj.transform.position, 0.1f);
+                        _animationController.PlayPickupAnimation(_desiredObj.GetComponent<ObjComponent>().height);
+                        _acquiredObjCnt++;
+                        _aquiredObjUI.setAquiredObjCount(_acquiredObjCnt);
+                    }
+                }
+                
+                
+                /*if (_agentComponent.StartedWaiting == false)
 				{
 					_agentComponent.LookAt(_desiredObj.transform.position, 0.1f);
 					//   if(_desiredObj.GetComponent<ObjComponent>().Achieved == false && _desiredObj.GetComponent<ObjComponent>().ClosestAgent.Equals(this.gameObject)) {
@@ -472,17 +492,17 @@ public class ShopperBehavior : MonoBehaviour
 					_agentComponent.StartedWaiting = true;
 					_agentComponent.FinishedWaiting = false;
 
-				}
+				}*/
 
-				else if (_agentComponent.StartedWaiting && !_agentComponent.FinishedWaiting && _desiredObj.GetComponent<ObjComponent>().Achieved == false)
+                /*else if (_agentComponent.StartedWaiting && !_agentComponent.FinishedWaiting && _desiredObj.GetComponent<ObjComponent>().Achieved == false)
 				{ //started waiting
 					//if (_desiredObj.GetComponent<ObjComponent>().ClosestAgent.Equals(this.gameObject))
 						//_desiredObj.position = _rightHand.position;
 					//_agentComponent.HandPos = _desiredObj.position;//+ Vector3.up * 0.1f;
 					PickedObject();
-				}
+				}*/
 
-				if (_agentComponent.FinishedWaiting)
+                /*if (_agentComponent.FinishedWaiting)
 				{
 					if (_desiredObj.GetComponent<ObjComponent>().Achieved == false)
 					{ //make sure someone else didn't pick it before me                
@@ -501,47 +521,129 @@ public class ShopperBehavior : MonoBehaviour
 
 
                     }
-					else //it is achieved
-					     //FUNDA: Why?
-					     //_agentComponent.LookAt(_desiredObj.GetComponent<ObjComponent>().AchievingAgent.transform.position, 0.01f);
+					else*/ //it is achieved
+                           //FUNDA: Why?
+                           //_agentComponent.LookAt(_desiredObj.GetComponent<ObjComponent>().AchievingAgent.transform.position, 0.01f);
 
-						_navmeshAgent.updateRotation = true;
-					_agentComponent.StartedWaiting = false;
-					if (_acquiredObjCnt >= _desiredObjCnt)
-					{
+                _navmeshAgent.updateRotation = true;
+					//_agentComponent.StartedWaiting = false;
+				if (_acquiredObjCnt >= _desiredObjCnt)
+				{
 
-						if (_affectComponent.Emotion[(int)EType.Reproach] < 0.5f)
-							State = (int)ShoppingState.GoingToLine; //go to line
-						else
-							State = (int)ShoppingState.Exiting; //exit without paying
-
-					}
+					if (_affectComponent.Emotion[(int)EType.Reproach] < 0.5f)
+						State = (int)ShoppingState.GoingToLine; //go to line
 					else
-						State = (int)ShoppingState.GoingToObject; //go to another object                        
+						State = (int)ShoppingState.Exiting; //exit without paying
 
 				}
+				else
+					State = (int)ShoppingState.GoingToObject; //go to another object                        
 
 				break;
 			case (int)ShoppingState.GoingToLine:
-				_counter.GetComponent<LineHandler>().GetInLine(this.gameObject); //get in line if not already in
-				if (_counter.GetComponent<LineHandler>().IsInLine(this.gameObject))
-					State = (int)ShoppingState.WaitingInLine;
-				else
-					_agentComponent.SteerTo(_counter.GetComponent<LineHandler>().LineEnd);
 
-				break;
-			case (int)ShoppingState.WaitingInLine:
-
-				_agentComponent.SteerTo(_counter.GetComponent<LineHandler>().FindLineEndBeforeAgent(this.gameObject));
-				if (_counter.GetComponent<LineHandler>().IsFirst(this.gameObject))
+				/*if (_LineHandler.PayingShopper == null && _LineHandler.LineList.Count == 0)
+					_agentComponent.SteerTo(_LineHandler.PayingPosition.transform.position);
+				else if(_LineHandler.PayingShopper != null && _LineHandler.LineList.Count == 0)
+				{
+					_agentComponent.SteerTo(_LineHandler.FrontOfLinePosition.transform.position);
+				}
+				else if(_LineHandler.PayingShopper == this)
+				{
 					State = (int)ShoppingState.Paying;
+                }
+				//if(isWaitingBehindSomeone == true || _LineHandler.ShopperAtFrontOfLine == this)
+				else
+				{
+					_agentComponent.SteerTo(_LineHandler.ShopperAtEndOfLine.NextInLinePositionCollider.transform.position);
+					//State = (int)ShoppingState.WaitingInLine;
+                    //_agentComponent.Watch(_LineHandler.PayingPosition);
+                    //_agentComponent.LookAt(_LineHandler.PayingPosition.transform.position, 1);
+                }*/
+				_agentComponent.SteerTo(_LineHandler.GoToLine());
+                if (_LineHandler.PayingShopper == this)
+                {
+                    State = (int)ShoppingState.Paying;
+                }
+                if (isWaitingBehindSomeone == true || _LineHandler.ShopperAtFrontOfLine == this)
+                    State = (int)ShoppingState.WaitingInLine;
+					
+                /*_counter.GetComponent<LineHandler>().GetInLine(this.gameObject); //get in line if not already in
+                if (_counter.GetComponent<LineHandler>().IsInLine(this.gameObject))
+                    State = (int)ShoppingState.WaitingInLine;
+                else
+                    _agentComponent.SteerTo(_counter.GetComponent<LineHandler>().LineEnd);
+                */
+                break;
+            /*
+				[SerializeField] public GameObject NextInLinePositionCollider;
+				public ShopperBehavior ShopperAheadInLine;
+				public ShopperBehavior ShopperBehindInLine;
+				public GameObject PositionBehindSomeone;
+				public bool isWaitingBehindSomeone = false;*/
 
-				break;
+            case (int)ShoppingState.WaitingInLine:
+
+                /*if (!_LineHandler.LineList.Contains(this))
+                {
+                    _LineHandler.LineList.Add(this);
+                }*/
+
+                if (_LineHandler.ShopperAtFrontOfLine == this)
+				{
+					isWaitingBehindSomeone = false;
+
+					if (_LineHandler.PayingShopper == null)
+					{
+						//_LineHandler.PayingShopper = this;
+						if (ShopperBehindInLine != null) _LineHandler.SetNewFrontOfLineShopper(ShopperBehindInLine.GetComponent<ShopperBehavior>());
+						_LineHandler.SetNewPayingShopper(this);
+                        _agentComponent.SteerTo(_LineHandler.PayingPosition.transform.position);
+						//ShopperBehindInLine.GetComponentInParent<AgentComponent>().SteerTo(_LineHandler.FrontOfLinePosition.transform.position);
+                    }
+					else
+					{
+                        _agentComponent.SteerTo(_LineHandler.FrontOfLinePosition.transform.position);
+                        _agentComponent.LookAt(_LineHandler.PayingPosition.transform.position, 1);
+                    }
+				}
+                if (_LineHandler.PayingShopper == this)
+                {
+                    State = (int)ShoppingState.Paying;
+                }
+				if(isWaitingBehindSomeone)
+				{
+					_agentComponent.SteerTo(ShopperAheadInLine.NextInLinePositionCollider.transform.position);
+                    _agentComponent.LookAt(ShopperAheadInLine.transform.position, 1);
+                }
+
+                /*_agentComponent.SteerTo(_counter.GetComponent<LineHandler>().FindLineEndBeforeAgent(this.gameObject));
+				if (_counter.GetComponent<LineHandler>().IsFirst(this.gameObject))
+					State = (int)ShoppingState.Paying;*/
+
+                break;
 
 			case (int)ShoppingState.Paying:
-				_agentComponent.Watch(_cashier);
-				//_agentComponent.LookAt(_cashier.transform.position);
-				if (_agentComponent.StartedWaiting == false)
+
+                //if(_LineHandler.LineList.Contains(this)) _LineHandler.LineList.Remove(this);
+                _agentComponent.SteerTo(_LineHandler.PayingPosition.transform.position);
+                _agentComponent.Watch(paymentCollider);
+				if (!transform.GetComponent<VRShopperAnimationController>().IsAnimated() && transform.GetComponent<Animator>().GetBool("VRIK_IsMoving") == false)
+				{
+                    StartCoroutine(_agentComponent.WaitAWhile(1));
+                    _animationController.PlayPayingAnimation();
+                    _navmeshAgent.updateRotation = true; //change after lookat
+                    StartCoroutine(_agentComponent.WaitAWhile(1));
+                    State = (int)ShoppingState.Exiting;
+					_LineHandler.PayingShopper = null;
+					hasPaid = true;
+                }
+                
+               // _counter.GetComponent<LineHandler>().GetOutLine(this.gameObject);
+                //_agentComponent.StartedWaiting = false;
+               
+                //_agentComponent.LookAt(_cashier.transform.position);
+                /*if (_agentComponent.StartedWaiting == false)
 					StartCoroutine(_agentComponent.WaitAWhile(10));
 
 				if (_agentComponent.FinishedWaiting)
@@ -551,7 +653,7 @@ public class ShopperBehavior : MonoBehaviour
 					_counter.GetComponent<LineHandler>().GetOutLine(this.gameObject);
 					_agentComponent.StartedWaiting = false;
 					State = (int)ShoppingState.Exiting;
-				}
+				}*/
 				break;
 
 			case (int)ShoppingState.Exiting:
@@ -575,9 +677,16 @@ public class ShopperBehavior : MonoBehaviour
 				_objs = _allObjs[_shelfOrder[_shelfInd]];
 
 
-				if (Vector3.Distance(_closestShelfPos, transform.position) < 2f) //close enough
+				if (Vector3.Distance(_closestShelfPos, transform.position) < 1f) //close enough ,changed from 2f to 1f
 				{
-                    State = (int)ShoppingState.GoingToObject;
+					if (_isleCountData.ShopperCountInIsle[_shelfInd] < _isleCountData.IslePerShopperMax) //If to many shoppers in isle then that isle is skipped, logical choice and prevents AI clumping as much
+					{
+                        State = (int)ShoppingState.GoingToObject;
+                    }
+					else
+					{
+						_shelfInd++;
+                    }
                 }
 				break;
 
@@ -774,8 +883,6 @@ public class ShopperBehavior : MonoBehaviour
 
 	}
 
-
-
 	void OnDrawGizmosSelected()
 	{
 		/*   Gizmos.color = Color.blue;
@@ -793,5 +900,36 @@ public class ShopperBehavior : MonoBehaviour
 		       }*/
 	}
 
+	public void GetClosestObj()
+	{
+		int counter = 0;
+		int counterMax = 4;
+		if(gameObject.GetComponentInChildren<FindClosestTargestCollision>().ClosestTarget.transform.parent.GetComponent<IsleComponent>().IsleIndex == _shelfOrder[_shelfInd])
+		{ 
+			if(counter < counterMax)
+			{
+                if (_desiredObj == null)
+                    _desiredObj = gameObject.GetComponentInChildren<FindClosestTargestCollision>().ClosestTarget.transform;
+                else
+                {
+                    if (Vector3.Distance(transform.position, _desiredObj.transform.position) >
+                        Vector3.Distance(transform.position, gameObject.GetComponentInChildren<FindClosestTargestCollision>().ClosestTarget.transform.position))
+                    {
+                        _desiredObj = gameObject.GetComponentInChildren<FindClosestTargestCollision>().ClosestTarget.transform;
+                    }
+                }
+				counter++;
+            }
+			else
+			{
+                FindClosestIpad.SetActive(false);
+            }
+            
+        }
+	}
 
+    internal void ResetDesiredObj()
+    {
+		_desiredObj = null;
+    }
 }

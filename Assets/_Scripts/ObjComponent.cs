@@ -14,6 +14,7 @@ public class ObjComponent : MonoBehaviour {
     Rigidbody _rigidbody;
     //Box Collider
     BoxCollider _boxCollider;
+    IsleComponent _isleComponent;
     public bool Achieved {
         get { return _achieved; }
         set { _achieved = value; }
@@ -47,6 +48,7 @@ public class ObjComponent : MonoBehaviour {
         _interactable = GetComponent<XRGrabInteractable>();
         _rigidbody = GetComponent<Rigidbody>();
         _boxCollider = GetComponent<BoxCollider>();
+        _isleComponent = GetComponentInParent<IsleComponent>();
     }
 
     private void Update()
@@ -108,11 +110,15 @@ public class ObjComponent : MonoBehaviour {
 
      public void ObjPickupSuccess()
     {
-        _meshRenderer.enabled = false;
+        //_achieved = true;
+        _isleComponent.UpdateIsleCount();
+        /*_meshRenderer.enabled = false;
         _interactable.enabled = false;
         _rigidbody.isKinematic = true;
         _rigidbody.detectCollisions = false;
-        _boxCollider.enabled = false;
+        _boxCollider.enabled = false;*/
+        AchievingAgent.GetComponent<ShopperBehavior>().ResetDesiredObj();
+        Destroy(this.gameObject);
     }
 
 }

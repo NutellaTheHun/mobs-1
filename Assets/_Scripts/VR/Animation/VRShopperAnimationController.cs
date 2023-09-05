@@ -1,17 +1,21 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using static RootMotion.FinalIK.IKSolverVR;
 
 //influence for programmatic animation controller
 //https://www.youtube.com/watch?v=nBkiSJ5z-hE
 public class VRShopperAnimationController : MonoBehaviour
 {
-    private Animator _animator;
-    private GlobalAnimationManager _animationManager;
+    private GlobalAnimationManager _AnimationManager;
+    private Animator _Animator;
+    private FootStep _Footstep;
+    [SerializeField] private AnimationData _AnimationData;
 
     public State _state;
-    private bool isAnimated = false;
+    public bool isAnimated = false;
     private bool noFightSequence = true;
+    public bool IsInIsle = false; //no quirks are played in isle as people are focused on grabbing items
 
     [Range(0, 100)]
     [SerializeField] private int handsAnimationFrequency;
@@ -24,32 +28,7 @@ public class VRShopperAnimationController : MonoBehaviour
     [Range(0, 100)]
     [SerializeField] private int beginningAnimationFrequency;
 
-    private int totalIdleHandsAnimations;
-    private int totalFightingIdleAnimations;
-    private int totalLeftPunchAnimations;
-    private int totalRightPunchAnimations;
-    private int totalPayAnimations;
-    private int totalLowGrabAnimations;
-    private int totalMidGrabAnimations;
-    private int totalHighGrabAnimations;
-
-    private const string layer = "UpperBody.";
     private string[] punchSequence;
-
-    //structure of the types of animations to play, index is appended to string to be the literal animation clip,such as quick_hands1, or quirk_wave2
-    private const string quirk_hands = "quirk_hands";
-    private const string quirk_headset = "quirk_headset";
-    private const string quirk_wave = "quirk_wave";
-    private const string quirk_quick = "quirk_quick";
-    private const string beginning = "beginning";
-    private const string fighting_idle = "fighting_idle"; //probably dont need idle handled here
-    private const string punch_left = "punch_left";
-    private const string punch_right = "punch_right";
-    private const string pay = "pay";
-    private const string grab_high = "grab_high";
-    private const string grab_mid = "grab_mid";
-    private const string grab_low = "grab_low";
-    private const string indle_hands = "Idle_down";
 
     public enum State
     {
@@ -60,22 +39,26 @@ public class VRShopperAnimationController : MonoBehaviour
 
     void Start()
     {
-        _animator = GetComponent<Animator>();
-        _animationManager = GameObject.Find("AnimationManager").GetComponent<GlobalAnimationManager>();
+        _Animator = GetComponentInChildren<Animator>();
+        _AnimationManager = GameObject.Find("AnimationManager").GetComponent<GlobalAnimationManager>();
+        _Footstep = GetComponentInChildren<FootStep>();
+        //_AnimationManager.RegisterAnimationController(this);
         _state = State.beginning;
-        InitializeTotalAnimationTypeCountInformation();
         PlayIdleAnimation();
     }
 
     private void Update()
     {
         FightCheck();
+        _Animator.SetFloat("VRIK_Vertical", transform.forward.magnitude);
+        //_Animator.SetFloat("VRIK_Horizontal", transform.right.magnitude);
     }
 
-    //-----------Interaction Functions-----------------
-    //---Fighting
+    //Interaction Functions
+    //Fighting
+    #region
 
-    //Fighting animation system overall generates a sequence of punches with varying amounts and animations, then pauses for a varied time before punching again.
+    //The fight animation system generates avarying sequence of punches with different animations, then pauses for a varied time before punching again.
     private void FightCheck()
     {
         if (_state == State.fighting)
@@ -93,13 +76,13 @@ public class VRShopperAnimationController : MonoBehaviour
         noFightSequence = false;
 
         //Generate how many punches to deliver, (originally between 1 and 3 punches in one sequence)
-        int randomCombo = UnityEngine.Random.Range(1, totalLeftPunchAnimations + 1);
+        int randomCombo = UnityEngine.Random.Range(1, _AnimationData.totalLeftPunchAnimations + 1);
 
         //Generate random index numbers to append to animation types to create an animation clip. example "punch_left" + "0"
         int[] punchAnimationIndex = new int[randomCombo];
         for (int i = 0; i < punchAnimationIndex.Length; i++)
         {
-            int index = UnityEngine.Random.Range(0, totalLeftPunchAnimations);
+            int index = UnityEngine.Random.Range(0, _AnimationData.totalLeftPunchAnimations);
             punchAnimationIndex[i] = index;
         }
 
@@ -108,11 +91,11 @@ public class VRShopperAnimationController : MonoBehaviour
         int randomPunch = UnityEngine.Random.Range(0, 2);
         if (randomPunch == 0)
         {
-            punchAnimationSequence = CompletePunchSequence(punch_left, punchAnimationIndex);
+            punchAnimationSequence = CompletePunchSequence(_AnimationData.punchLeft, punchAnimationIndex);
         }
         else
         {
-            punchAnimationSequence = CompletePunchSequence(punch_right, punchAnimationIndex);
+            punchAnimationSequence = CompletePunchSequence(_AnimationData.punchRight, punchAnimationIndex);
         }
 
         return punchAnimationSequence;
@@ -124,18 +107,18 @@ public class VRShopperAnimationController : MonoBehaviour
         bool isLeft = false;
         int size = punchAnimationIndex.Length;
         string[] completePunchSequence = new string[size];
-        if (punchType == punch_left) { isLeft = true; }
+        if (punchType == _AnimationData.punchLeft) { isLeft = true; }
 
         for (int i = 0; i < size; i++)
         {
             if (isLeft)
             {
-                completePunchSequence[i] = punch_left + punchAnimationIndex[i].ToString();
+                completePunchSequence[i] = _AnimationData.punchLeft + punchAnimationIndex[i].ToString();
                 isLeft = false;
             }
             else
             {
-                completePunchSequence[i] = punch_right + punchAnimationIndex[i].ToString();
+                completePunchSequence[i] = _AnimationData.punchRight + punchAnimationIndex[i].ToString();
                 isLeft = true;
             }
         }
@@ -147,8 +130,8 @@ public class VRShopperAnimationController : MonoBehaviour
     {
         for (int i = 0; i < punchSequence.Length; i++)
         {
-            _animator.CrossFade(layer + punchSequence[i], 0.1f);
-            yield return new WaitForSeconds(_animationManager.GetAnimationClipDuration(punchSequence[i]));
+            _Animator.CrossFade(_AnimationData.layer + punchSequence[i], 0.1f);
+            yield return new WaitForSeconds(_AnimationManager.animationDurations[punchSequence[i]]);
         }
         StartCoroutine(EnterFightTransition());
     }
@@ -159,7 +142,9 @@ public class VRShopperAnimationController : MonoBehaviour
         yield return new WaitForSeconds(rng);
         noFightSequence = true;
     }
-    //-----------Grabbing Functionality
+    #endregion
+    //Grabbing Functionality
+    #region
     public void PlayPickupAnimation(ObjComponent.Height height)
     {
         PlayChosenInteractionAnimation(
@@ -175,8 +160,8 @@ public class VRShopperAnimationController : MonoBehaviour
     {
         AnimationChoice ac = null;
         int rng;
-        rng = UnityEngine.Random.Range(0, totalPayAnimations);
-        ac = new AnimationChoice(pay, rng);
+        rng = UnityEngine.Random.Range(0, _AnimationData.totalPayAnimations);
+        ac = new AnimationChoice(_AnimationData.pay, rng);
         return ac;
     }
 
@@ -187,18 +172,18 @@ public class VRShopperAnimationController : MonoBehaviour
         switch (height)
         {
             case ObjComponent.Height.High:
-                rng = UnityEngine.Random.Range(0, totalHighGrabAnimations);
-                ac = new AnimationChoice(grab_high, rng);
+                rng = UnityEngine.Random.Range(0, _AnimationData.totalHighGrabAnimations);
+                ac = new AnimationChoice(_AnimationData.grabHigh, rng);
                 break;
 
             case ObjComponent.Height.Mid:
-                rng = UnityEngine.Random.Range(0, totalMidGrabAnimations);
-                ac = new AnimationChoice(grab_mid, rng);
+                rng = UnityEngine.Random.Range(0, _AnimationData.totalMidGrabAnimations);
+                ac = new AnimationChoice(_AnimationData.grabMid, rng);
                 break;
 
             case ObjComponent.Height.Low:
-                rng = UnityEngine.Random.Range(0, totalLowGrabAnimations);
-                ac = new AnimationChoice(grab_low, rng);
+                rng = UnityEngine.Random.Range(0, _AnimationData.totalLowGrabAnimations);
+                ac = new AnimationChoice(_AnimationData.grabLow, rng);
                 break;
 
             default:
@@ -216,31 +201,37 @@ public class VRShopperAnimationController : MonoBehaviour
             isAnimated = true;
 
             string animationToPlay = ac.ConvertToString();
-            _animator.Play(layer + animationToPlay);
+            _Animator.Play(_AnimationData.layer + animationToPlay);
+            //_Animator.CrossFade(_AnimationData.layer + animationToPlay, 0.3f);
 
-            Invoke("AnimationComplete", _animationManager.GetAnimationClipDuration(animationToPlay)); //Ensures Animation will complete, equal to HasExitTime bool for transitions
+            Invoke("AnimationComplete", _AnimationManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
         }
     }
-
-    //--------------- General Animation Functionality
+    #endregion
+    //General Animation Functionality
+    #region
     private void PlayIdleAnimation()
     {
         int chance = 0;
+        isAnimated = false;
         switch (_state)
         {
             case State.moving:
-                chance = UnityEngine.Random.Range(0, totalIdleHandsAnimations);
-                _animator.Play(layer + indle_hands + chance.ToString());
+                chance = UnityEngine.Random.Range(0, _AnimationData.totalIdleHandsAnimations);
+                _Animator.Play(_AnimationData.layer + _AnimationData.indleHands + chance.ToString());
+                //_Animator.CrossFade(_AnimationData.layer + _AnimationData.indleHands + chance.ToString(), 0.3f);
                 break;
 
             case State.beginning:
-                chance = UnityEngine.Random.Range(0, totalIdleHandsAnimations);
-                _animator.Play(layer + indle_hands + chance.ToString());
+                chance = UnityEngine.Random.Range(0, _AnimationData.totalIdleHandsAnimations);
+                _Animator.Play(_AnimationData.layer + _AnimationData.indleHands + chance.ToString());
+                //_Animator.CrossFade(_AnimationData.layer + _AnimationData.indleHands + chance.ToString(), 0.3f);
                 break;
 
             case State.fighting:
-                chance = UnityEngine.Random.Range(0, totalFightingIdleAnimations);
-                _animator.Play(layer + fighting_idle + chance.ToString());
+                chance = UnityEngine.Random.Range(0, _AnimationData.totalFightingIdleAnimations);
+                _Animator.Play(_AnimationData.layer + _AnimationData.fightingIdle + chance.ToString());
+                //_Animator.CrossFade(_AnimationData.layer + _AnimationData.fightingIdle + chance.ToString(), 0.3f);
                 break;
 
             default:
@@ -248,27 +239,10 @@ public class VRShopperAnimationController : MonoBehaviour
                 break;
         }
     }
+    #endregion
 
-    private void PlayChosenQuirkAnimation(AnimationChoice ac)
-    {
-        if (!isAnimated)
-        {
-            string animationToPlay = ac.ConvertToString();
-            isAnimated = true;
-            _animator.Play(layer + animationToPlay);
-            _animationManager.UpdateQuirkCount(ac);
-            Invoke("AnimationComplete", _animationManager.GetAnimationClipDuration(animationToPlay)); //Ensures Animation will complete, equal to HasExitTime bool for transitions
-        }
-    }
-    void AnimationComplete()
-    {
-        isAnimated = false;
-        PlayIdleAnimation();
-    }
-
-    //----------------------------------
-
-    //------------------Quirk Related Functions
+    //Quirk Related Functions
+    #region
 
     //ChooseQuirk() is called in GlobalAnimationManager, manager selects controller to perform quirk animation,
     //manager gives an array with 1 of each quirk subtype,
@@ -280,7 +254,7 @@ public class VRShopperAnimationController : MonoBehaviour
         if (_state == State.beginning)
         {
             //beginning animation
-            _animationToPlay = unpackChoice(beginning, quirks);
+            _animationToPlay = unpackChoice(_AnimationData.beginning, quirks);
         }
 
         if (_state == State.moving)
@@ -291,25 +265,25 @@ public class VRShopperAnimationController : MonoBehaviour
             if (chance < handsAnimationFrequency)
             {
                 //hands
-                _animationToPlay = unpackChoice(quirk_hands, quirks);
+                _animationToPlay = unpackChoice(_AnimationData.quirkHands, quirks);
             }
 
             else if (chance < handsAnimationFrequency + headSetAnimationFrequency)
             {
                 //headset
-                _animationToPlay = unpackChoice(quirk_wave, quirks);
+                _animationToPlay = unpackChoice(_AnimationData.quirkWave, quirks);
             }
 
             else if (chance < handsAnimationFrequency + headSetAnimationFrequency + waveAnimationFrequency)
             {
                 //wave
-                _animationToPlay = unpackChoice(quirk_headset, quirks);
+                _animationToPlay = unpackChoice(_AnimationData.quirkHeadset, quirks);
             }
 
             else
             {
                 //quick quirk
-                _animationToPlay = unpackChoice(quirk_quick, quirks);
+                _animationToPlay = unpackChoice(_AnimationData.quirkQuick, quirks);
             }
         }
         PlayChosenQuirkAnimation(_animationToPlay);
@@ -331,9 +305,27 @@ public class VRShopperAnimationController : MonoBehaviour
         throw new ArgumentException("quirk not found in unpackChoice function");
     }
 
-    //----------------------------------------
+    private void PlayChosenQuirkAnimation(AnimationChoice ac)
+    {
+        if (!isAnimated && !IsInIsle)
+        {
+            string animationToPlay = ac.ConvertToString();
+            isAnimated = true;
+            _Animator.Play(_AnimationData.layer + animationToPlay);
+            //_Animator.CrossFade(_AnimationData.layer + animationToPlay, 0.3f);
+            _AnimationManager.UpdateQuirkCount(ac);
+            Invoke("AnimationComplete", _AnimationManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
+        }
+    }
+    void AnimationComplete()
+    {
+        //isAnimated = false;
+        PlayIdleAnimation();
+    }
 
-    //------------State and Boolean Checks, utilities
+    #endregion
+    //State and Boolean Checks, utilities
+    #region
     public void EnterFightState()
     {
         _state = State.fighting;
@@ -343,7 +335,7 @@ public class VRShopperAnimationController : MonoBehaviour
     public void EnterMovingState()
     {
         _state = State.moving;
-        PlayIdleAnimation();
+        //PlayIdleAnimation();
     }
 
     public void UpdateAnimationState(State state)
@@ -372,19 +364,19 @@ public class VRShopperAnimationController : MonoBehaviour
         }
     }
 
-    private void InitializeTotalAnimationTypeCountInformation()
+    internal void SetIsInIsle(bool v)
     {
-        int[] input = _animationManager.InitializeShopperInteractionAnimationCounts();
-
-        totalIdleHandsAnimations = input[0];
-        totalFightingIdleAnimations = input[1];
-        totalLeftPunchAnimations = input[2];
-        totalRightPunchAnimations = input[3];
-        totalPayAnimations = input[4];
-        totalLowGrabAnimations = input[5];
-        totalMidGrabAnimations = input[6];
-        totalHighGrabAnimations = input[7];
+        IsInIsle = v;
     }
 
-    
+    public bool IsAnimated()
+    {
+        return isAnimated;
+    }
+
+    public void PlayFootStepAudio()
+    {
+        _Footstep.PlayFootStep();
+    }
+    #endregion
 }
