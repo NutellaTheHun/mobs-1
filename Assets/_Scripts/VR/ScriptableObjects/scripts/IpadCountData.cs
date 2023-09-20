@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //Shelves -> ObjectsX -> IpadX_Y
@@ -7,10 +5,23 @@ using UnityEngine;
 public class IpadCountData : ScriptableObject
 {
     public int NumberOfIsles;
-    public int[] Isle = new int[1];
+    public IsleData[] Isle;
+
+    public void removeIpad(int isleIndex, ObjComponent.ShelfSide sideOfIsle)
+    {
+        if(sideOfIsle == ObjComponent.ShelfSide.Left)
+        {
+            Isle[isleIndex]._left--;
+        }
+        else
+        {
+            Isle[isleIndex]._right--;
+        }
+        Isle[isleIndex]._total--;
+    }
 
     private void OnEnable()
     {
-        Isle = new int[NumberOfIsles];
+        Isle = new IsleData[NumberOfIsles];
     }
 }

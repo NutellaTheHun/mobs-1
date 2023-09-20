@@ -175,6 +175,7 @@ public class FaceAnimator : MonoBehaviour
 		blinkState = NONE;
 
 		meshRenderer = transform.Find("Body").GetComponent<SkinnedMeshRenderer>();
+
 		//if(!meshRenderer)//Frank //TODO 
 		//        meshRenderer = transform.Find("CC_Base_Body").GetComponent<SkinnedMeshRenderer>();
 

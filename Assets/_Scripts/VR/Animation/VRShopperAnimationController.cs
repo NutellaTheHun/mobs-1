@@ -376,7 +376,7 @@ public class VRShopperAnimationController : MonoBehaviour
 
     public void PlayFootStepAudio()
     {
-        _Footstep.PlayFootStep();
+        //_Footstep.PlayFootStep();
     }
     #endregion
 }

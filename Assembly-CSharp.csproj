@@ -74,6 +74,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\Posers\GenericPoser.cs" />
     <Compile Include="Assets\HealthBar.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\FBBIKArmBending.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\ShopperInTheWay.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Grounder\GrounderFBBIK.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverLookAt.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverVRLeg.cs" />
@@ -215,7 +216,7 @@
     <Compile Include="Assets\_Scripts\Behavior\FightBehavior.cs" />
     <Compile Include="Assets\_Scripts\UI\VR\aquiredObjUI.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\LazySingleton.cs" />
-    <Compile Include="Assets\_Scripts\VR\interaction\FindClosestTargestCollision.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\FindClosestTargetCollision.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKMappingBone.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\InteractionSystem.cs" />
     <Compile Include="Assets\RootMotion\Shared Demo Assets\Scripts\Character Controllers\SimpleLocomotion.cs" />

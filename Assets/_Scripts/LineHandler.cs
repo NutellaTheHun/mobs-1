@@ -11,6 +11,8 @@ public class LineHandler : MonoBehaviour
 	private GetShopperInPosition PayingCollider;
 	[SerializeField] public GameObject FrontOfLinePosition;
     private GetShopperInPosition FrontOfLineCollider;
+
+	public Vector3 nextPosition;
     public ShopperBehavior ShopperAtEndOfLine;
 	public ShopperBehavior ShopperAtFrontOfLine;
 	public ShopperBehavior PayingShopper;
@@ -35,7 +37,37 @@ public class LineHandler : MonoBehaviour
 
     private void Update()
     {
-		if (ShopperAtFrontOfLine != null)
+		
+		if(PayingShopper == null)
+		{
+			if(ShopperAtFrontOfLine == null)
+			{
+				if(linesize == 0)
+				{
+                    nextPosition = PayingPosition.transform.position;
+                    FrontOfLineCollider.enabled = true;
+                    PayingCollider.enabled = true;
+                }
+			}
+		}
+		else
+		{
+            FrontOfLineCollider.enabled = false;
+            if (ShopperAtFrontOfLine == null)
+			{
+                if (linesize == 0)
+                {
+                    nextPosition = FrontOfLinePosition.transform.position;
+                }
+			}
+			else
+			{
+                UpdateEndOfLineShopper();
+                PayingCollider.enabled = false;
+                nextPosition = ShopperAtEndOfLine.NextInLinePositionCollider.transform.position;
+            }
+		}
+		/*if (ShopperAtFrontOfLine != null)
 		{
 			shoppersWaitingToPay = true;
 		}
@@ -60,8 +92,13 @@ public class LineHandler : MonoBehaviour
 			{
 				ShopperAtEndOfLine = ShopperAtEndOfLine.ShopperBehindInLine;
 			}
-		}
+		}*/
 	}
+
+    private void UpdateEndOfLineShopper()
+    {
+		ShopperBehavior sb = ShopperAtFrontOfLine;
+    }
 
     void UpdateLineEnd()
 	{
@@ -125,28 +162,17 @@ public class LineHandler : MonoBehaviour
 		Gizmos.DrawCube(LineEnd, new Vector3(1, 1, 1));
 	}
 
-    public Vector3 GoToLine()
+    public Vector3 GoToLine(ShopperBehavior sb)
     {
-		if(PayingShopper == null)
+		if(nextPosition == ShopperAtEndOfLine.NextInLinePositionCollider.transform.position)
 		{
-			return PayingPosition.transform.position;
-        }
-		if(ShopperAtFrontOfLine == null)
-		{
-			return FrontOfLinePosition.transform.position;
-        }
-		else
-		{
-			return ShopperAtEndOfLine.NextInLinePositionCollider.transform.position;
-        }
-       /* if(ShopperAtFrontOfLine == null)
-		{
-			return FrontOfLinePosition.transform.position;
+			sb.isWaitingBehindSomeone = true;
 		}
 		else
 		{
-            return ShopperAtEndOfLine.NextInLinePositionCollider.transform.position;
-        }*/
+			sb.isWaitingBehindSomeone = false;
+        }
+		return nextPosition;
     }
 
     public void SetNewFrontOfLineShopper(ShopperBehavior shopperBehavior)

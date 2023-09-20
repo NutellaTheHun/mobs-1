@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 using UnityEngine.SceneManagement;
 using System.Runtime.InteropServices;
-
 
 public class UserStats {
     public float TimeSpent = 0f;
@@ -271,16 +269,18 @@ private void OnTriggerExit(Collider collider) {
     //Give all your objects to your opponent who is always an agent
     public void YieldObjects(GameObject opponent) {
 
-        List<Transform> children = new List<Transform>();
-        int childCnt = CurrentObjs.transform.childCount;
-        for(int i = 0; i < childCnt; i++) 
-            children.Add(CurrentObjs.transform.GetChild(i));
+        /*List<Transform> children = new List<Transform>();
+         int childCnt = CurrentObjs.transform.childCount;
+         for(int i = 0; i < childCnt; i++) 
+             children.Add(CurrentObjs.transform.GetChild(i));
 
-        foreach(Transform c in children) {
-            c.parent = opponent.GetComponent<ShopperBehavior>().CurrentObjs.transform;        
-        }
+         foreach(Transform c in children) {
+             c.parent = opponent.GetComponent<ShopperBehavior>().CurrentObjs.transform;        
+         }
 
-        opponent.GetComponent<ShopperBehavior>().SortObjects();
+         opponent.GetComponent<ShopperBehavior>().SortObjects();*/
+        opponent.GetComponent<ShopperBehavior>().AddAquiredObjs(Stats.CollectedItemCnt);
+        Stats.CollectedItemCnt = 0;
         CurrentObjs.SetActive(true);
 
         Debug.Log("yielded objects");
@@ -363,6 +363,11 @@ private void OnTriggerExit(Collider collider) {
     public void setIsPaying(bool val)
     {
         isPaying = val;
+    }
+
+    public void AddCollectedItemCount(int acquiredObjCnt)
+    {
+       Stats.CollectedItemCnt += acquiredObjCnt;
     }
 
     //**************************************

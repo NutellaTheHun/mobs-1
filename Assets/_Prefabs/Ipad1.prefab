@@ -152,7 +152,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.38809094
+  m_Radius: 5
   m_Center: {x: 0, y: 0.003785193, z: 0.099999905}
 --- !u!114 &8343196568304736154
 MonoBehaviour:
@@ -169,6 +169,7 @@ MonoBehaviour:
   _achieved: 0
   ClosestAgent: {fileID: 0}
   AchievingAgent: {fileID: 0}
+  height: 0
 --- !u!54 &811128554807376083
 Rigidbody:
   m_ObjectHideFlags: 0

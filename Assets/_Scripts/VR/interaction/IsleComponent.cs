@@ -1,13 +1,25 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+public class IsleData
+{
+    public int _left;
+    public int _right;
+    public int _total;
+    public IsleData(int left, int right)
+    {
+        _left = left;
+        _right = right;
+        _total = left + right;
+    }
+
+}
 public class IsleComponent : MonoBehaviour
 {
     [SerializeField] public int IsleIndex;
     [SerializeField] IpadCountData _IpadCountData;
     private ObjComponent[] IpadList;
+    private int LeftIpadCount = 0;
+    private int RightIpadCount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -16,9 +28,14 @@ public class IsleComponent : MonoBehaviour
         _IpadCountData.Isle[IsleIndex] = GetIpadCount();
     }
 
-    private int GetIpadCount()
+    private IsleData GetIpadCount()
     {
-        return IpadList.Length;
+        foreach(ObjComponent ipad in IpadList)
+        {
+            if (ipad.sideOfIsle == ObjComponent.ShelfSide.Left) LeftIpadCount++;
+            else RightIpadCount++;
+        }
+        return new IsleData(LeftIpadCount, RightIpadCount);
     }
 
     // Update is called once per frame
@@ -27,8 +44,8 @@ public class IsleComponent : MonoBehaviour
         
     }
 
-    public void UpdateIsleCount()
+    public void UpdateIsleCount(ObjComponent.ShelfSide sideOfIsle)
     {
-        _IpadCountData.Isle[IsleIndex]--;
+        _IpadCountData.removeIpad(IsleIndex,sideOfIsle);
     }
 }

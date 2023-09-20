@@ -1,7 +1,5 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.XR.CoreUtils;
+
 
 /*public struct VR_Shelf {  //shelves that hold the objects
     public Vector3 v1,v2,v3,v4;
@@ -21,10 +19,9 @@ public class VR_ShelfComponent:MonoBehaviour {
     float _halfShelfWidth = 0.5f;//0.55f; //previous val: 1.5f
     float _halfShelfLength = 6.8f; //previos val 5.5f*/
     public int[] shopperInIsleCount = new int[IsleNum];
-    aisle[] aisles = new aisle[IsleNum];
+    public aisle[] aisles = new aisle[IsleNum];
     void  Start() {
-       
-       for(int i = 0; i < IsleNum; i++)
+        for (int i = 0; i < IsleNum; i++)
         {
             Transform go = GameObject.Find("Objects" + i).transform;
             for(int j = 0; j < go.childCount; j++)
@@ -34,6 +31,7 @@ public class VR_ShelfComponent:MonoBehaviour {
                     if (aisles[i].wp1 == Vector3.zero)
                     {
                         aisles[i].wp1 = go.GetChild(j).position;
+                        continue;
                     }
                     if (aisles[i].wp2 == Vector3.zero)
                     {
@@ -95,6 +93,24 @@ public class VR_ShelfComponent:MonoBehaviour {
         return shopperCount;
     }
 
+    public Vector3 getOtherWaypoint(Vector3 closestShelfPos, int isleIndex)
+    {
+        if (aisles[isleIndex].wp1 == closestShelfPos)
+        {
+            return aisles[isleIndex].wp2;
+        }
+        else return aisles[isleIndex].wp1;
+    }
+
+private void OnDrawGizmos()
+{
+   foreach(aisle a in aisles)
+   {
+       Gizmos.color = Color.red;
+       Gizmos.DrawSphere(a.wp1, 0.25f);
+       Gizmos.DrawSphere(a.wp2, 0.25f);
+   }
+}
     //Find the point on s which is closest to p
     /* public Vector3 FindClosestShelfPos(Vector3 p, int shelfInd) {
      Vector3 cp;

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.XR.Interaction.Toolkit;
+using System.Collections.Generic;
 
 public class ObjComponent : MonoBehaviour {
     [SerializeField]
@@ -26,7 +27,7 @@ public class ObjComponent : MonoBehaviour {
 
     public GameObject ClosestAgent;
     public GameObject AchievingAgent;
-
+    public List<ShopperBehavior> ShoppersDesiringThisObj;
 
     public ArrayList _collidingAgents;
     private float minDist = 10000f;
@@ -39,6 +40,13 @@ public class ObjComponent : MonoBehaviour {
         High,
         Mid,
         Low
+    }
+    public ShelfSide sideOfIsle;
+    public enum ShelfSide
+    {
+        None,
+        Left,
+        Right
     }
 
 
@@ -57,12 +65,40 @@ public class ObjComponent : MonoBehaviour {
             GetComponent<Collider>().enabled = false;
         else
             GetComponent<Collider>().enabled = true;
+
+        if(ShoppersDesiringThisObj.Count > 1) { SetClosestShopper(); }
+    }
+
+    private void SetClosestShopper()
+    {
+        GameObject closest = null;
+        float distance = 0;
+        float tempDist;
+        foreach(ShopperBehavior sp in ShoppersDesiringThisObj)
+        {
+            if (distance == 0)
+            {
+                closest = sp.gameObject;
+                distance = Vector3.Distance(transform.position, sp.transform.position);
+            }
+            else
+            {
+                tempDist = Vector3.Distance(transform.position, sp.transform.position);
+                if(tempDist < Vector3.Distance(transform.position, closest.transform.position))
+                {
+                    closest = sp.gameObject;
+                    distance = tempDist;
+                }
+            }
+               
+        }
+        ClosestAgent = closest;
     }
 
 
-/// Finds the agents around me
+    /// Finds the agents around me
     void OnTriggerEnter(Collider collider) {
-        if (collider.gameObject.CompareTag("Player") || collider.gameObject.CompareTag("RealPlayer")) {
+       /* if (collider.gameObject.CompareTag("Player") || collider.gameObject.CompareTag("RealPlayer")) {
           
             if (!_collidingAgents.Contains(collider)) {
                 _collidingAgents.Add(collider.gameObject);
@@ -80,16 +116,16 @@ public class ObjComponent : MonoBehaviour {
 
                 }
             }
-        }
+        }*/
 
     }
 
 
     void OnTriggerExit(Collider collider) {
-        if (collider.gameObject.CompareTag("Player")|| collider.gameObject.CompareTag("RealPlayer")) {
+        /*if (collider.gameObject.CompareTag("Player")|| collider.gameObject.CompareTag("RealPlayer")) {
             _collidingAgents.Remove(collider.gameObject);
             UpdateClosestAgent();
-        }
+        }*/
         
     }
 
@@ -110,15 +146,17 @@ public class ObjComponent : MonoBehaviour {
 
      public void ObjPickupSuccess()
     {
-        //_achieved = true;
-        _isleComponent.UpdateIsleCount();
-        /*_meshRenderer.enabled = false;
-        _interactable.enabled = false;
-        _rigidbody.isKinematic = true;
-        _rigidbody.detectCollisions = false;
-        _boxCollider.enabled = false;*/
+        _isleComponent.UpdateIsleCount(sideOfIsle);
         AchievingAgent.GetComponent<ShopperBehavior>().ResetDesiredObj();
         Destroy(this.gameObject);
     }
 
+    public void addShopperToDesiredObjList(ShopperBehavior shopperBehavior)
+    {
+        if (!ShoppersDesiringThisObj.Contains(shopperBehavior))
+        {
+            ShoppersDesiringThisObj.Add(shopperBehavior);
+            if (ShoppersDesiringThisObj.Count == 1) ClosestAgent = shopperBehavior.gameObject;
+        }
+    }
 }
