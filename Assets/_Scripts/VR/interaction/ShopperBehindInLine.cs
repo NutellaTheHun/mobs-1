@@ -30,7 +30,7 @@ public class ShopperBehindInLine : MonoBehaviour
                     ParentShopper.ShopperBehindInLine = otherShopper;
                     otherShopper.ShopperAheadInLine = ParentShopper;
                     otherShopper.isWaitingBehindSomeone = true;
-                    //lineHandler.UpdateEndOfLine();
+                    //lineHandler.UpdateEndOfLine(otherShopper);
                 }
             }
         }
