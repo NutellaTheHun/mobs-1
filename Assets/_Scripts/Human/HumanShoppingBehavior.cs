@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Runtime.InteropServices;
+using System;
 
 public class UserStats {
     public float TimeSpent = 0f;
@@ -335,6 +336,7 @@ private void OnTriggerExit(Collider collider) {
     public void DesiredObjectPickedUp(GameObject desiredObj)
     {
         ObjComponent oc = desiredObj.GetComponent<ObjComponent>();
+
         oc.AchievingAgent = this.gameObject;
         oc.Achieved = true;
 
@@ -357,7 +359,7 @@ private void OnTriggerExit(Collider collider) {
     IEnumerator ObjPickupSuccessDelayed(GameObject desiredObj, float time)
     {
         yield return new WaitForSeconds(time);
-        desiredObj.GetComponent<ObjComponent>().ObjPickupSuccess();
+        desiredObj.GetComponent<ObjComponent>().HumanObjPickupSuccess();
     }
 
     public void setIsPaying(bool val)
@@ -368,6 +370,26 @@ private void OnTriggerExit(Collider collider) {
     public void AddCollectedItemCount(int acquiredObjCnt)
     {
        Stats.CollectedItemCnt += acquiredObjCnt;
+    }
+
+    public void setHasPaid(bool val)
+    {
+        _hasPaid = val;
+    }
+    public bool getHasPaid()
+    {
+        return _hasPaid;
+    }
+
+    public void ResetShoppingStats()
+    {
+        _hasPaid = false;
+        Stats.CollectedItemCnt = 0;
+    }
+
+    internal void ResetPaymentSystem()
+    {
+        _paymentSystem.disablePaymentSystem();
     }
 
     //**************************************

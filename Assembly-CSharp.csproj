@@ -136,6 +136,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\Aim IK\Scripts\SecondHandOnGun.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverVRSpine.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\TouchWalls.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\IntroductionSphere.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\VRIK\Scripts\VRIKCalibrationBasic.cs" />
     <Compile Include="Assets\_Scripts\Behavior\LeaderComponent.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Rotation Limits\RotationLimitHinge.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Assets\_Scripts\VR\Animation\AnimationChoice.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\DemoGUIMessage.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Tools\AimPoser.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\TutorialObjComponent.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\PropertyAttributes.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Tools\AimController.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\Aim IK\Scripts\TerrainOffset.cs" />
@@ -181,7 +183,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverFullBodyBiped.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Tools\OffsetPose.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\InteractionTarget.cs" />
-    <Compile Include="Assets\_Scripts\VR\Animation\GlobalAnimationManager.cs" />
+    <Compile Include="Assets\_Scripts\VR\Animation\AIManager.cs" />
     <Compile Include="Assets\_Scripts\GUIHandler.cs" />
     <Compile Include="Assets\_Scripts\ObjectLabel.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Components\FABRIKRoot.cs" />
@@ -199,6 +201,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\DoxygenManualFinalIK.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\Grounder\Scripts\GrounderDemo.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\VRIK\Scripts\VRIKPlatformController.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\TutorialPaymentSystem.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\PendulumExample.cs" />
     <Compile Include="Assets\_Scripts\Camera\MoveTarget.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\InteractionEffector.cs" />
@@ -233,6 +236,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\Rotation Limits\RotationLimitSpline.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\Posers\Poser.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\CharacterAnimationThirdPersonIK.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\DetermineAlternatePath.cs" />
     <Compile Include="Assets\RootMotion\Baker\Scripts\Helpers\AvatarUtility.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\VRIK\Scripts\VRIKPlatform.cs" />
     <Compile Include="Assets\_Scripts\Utilities.cs" />
@@ -240,6 +244,7 @@
     <Compile Include="Assets\RootMotion\Baker\Scripts\Baker.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Components\IK.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverArm.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\IsPathClear.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverFABRIK.cs" />
     <Compile Include="Assets\_Scripts\VR\interaction\IsleComponent.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\BipedIK\BipedIKSolvers.cs" />

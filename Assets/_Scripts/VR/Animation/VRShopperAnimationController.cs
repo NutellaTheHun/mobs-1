@@ -7,7 +7,7 @@ using static RootMotion.FinalIK.IKSolverVR;
 //https://www.youtube.com/watch?v=nBkiSJ5z-hE
 public class VRShopperAnimationController : MonoBehaviour
 {
-    private GlobalAnimationManager _AnimationManager;
+    private AIManager _AIManager;
     private Animator _Animator;
     private FootStep _Footstep;
     [SerializeField] private AnimationData _AnimationData;
@@ -40,9 +40,9 @@ public class VRShopperAnimationController : MonoBehaviour
     void Start()
     {
         _Animator = GetComponentInChildren<Animator>();
-        _AnimationManager = GameObject.Find("AnimationManager").GetComponent<GlobalAnimationManager>();
+        _AIManager = GameObject.Find("AIManager").GetComponent<AIManager>();
         _Footstep = GetComponentInChildren<FootStep>();
-        //_AnimationManager.RegisterAnimationController(this);
+        //_AIManager.RegisterAnimationController(this);
         _state = State.beginning;
         PlayIdleAnimation();
     }
@@ -131,7 +131,7 @@ public class VRShopperAnimationController : MonoBehaviour
         for (int i = 0; i < punchSequence.Length; i++)
         {
             _Animator.CrossFade(_AnimationData.layer + punchSequence[i], 0.1f);
-            yield return new WaitForSeconds(_AnimationManager.animationDurations[punchSequence[i]]);
+            yield return new WaitForSeconds(_AIManager.animationDurations[punchSequence[i]]);
         }
         StartCoroutine(EnterFightTransition());
     }
@@ -204,7 +204,7 @@ public class VRShopperAnimationController : MonoBehaviour
             _Animator.Play(_AnimationData.layer + animationToPlay);
             //_Animator.CrossFade(_AnimationData.layer + animationToPlay, 0.3f);
 
-            Invoke("AnimationComplete", _AnimationManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
+            Invoke("AnimationComplete", _AIManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
         }
     }
     #endregion
@@ -313,8 +313,8 @@ public class VRShopperAnimationController : MonoBehaviour
             isAnimated = true;
             _Animator.Play(_AnimationData.layer + animationToPlay);
             //_Animator.CrossFade(_AnimationData.layer + animationToPlay, 0.3f);
-            _AnimationManager.UpdateQuirkCount(ac);
-            Invoke("AnimationComplete", _AnimationManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
+            _AIManager.UpdateQuirkCount(ac);
+            Invoke("AnimationComplete", _AIManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
         }
     }
     void AnimationComplete()

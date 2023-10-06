@@ -1,5 +1,8 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ShopperInTheWay : MonoBehaviour
 {
@@ -7,14 +10,16 @@ public class ShopperInTheWay : MonoBehaviour
     ShopperBehavior otherShopper;
     ShopperBehavior leavingShopper;
     public List<ShopperBehavior> ShoppersInTheWay;
-    // Start is called before the first frame update
+    [SerializeField] UnityEvent FireEvent;
+    public float crowdedTolerance = 2f;
+   
     void Start()
     {
         ParentShopperComp = GetComponentInParent<ShopperBehavior>();
         ShoppersInTheWay = new List<ShopperBehavior>();
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
 
@@ -29,7 +34,17 @@ public class ShopperInTheWay : MonoBehaviour
             {
                 ShoppersInTheWay.Add(otherShopper);
                 ParentShopperComp.setIsCrowded(true);
+                StartCoroutine(CrowdedToLongCheck(crowdedTolerance, otherShopper));
             }
+        }
+    }
+
+    IEnumerator CrowdedToLongCheck(float crowdedTolerance, ShopperBehavior otherShopper)
+    {
+        yield return new WaitForSeconds(crowdedTolerance);
+        if(ShoppersInTheWay.Contains(otherShopper))
+        {
+            FireEvent.Invoke();
         }
     }
 

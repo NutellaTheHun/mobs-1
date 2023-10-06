@@ -58,7 +58,9 @@ public class ShopperBehavior : MonoBehaviour
 	private GameObject paymentCollider;
 	public bool hasPaid = false;
     [SerializeField] private GameObject FindClosestIpad;
-	 private GameObject IsShopperCrowdedComponent;
+	private GameObject IsShopperCrowdedComponent;
+	private ShopperInTheWay shopperInTheWay;
+	private DetermineAlternatePath determineAlternatePath;
 
     //Author: Nathan Brilmayer, used for floating counter above AI for aquired objects
     aquiredObjUI _aquiredObjUI;
@@ -76,6 +78,7 @@ public class ShopperBehavior : MonoBehaviour
 	public Vector3 LineDestination;
     private bool hasLeft = false;
     private bool isPickingUpObj = false;
+    private bool movingInIsle = false;
 
     public int State
 	{
@@ -171,6 +174,8 @@ public class ShopperBehavior : MonoBehaviour
 		_aquiredObjCanvasManager = GameObject.Find("Canvas").GetComponentInChildren<aquiredObjCanvasManager>();
         _aquiredObjCanvasManager.initializeShopperCounterUI(this);
         _animationController = GetComponent<VRShopperAnimationController>();
+        shopperInTheWay = GetComponentInChildren<ShopperInTheWay>();
+		determineAlternatePath = GetComponentInChildren<DetermineAlternatePath>();
     }
 	public void setAquiredUI(aquiredObjUI aou)
 	{
@@ -390,18 +395,17 @@ public class ShopperBehavior : MonoBehaviour
 		{
 			case (int)ShoppingState.GoingToObject:
 			{
-					isPickingUpObj = false;
-					IsShopperCrowdedComponent.SetActive(true);
+					//isPickingUpObj = false;
+					IsShopperCrowdedComponent.SetActive(true); //Enables collider in front of shopper to detect if somone is infront of them
                     _totalObjCnt = _ipadCountData.Isle[_shelfOrder[_shelfInd]]._total;
 
-                    if (_totalObjCnt == 0)
+                    if (_totalObjCnt <= 0)
                     { //all objects in my shelf are consumed
-                        _shelfInd++;
+                        ++_shelfInd;
                         // if ( _affectComponent.Ekman[(int)EkmanType.Afraid] > 0.5) {
                         if (_shelfInd > 10)
                         { //all objects in the store are consumed
                             _allConsumed = true;
-
 
                             if (_acquiredObjCnt > 0)
                             {//if I bought something
@@ -430,6 +434,7 @@ public class ShopperBehavior : MonoBehaviour
                     }
 
                     if (_desiredObj == null) { 
+
 						if(sideOfIsle != ShelfSide.None) //switch sides if their side of isle is clear
 						{
                             if (sideOfIsle == ShelfSide.Left && _ipadCountData.Isle[_shelfOrder[_shelfInd]]._left == 0)
@@ -442,7 +447,7 @@ public class ShopperBehavior : MonoBehaviour
                             }
                         }
 						
-						EnableFindClosestIpad(); 
+						EnableFindClosestIpad(); //Function that sets desiredObj
 					}
 					else// (_desiredObj != null)
 					{
@@ -458,12 +463,15 @@ public class ShopperBehavior : MonoBehaviour
 									}
 						/* If shopper is crowded (other shopper is in its frontwards sphere collider, and if the desired objects, 
 						 * closest agent is in the collider, shopper will try a different ipad*/
-						if(IsCrowded && GetComponentInChildren<ShopperInTheWay>().ShoppersInTheWay.Contains(
-							_desiredObj.GetComponent<ObjComponent>().ClosestAgent.GetComponent<ShopperBehavior>()))
+						if(_desiredObj != null)
 						{
-                            TryOtherIpad();
+                            if (IsCrowded && shopperInTheWay.ShoppersInTheWay.Contains(
+                            _desiredObj.GetComponent<ObjComponent>().ClosestAgent.GetComponent<ShopperBehavior>()))
+                            {
+                                TryOtherIpad();
+                            }
                         }
-							
+						
                         _agentComponent.SteerTo(_desiredObj.transform.position);
                         if (!transform.GetComponent<VRShopperAnimationController>().IsAnimated())
 						{
@@ -485,16 +493,16 @@ public class ShopperBehavior : MonoBehaviour
 					_agentComponent.LookAt(_desiredObj.transform.position, 2);
                     if (_desiredObj.GetComponent<ObjComponent>().Achieved == false && !transform.GetComponent<VRShopperAnimationController>().IsAnimated() && !isPickingUpObj)
                     {
-                        /*if (!isPickingUpObj)
+                        if (!isPickingUpObj)
 						{
                             isPickingUpObj = true;
                             StartCoroutine(PickUpObj());
-                        }*/
-                        _desiredObj.GetComponent<ObjComponent>().AchievingAgent = this.gameObject;
+                        }
+                        /*_desiredObj.GetComponent<ObjComponent>().AchievingAgent = this.gameObject;
                         _desiredObj.GetComponent<ObjComponent>().Achieved = true;
                         _animationController.PlayPickupAnimation(_desiredObj.GetComponent<ObjComponent>().height);
                         _acquiredObjCnt++;
-                        _aquiredObjUI.setAquiredObjCount(_acquiredObjCnt);
+                        _aquiredObjUI.setAquiredObjCount(_acquiredObjCnt);*/
 
                     }
                 }
@@ -642,7 +650,8 @@ public class ShopperBehavior : MonoBehaviour
         _animationController.PlayPickupAnimation(_desiredObj.GetComponent<ObjComponent>().height);
         _acquiredObjCnt++;
         _aquiredObjUI.setAquiredObjCount(_acquiredObjCnt);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
+		isPickingUpObj = false;
     }
 
     IEnumerator Pay()
@@ -669,19 +678,23 @@ public class ShopperBehavior : MonoBehaviour
 		}
 		else
 		{
-			if (_isleCountData.ShopperCountInIsle[_shelfOrder[_shelfInd]] < 4)
+			if(!movingInIsle)
 			{
-				TryFarEndOfIsle();
-			}
-			else
-			{
-				if (_shelfInd != numberOfIsles - 1)
-				{
-					_shelfInd++;
-					State = (int)ShoppingState.ShelfChanging;
-				}
-				else State = (int)ShoppingState.GoingToLine;
-			}
+                if (_isleCountData.ShopperCountInIsle[_shelfOrder[_shelfInd]] < 4)
+                {
+                    movingInIsle = true;
+                    TryFarEndOfIsle();
+                }
+                else
+                {
+                    if (_shelfInd != numberOfIsles - 1)
+                    {
+                        _shelfInd++;
+                        State = (int)ShoppingState.ShelfChanging;
+                    }
+                    else State = (int)ShoppingState.GoingToLine;
+                }
+            }
 		}
     }
 
@@ -695,7 +708,8 @@ public class ShopperBehavior : MonoBehaviour
 	{
         _agentComponent.SteerTo(_closestShelfPos);
         yield return new WaitForSeconds(seconds);
-		State = (int)ShoppingState.GoingToObject;
+		movingInIsle = false;
+        State = (int)ShoppingState.GoingToObject;
 	}
 
 
@@ -714,7 +728,10 @@ public class ShopperBehavior : MonoBehaviour
 
     private void HideAchievedObj()
     {
-        _desiredObj.GetComponent<ObjComponent>().ObjPickupSuccess();
+		if(_desiredObj != null)
+		{
+            _desiredObj.GetComponent<ObjComponent>().ObjPickupSuccess();
+        }
     }
 
     void LateUpdate()
@@ -924,10 +941,164 @@ public class ShopperBehavior : MonoBehaviour
 
     }
 
-	public void GetClosestObj()
+	public void CrowdedChangeDirection()
 	{
-		int counter = 0;
-		int counterMax = 4;
+		Vector3 currentDestination = _navmeshAgent.destination;
+		Vector3 alternateDestination = determineAlternatePath.MoveOutOfTheWay((ShoppingState)State);
+		if(alternateDestination == Vector3.zero)
+		{
+			//pause;
+			StartCoroutine(PauseAgent(2f));
+		}
+		else
+		{
+			StartCoroutine(TravelAlternatePath(alternateDestination, currentDestination));
+			//go to alternate destination
+			//once complete, go to current destination
+		}
+		/*switch(State)
+		{
+			case (int)ShoppingState.GoingToObject:
+
+
+				break;
+
+            case (int)ShoppingState.GoingToLine:
+
+
+                break;
+
+            case (int)ShoppingState.ShelfChanging:
+
+
+                break;
+        }*/
+       /* if (state == ShoppingState.ShelfChanging)
+        {
+            //move left, or right, or pause
+            if (LeftOk && RightOk)
+            {
+                //Go left or right with some preference?
+                int rand = UnityEngine.Random.Range(0, 1);
+                if (rand == 1)
+                {
+                    return LeftColliderArea.transform.position;
+                }
+                else
+                {
+                    return RightColliderArea.transform.position;
+                }
+            }
+            else if (LeftOk)
+            {
+                //go left
+                return LeftColliderArea.transform.position;
+            }
+            else if (RightOk)
+            {
+                //go right
+                return RightColliderArea.transform.position;
+            }
+            else
+            {
+                //pause
+                return Vector3.zero;
+            }
+        }
+        if (state == ShoppingState.GoingToObject)
+        {
+            //go to center of isle, go ahead or switch side
+            if (LeftOk && RightOk)
+            {
+                int rand = UnityEngine.Random.Range(0, 1);
+                //Go left or right with some preference? most likely rarely triggered
+                if (rand == 1)
+                {
+                    return LeftColliderArea.transform.position;
+                }
+                else
+                {
+                    return RightColliderArea.transform.position;
+                }
+            }
+            else if (LeftOk)
+            {
+                //go left
+                return LeftColliderArea.transform.position;
+            }
+            else if (RightOk)
+            {
+                //go right
+                return RightColliderArea.transform.position;
+            }
+            else
+            {
+                //pause
+                return Vector3.zero;
+            }
+        }
+        if (state == ShoppingState.GoingToLine)
+        {
+            //move left, or right, or pause
+            if (LeftOk && RightOk)
+            {
+                //Go left or right with some preference?
+                int rand = UnityEngine.Random.Range(0, 1);
+                //Go left or right with some preference? most likely rarely triggered
+                if (rand == 1)
+                {
+                    return LeftColliderArea.transform.position;
+                }
+                else
+                {
+                    return RightColliderArea.transform.position;
+                }
+            }
+            else if (LeftOk)
+            {
+                //go left
+                return LeftColliderArea.transform.position;
+            }
+            else if (RightOk)
+            {
+                //go right
+                return RightColliderArea.transform.position;
+            }
+            else
+            {
+                //pause
+                return Vector3.zero;
+            }
+        }
+        return Vector3.zero;
+    }*/
+}
+
+    IEnumerator PauseAgent(float seconds)
+    {
+		_navmeshAgent.isStopped = true;
+		yield return new WaitForSeconds(seconds);
+        _navmeshAgent.isStopped = false;
+    }
+
+    IEnumerator TravelAlternatePath(Vector3 alternateDestination, Vector3 currentDestination)
+    {
+		bool finishedAlternateDestination = false;
+        _agentComponent.SteerTo(alternateDestination);
+        while (!finishedAlternateDestination)
+		{
+			if(!_navmeshAgent.pathPending && !_navmeshAgent.hasPath)
+			{
+				finishedAlternateDestination = true;
+				_agentComponent.SteerTo(currentDestination);
+			}
+            yield return null;
+        }
+		yield return 0;
+    }
+
+    public void GetClosestObj()
+	{
 		Transform ipad = gameObject.GetComponentInChildren<FindClosestTargetCollision>().ClosestTarget.transform;
 
         if (_desiredObj == null)
@@ -951,8 +1122,6 @@ public class ShopperBehavior : MonoBehaviour
             }
         }
 				
-
-
         FindClosestIpad.SetActive(false);
 	}
 

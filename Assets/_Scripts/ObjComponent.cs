@@ -25,7 +25,7 @@ public class ObjComponent : MonoBehaviour {
         get { return _collidingAgents.Count; }
     }
 
-    public GameObject ClosestAgent;
+    public ShopperBehavior ClosestAgent;
     public GameObject AchievingAgent;
     public List<ShopperBehavior> ShoppersDesiringThisObj;
 
@@ -56,7 +56,11 @@ public class ObjComponent : MonoBehaviour {
         _interactable = GetComponent<XRGrabInteractable>();
         _rigidbody = GetComponent<Rigidbody>();
         _boxCollider = GetComponent<BoxCollider>();
-        _isleComponent = GetComponentInParent<IsleComponent>();
+        if(sideOfIsle != ShelfSide.None)
+        {
+            _isleComponent = GetComponentInParent<IsleComponent>();
+        }
+        
     }
 
     private void Update()
@@ -71,14 +75,14 @@ public class ObjComponent : MonoBehaviour {
 
     private void SetClosestShopper()
     {
-        GameObject closest = null;
+        ShopperBehavior closest = null;
         float distance = 0;
         float tempDist;
         foreach(ShopperBehavior sp in ShoppersDesiringThisObj)
         {
             if (distance == 0)
             {
-                closest = sp.gameObject;
+                closest = sp;
                 distance = Vector3.Distance(transform.position, sp.transform.position);
             }
             else
@@ -86,7 +90,7 @@ public class ObjComponent : MonoBehaviour {
                 tempDist = Vector3.Distance(transform.position, sp.transform.position);
                 if(tempDist < Vector3.Distance(transform.position, closest.transform.position))
                 {
-                    closest = sp.gameObject;
+                    closest = sp;
                     distance = tempDist;
                 }
             }
@@ -139,15 +143,29 @@ public class ObjComponent : MonoBehaviour {
             float dist = Vector3.Distance(v1, v2);
             if (dist < minDist) {
                 minDist = dist;
-                ClosestAgent = a;
+                //ClosestAgent = a;
             }
         }
     }
 
      public void ObjPickupSuccess()
-    {
-        _isleComponent.UpdateIsleCount(sideOfIsle);
+     {
+        if(_isleComponent != null)
+        {
+            _isleComponent.UpdateIsleCount(sideOfIsle);
+        }
+        
         AchievingAgent.GetComponent<ShopperBehavior>().ResetDesiredObj();
+        Destroy(this.gameObject);
+     }
+
+    public void HumanObjPickupSuccess()
+    {
+        if (_isleComponent != null)
+        {
+            _isleComponent.UpdateIsleCount(sideOfIsle);
+        }
+
         Destroy(this.gameObject);
     }
 
@@ -156,7 +174,7 @@ public class ObjComponent : MonoBehaviour {
         if (!ShoppersDesiringThisObj.Contains(shopperBehavior))
         {
             ShoppersDesiringThisObj.Add(shopperBehavior);
-            if (ShoppersDesiringThisObj.Count == 1) ClosestAgent = shopperBehavior.gameObject;
+            if (ShoppersDesiringThisObj.Count == 1) ClosestAgent = shopperBehavior;
         }
     }
 }

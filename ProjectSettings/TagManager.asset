@@ -10,6 +10,11 @@ TagManager:
   - Ipad
   - PaymentBubble
   - AisleWaypoint
+  - AnimationMovingState
+  - Isle Volume
+  - PlayerHands
+  - LinePositionCollision
+  - PhysicalObstruction
   layers:
   - Default
   - TransparentFX
@@ -18,7 +23,7 @@ TagManager:
   - Water
   - UI
   - Agent
-  - 
+  - ShopperPosition
   - 
   - 
   - 

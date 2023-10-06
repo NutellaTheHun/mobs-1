@@ -49,6 +49,14 @@ public class PaymentSystem : MonoBehaviour
         vol.enabled = true;
     }
 
+    public void disablePaymentSystem()
+    {
+        tmp.enabled = false;
+        c.enabled = false;
+        mr.enabled = false;
+        vol.enabled = false;
+    }
+
     private void initializePaymentSystem()
     {
         parent = transform.parent.gameObject;

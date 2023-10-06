@@ -89,7 +89,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 
 	void Start()
 	{
-		StaggerStart(); //Enables nav mesh agent component to help stagger the crowd of shoppers into the store
+		//StaggerStart(); //Enables nav mesh agent component to help stagger the crowd of shoppers into the store
 		//Added by Nathan Brilmayer FOR VR
         _shopperAnimationController = GetComponent<VRShopperAnimationController>();
         _animator = GetComponentInChildren<Animator>();
@@ -124,7 +124,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 
 	}
 
-    private void StaggerStart()
+    public void StaggerStart()
     {
         Random.InitState(gameObject.GetInstanceID());
         float num = Random.Range(0f, 4f);
