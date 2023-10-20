@@ -177,4 +177,11 @@ public class ObjComponent : MonoBehaviour {
             if (ShoppersDesiringThisObj.Count == 1) ClosestAgent = shopperBehavior;
         }
     }
+    public void removeShopperFromDesiredObjList(ShopperBehavior shopperBehavior)
+    {
+        if (!ShoppersDesiringThisObj.Contains(shopperBehavior))
+        {
+            ShoppersDesiringThisObj.Remove(shopperBehavior);
+        }
+    }
 }

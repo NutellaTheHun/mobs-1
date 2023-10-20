@@ -12,15 +12,20 @@ public class FindClosestTargetCollision : MonoBehaviour
     [SerializeField] float Frequency;
     [SerializeField] UnityEvent FireEvent;
     public SphereCollider Collider;
+    public int pulses = 3;
+    public int currentPulses;
     private float ActiveRadius;
     public GameObject ClosestTarget;
     private bool EventFired = false;
+    private int shelfIndex;
     // Start is called before the first frame update
     void Start()
     {
         Collider = GetComponent<SphereCollider>();
+        currentPulses = pulses;
         ActiveRadius = MinimumRange;
         Collider.radius = ActiveRadius;
+        shelfIndex = GetComponentInParent<ShopperBehavior>().getShelfOrderIndex();
     }
 
     // Update is called once per frame
@@ -28,20 +33,37 @@ public class FindClosestTargetCollision : MonoBehaviour
     {
         ActiveRadius += Time.deltaTime * Frequency;
         Collider.radius = ActiveRadius;
-        if (ActiveRadius >= MaximumRange) ActiveRadius = MinimumRange;
+        if (ActiveRadius >= MaximumRange)
+        {
+            ActiveRadius = MinimumRange;
+            currentPulses -= 1;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag(TargettedTag))
+        if (other.CompareTag(TargettedTag) && other.GetComponentInParent<IsleComponent>().IsleIndex == shelfIndex)
         {
-            if (FireEvent != null)
+            if (ClosestTarget == null)
             {
-                ClosestTarget = other.gameObject; // potential problems if colliders are children of gameobject or collider on correct gameobject of prefab
-                if(!EventFired)
+                ClosestTarget = other.gameObject;
+                this.GetComponentInParent<AgentComponent>().SteerTo(ClosestTarget.transform.position);
+            }
+            else if (Vector3.Distance(other.gameObject.transform.position, transform.position) < 
+                Vector3.Distance(ClosestTarget.transform.position, transform.position))
+            {
+                ClosestTarget = other.gameObject;
+            }
+
+            if (FireEvent != null && currentPulses < 1)
+            {
+                currentPulses = pulses;
+                //ClosestTarget = other.gameObject;
+                if (!EventFired)
                 {
                     FireEvent.Invoke();
                     EventFired = true;
+                    //currentPulses = pulses;
                 }
                 
             }    
@@ -55,6 +77,8 @@ public class FindClosestTargetCollision : MonoBehaviour
     internal void PrimeEvent()
     {
         EventFired = false;
+        shelfIndex = GetComponentInParent<ShopperBehavior>().getShelfOrderIndex();
+        ClosestTarget = null;
     }
 }
 

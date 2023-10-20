@@ -77,7 +77,20 @@ public class VR_ShelfComponent:MonoBehaviour {
         return wp2;
 
     }
-       
+    public Vector3 FindFarthestIsleWaypoint(Vector3 p, int IsleInd)
+    {
+        Vector3 wp1 = aisles[IsleInd].wp1;
+        Vector3 wp2 = aisles[IsleInd].wp2;
+        float a = Vector3.Distance(p, wp1);
+        float b = Vector3.Distance(p, wp2);
+        if (a < b)
+        {
+            return wp2;
+        }
+        return wp1;
+
+    }
+
     public void incrementShopper(int isleID)
     {
         shopperInIsleCount[isleID]++;

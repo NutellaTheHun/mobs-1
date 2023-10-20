@@ -89,8 +89,9 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 
 	void Start()
 	{
-		//StaggerStart(); //Enables nav mesh agent component to help stagger the crowd of shoppers into the store
-		//Added by Nathan Brilmayer FOR VR
+        _navMeshAgent.avoidancePriority = 9;
+        //StaggerStart(); //Enables nav mesh agent component to help stagger the crowd of shoppers into the store
+        //Added by Nathan Brilmayer FOR VR
         _shopperAnimationController = GetComponent<VRShopperAnimationController>();
         _animator = GetComponentInChildren<Animator>();
         //IndicatorAgent = (GameObject)Instantiate(Resources.Load("Indicator"), transform.position + Vector3.up, transform.rotation);
@@ -185,7 +186,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 		//if (IsFallen) {
 		//   IndicatorAgent.transform.Rotate(90, 0, 0);
 		//}
-		if(_navMeshAgent.velocity.magnitude > 0)
+		if(_navMeshAgent.velocity.magnitude > 0.3)
 		{
 			_animator.SetBool("VRIK_IsMoving", true);
 		}

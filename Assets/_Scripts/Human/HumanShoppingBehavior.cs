@@ -336,6 +336,7 @@ private void OnTriggerExit(Collider collider) {
     public void DesiredObjectPickedUp(GameObject desiredObj)
     {
         ObjComponent oc = desiredObj.GetComponent<ObjComponent>();
+        desiredObj.GetComponentInParent<Rigidbody>().isKinematic = true;
 
         oc.AchievingAgent = this.gameObject;
         oc.Achieved = true;

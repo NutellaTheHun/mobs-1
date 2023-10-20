@@ -446,8 +446,11 @@ public class ShopperBehavior : MonoBehaviour
                                 switchSides();
                             }
                         }
+						if(!FindClosestIpad.activeSelf)
+						{
+                            EnableFindClosestIpad(); //Function that sets desiredObj
+                        }
 						
-						EnableFindClosestIpad(); //Function that sets desiredObj
 					}
 					else// (_desiredObj != null)
 					{
@@ -490,7 +493,7 @@ public class ShopperBehavior : MonoBehaviour
 				
 				if(_desiredObj != null)
 				{
-					_agentComponent.LookAt(_desiredObj.transform.position, 2);
+                    _agentComponent.LookAt(_desiredObj.transform.position, 2);
                     if (_desiredObj.GetComponent<ObjComponent>().Achieved == false && !transform.GetComponent<VRShopperAnimationController>().IsAnimated() && !isPickingUpObj)
                     {
                         if (!isPickingUpObj)
@@ -644,13 +647,14 @@ public class ShopperBehavior : MonoBehaviour
 
     IEnumerator PickUpObj()
     {
-		yield return new WaitForSeconds(0.5f);
+        _agentComponent.LookAt(_desiredObj.transform.position, 2);
+        yield return new WaitForSeconds(0.3f);
         _desiredObj.GetComponent<ObjComponent>().AchievingAgent = this.gameObject;
         _desiredObj.GetComponent<ObjComponent>().Achieved = true;
         _animationController.PlayPickupAnimation(_desiredObj.GetComponent<ObjComponent>().height);
         _acquiredObjCnt++;
         _aquiredObjUI.setAquiredObjCount(_acquiredObjCnt);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
 		isPickingUpObj = false;
     }
 
@@ -683,7 +687,7 @@ public class ShopperBehavior : MonoBehaviour
                 if (_isleCountData.ShopperCountInIsle[_shelfOrder[_shelfInd]] < 4)
                 {
                     movingInIsle = true;
-                    TryFarEndOfIsle();
+                    TryFarEndOfIsle(3);
                 }
                 else
                 {
@@ -698,10 +702,18 @@ public class ShopperBehavior : MonoBehaviour
 		}
     }
 
-    private void TryFarEndOfIsle()
+    private void TryFarEndOfIsle(int delaySeconds)
     {
-        _closestShelfPos = _shelfComp.getOtherWaypoint(_closestShelfPos, _shelfOrder[_shelfInd]);
-		StartCoroutine(DelayShopperGoingToObject(3));
+		if(hasSwitchedSides)
+		{
+            _closestShelfPos = _shelfComp.FindFarthestIsleWaypoint(transform.position, _shelfOrder[_shelfInd]);
+        }
+		else
+		{
+            _closestShelfPos = _shelfComp.getOtherWaypoint(_closestShelfPos, _shelfOrder[_shelfInd]);
+        }
+		
+        StartCoroutine(DelayShopperGoingToObject(delaySeconds));
     }
 
 	IEnumerator DelayShopperGoingToObject(float seconds)
@@ -711,7 +723,6 @@ public class ShopperBehavior : MonoBehaviour
 		movingInIsle = false;
         State = (int)ShoppingState.GoingToObject;
 	}
-
 
     private void switchSides()
     {
@@ -943,6 +954,8 @@ public class ShopperBehavior : MonoBehaviour
 
 	public void CrowdedChangeDirection()
 	{
+		//check these two spots when needed rather than always check them
+		
 		Vector3 currentDestination = _navmeshAgent.destination;
 		Vector3 alternateDestination = determineAlternatePath.MoveOutOfTheWay((ShoppingState)State);
 		if(alternateDestination == Vector3.zero)
@@ -972,7 +985,7 @@ public class ShopperBehavior : MonoBehaviour
 
 
                 break;
-        }*/
+        }
        /* if (state == ShoppingState.ShelfChanging)
         {
             //move left, or right, or pause
@@ -1072,6 +1085,7 @@ public class ShopperBehavior : MonoBehaviour
         }
         return Vector3.zero;
     }*/
+	   
 }
 
     IEnumerator PauseAgent(float seconds)
@@ -1103,27 +1117,36 @@ public class ShopperBehavior : MonoBehaviour
 
         if (_desiredObj == null)
 		{
-			if((sideOfIsle == ipad.GetComponent<ObjComponent>().sideOfIsle || sideOfIsle == ShelfSide.None) && 
-				ipad.parent.GetComponent<IsleComponent>().IsleIndex == _shelfOrder[_shelfInd])
+			if((sideOfIsle == ipad.GetComponent<ObjComponent>().sideOfIsle || sideOfIsle == ShelfSide.None) /*&& 
+				ipad.parent.GetComponent<IsleComponent>().IsleIndex == _shelfOrder[_shelfInd]*/)
 			{
-                _desiredObj = gameObject.GetComponentInChildren<FindClosestTargetCollision>().ClosestTarget.transform;
+				_desiredObj = ipad;
                 _desiredObj.GetComponent<ObjComponent>().addShopperToDesiredObjList(this);
             }
                 
         } 
-        else if (sideOfIsle == ipad.GetComponent<ObjComponent>().sideOfIsle && 
-			ipad.parent.GetComponent<IsleComponent>().IsleIndex == _shelfOrder[_shelfInd])
+        else if (sideOfIsle == ipad.GetComponent<ObjComponent>().sideOfIsle/* && 
+			ipad.parent.GetComponent<IsleComponent>().IsleIndex == _shelfOrder[_shelfInd]*/)
         {
             if (Vector3.Distance(transform.position, _desiredObj.transform.position) >
                 Vector3.Distance(transform.position, gameObject.GetComponentInChildren<FindClosestTargetCollision>().ClosestTarget.transform.position))
             {
-                _desiredObj = gameObject.GetComponentInChildren<FindClosestTargetCollision>().ClosestTarget.transform;
+                _desiredObj.GetComponent<ObjComponent>().removeShopperFromDesiredObjList(this);
+
+				_desiredObj = ipad;
                 _desiredObj.GetComponent<ObjComponent>().addShopperToDesiredObjList(this);
             }
         }
-				
+		
+        if (_desiredObj == null) 
+		{
+            _desiredObj = ipad;
+            _desiredObj.GetComponent<ObjComponent>().addShopperToDesiredObjList(this);
+            sideOfIsle = ipad.GetComponent<ObjComponent>().sideOfIsle;
+		}
+
         FindClosestIpad.SetActive(false);
-	}
+    }
 
     private void GetNextClosestIpad()
     {
@@ -1180,5 +1203,11 @@ public class ShopperBehavior : MonoBehaviour
     {
         LineDestination = _LineHandler.RequestLinePosition(this);
         _agentComponent.SteerTo(LineDestination);
+    }
+
+	public int getShelfOrderIndex()
+	{
+		return _shelfOrder[_shelfInd];
+
     }
 }
