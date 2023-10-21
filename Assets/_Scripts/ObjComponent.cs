@@ -2,11 +2,12 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.XR.Interaction.Toolkit;
 using System.Collections.Generic;
+using System;
 
 public class ObjComponent : MonoBehaviour {
     [SerializeField]
     private bool _achieved = false;
-
+    public bool _desiringShopperIsClose = false;
     //Mesh Renderer
     MeshRenderer _meshRenderer;
     //XR Grab Interactable
@@ -52,10 +53,10 @@ public class ObjComponent : MonoBehaviour {
 
     private void Start() {
         _collidingAgents = new ArrayList();
-        _meshRenderer = GetComponent<MeshRenderer>();
-        _interactable = GetComponent<XRGrabInteractable>();
-        _rigidbody = GetComponent<Rigidbody>();
-        _boxCollider = GetComponent<BoxCollider>();
+        _meshRenderer = GetComponentInParent<MeshRenderer>();
+        _interactable = GetComponentInParent<XRGrabInteractable>();
+        _rigidbody = GetComponentInParent<Rigidbody>();
+        _boxCollider = GetComponentInParent<BoxCollider>();
         if(sideOfIsle != ShelfSide.None)
         {
             _isleComponent = GetComponentInParent<IsleComponent>();
@@ -66,11 +67,19 @@ public class ObjComponent : MonoBehaviour {
     private void Update()
     {
         if (Achieved)
-            GetComponent<Collider>().enabled = false;
+            GetComponentInParent<Collider>().enabled = false;
         else
-            GetComponent<Collider>().enabled = true;
+            GetComponentInParent<Collider>().enabled = true;
 
-        if(ShoppersDesiringThisObj.Count > 1) { SetClosestShopper(); }
+        /*
+        if(ClosestAgent != null)
+        {
+            if(Vector3.Distance(ClosestAgent.transform.position, transform.position) < 1)
+            {
+                _desiringShopperIsClose = true;
+            }
+        }
+        */
     }
 
     private void SetClosestShopper()
@@ -83,20 +92,37 @@ public class ObjComponent : MonoBehaviour {
             if (distance == 0)
             {
                 closest = sp;
+                _desiringShopperIsClose = true;
                 distance = Vector3.Distance(transform.position, sp.transform.position);
+                return;
             }
             else
             {
                 tempDist = Vector3.Distance(transform.position, sp.transform.position);
-                if(tempDist < Vector3.Distance(transform.position, closest.transform.position))
+                if(tempDist < 1.5f)
                 {
                     closest = sp;
-                    distance = tempDist;
+                    _desiringShopperIsClose = true;
+                    //distance = tempDist;
+                    return;
                 }
             }
                
         }
         ClosestAgent = closest;
+        RefocusOtherShoppers();
+    }
+
+    private void RefocusOtherShoppers()
+    {
+       foreach(ShopperBehavior shopper in ShoppersDesiringThisObj )
+        {
+            if(shopper != ClosestAgent)
+            {
+                shopper.getNewDesiredObj(transform);
+                removeShopperFromDesiredObjList(shopper);
+            }
+        }
     }
 
 
@@ -150,13 +176,16 @@ public class ObjComponent : MonoBehaviour {
 
      public void ObjPickupSuccess()
      {
-        if(_isleComponent != null)
+        //AchievingAgent.GetComponent<aquiredObjUI>().setAquiredObjCount(AchievingAgent.GetComponent<ShopperBehavior>().getAquiredObjCount());
+        if (_isleComponent != null)
         {
             _isleComponent.UpdateIsleCount(sideOfIsle);
         }
         
-        AchievingAgent.GetComponent<ShopperBehavior>().ResetDesiredObj();
-        Destroy(this.gameObject);
+        //AchievingAgent.GetComponent<ShopperBehavior>().resetDesiredObj();
+        AchievingAgent.GetComponent<ShopperBehavior>().isPickingUpObj = false;
+        //RefocusOtherShoppers();
+        Destroy(transform.parent.gameObject);
      }
 
     public void HumanObjPickupSuccess()
@@ -166,7 +195,7 @@ public class ObjComponent : MonoBehaviour {
             _isleComponent.UpdateIsleCount(sideOfIsle);
         }
 
-        Destroy(this.gameObject);
+        Destroy(transform.parent.gameObject);
     }
 
     public void addShopperToDesiredObjList(ShopperBehavior shopperBehavior)
@@ -175,6 +204,10 @@ public class ObjComponent : MonoBehaviour {
         {
             ShoppersDesiringThisObj.Add(shopperBehavior);
             if (ShoppersDesiringThisObj.Count == 1) ClosestAgent = shopperBehavior;
+            if (ShoppersDesiringThisObj.Count > 1) { 
+                if(!_desiringShopperIsClose)
+                    SetClosestShopper(); 
+            }
         }
     }
     public void removeShopperFromDesiredObjList(ShopperBehavior shopperBehavior)

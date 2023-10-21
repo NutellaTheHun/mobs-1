@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using static ObjComponent;
-
+using UnityEngine.UIElements;
 
 public class ShopperBehavior : MonoBehaviour
 {
@@ -77,7 +77,7 @@ public class ShopperBehavior : MonoBehaviour
     private bool isRegistered = false; //for registering with linehandler in State.GoingToLine
 	public Vector3 LineDestination;
     private bool hasLeft = false;
-    private bool isPickingUpObj = false;
+    public bool isPickingUpObj = false;
     private bool movingInIsle = false;
 
     public int State
@@ -458,12 +458,24 @@ public class ShopperBehavior : MonoBehaviour
 
 						/* If the shopper is less than 3 units away from target ipad, if other shoppers are targetting this ipad,
 						 * if this shopper isnt the closest, it will find another ipad */
+						/*
 						if ((Vector3.Distance(this.transform.position, _desiredObj.transform.position) < 3) && 
 								(_desiredObj.GetComponent<ObjComponent>().ShoppersDesiringThisObj.Count > 1) && 
 									(_desiredObj.GetComponent<ObjComponent>().ClosestAgent != this))
 									{
 										TryOtherIpad();
 									}
+						*/
+						if(_desiredObj != null)
+						{
+							if(_desiredObj.GetComponent<ObjComponent>()._desiringShopperIsClose == true)
+							{
+                                if (_desiredObj.GetComponent<ObjComponent>().ClosestAgent != this)
+                                {
+                                    TryOtherIpad();
+                                }
+                            }
+						}
 						/* If shopper is crowded (other shopper is in its frontwards sphere collider, and if the desired objects, 
 						 * closest agent is in the collider, shopper will try a different ipad*/
 						if(_desiredObj != null)
@@ -474,16 +486,35 @@ public class ShopperBehavior : MonoBehaviour
                                 TryOtherIpad();
                             }
                         }
-						
-                        _agentComponent.SteerTo(_desiredObj.transform.position);
+						if(_desiredObj != null)
+						{
+                            _agentComponent.SteerTo(_desiredObj.transform.position);
+                        }
+                        
                         if (!transform.GetComponent<VRShopperAnimationController>().IsAnimated())
 						{
-                            float dist = Vector2.Distance(new Vector2(_desiredObj.transform.position.x, _desiredObj.transform.position.z), new Vector2(transform.position.x, transform.position.z));
+                            if (_desiredObj != null)
+							{
+                                float dist = Vector2.Distance(new Vector2(_desiredObj.transform.position.x, _desiredObj.transform.position.z), new Vector2(transform.position.x, transform.position.z));
 
-                            if (dist < 1f)
-                            {//Pick up object
-								FindClosestIpad.SetActive(false);
-                                State = (int)ShoppingState.PickingUpObject;
+                                if (dist < 1f && _desiredObj.GetComponent<ObjComponent>().ClosestAgent == this)
+                                {//Pick up object
+                                    FindClosestIpad.SetActive(false);
+                                    _desiredObj.GetComponent<ObjComponent>().AchievingAgent = this.gameObject;
+                                    _desiredObj.GetComponent<ObjComponent>().Achieved = true;
+
+                                    State = (int)ShoppingState.PickingUpObject;
+									/*
+                                    if (_desiredObj.GetComponent<ObjComponent>().Achieved == false)
+                                    {
+                                        State = (int)ShoppingState.PickingUpObject;
+                                    }
+                                    else
+                                    {
+                                        //TryOtherIpad();
+                                    }
+									*/
+                                }
                             }
                         }
 					}
@@ -491,10 +522,12 @@ public class ShopperBehavior : MonoBehaviour
 				break;
 			case (int)ShoppingState.PickingUpObject:
 				
-				if(_desiredObj != null)
+				if(_desiredObj != null /*&& (_desiredObj.GetComponent<ObjComponent>().Achieved == false || _desiredObj.GetComponent<ObjComponent>().AchievingAgent == this)*/)
 				{
+                    //_desiredObj.GetComponent<ObjComponent>().AchievingAgent = this.gameObject;
+                   // _desiredObj.GetComponent<ObjComponent>().Achieved = true;
                     _agentComponent.LookAt(_desiredObj.transform.position, 2);
-                    if (_desiredObj.GetComponent<ObjComponent>().Achieved == false && !transform.GetComponent<VRShopperAnimationController>().IsAnimated() && !isPickingUpObj)
+                    if (!transform.GetComponent<VRShopperAnimationController>().IsAnimated() && !isPickingUpObj)
                     {
                         if (!isPickingUpObj)
 						{
@@ -509,12 +542,19 @@ public class ShopperBehavior : MonoBehaviour
 
                     }
                 }
-
+				else if(_desiredObj != null) {
+                    if (_desiredObj.GetComponent<ObjComponent>().Achieved == true)
+                    {
+                        if (_desiredObj.GetComponent<ObjComponent>().AchievingAgent != this.gameObject)
+                        {
+                            TryOtherIpad();
+                        }
+                    }
+                }
                 _navmeshAgent.updateRotation = true;
 					//_agentComponent.StartedWaiting = false;
 				if (_acquiredObjCnt >= _desiredObjCnt)
-				{
-
+				{ 
 					if (_affectComponent.Emotion[(int)EType.Reproach] < 0.5f)
 					{
                         IsShopperCrowdedComponent.SetActive(false);
@@ -529,7 +569,11 @@ public class ShopperBehavior : MonoBehaviour
                       
 				}
 				else
-					State = (int)ShoppingState.GoingToObject; //go to another object                        
+					if (!isPickingUpObj)
+					{
+						State = (int)ShoppingState.GoingToObject; //go to another object  
+					}
+					                      
 
 				break;
 			case (int)ShoppingState.GoingToLine:
@@ -649,13 +693,11 @@ public class ShopperBehavior : MonoBehaviour
     {
         _agentComponent.LookAt(_desiredObj.transform.position, 2);
         yield return new WaitForSeconds(0.3f);
-        _desiredObj.GetComponent<ObjComponent>().AchievingAgent = this.gameObject;
-        _desiredObj.GetComponent<ObjComponent>().Achieved = true;
         _animationController.PlayPickupAnimation(_desiredObj.GetComponent<ObjComponent>().height);
         _acquiredObjCnt++;
         _aquiredObjUI.setAquiredObjCount(_acquiredObjCnt);
         yield return new WaitForSeconds(0.1f);
-		isPickingUpObj = false;
+		//isPickingUpObj = false;
     }
 
     IEnumerator Pay()
@@ -674,9 +716,18 @@ public class ShopperBehavior : MonoBehaviour
 		FindClosestIpad.GetComponent<FindClosestTargetCollision>().PrimeEvent();
     }
 
+	public void resetDesiredObj()
+	{
+		_desiredObj.GetComponent<ObjComponent>().removeShopperFromDesiredObjList(this);
+		_desiredObj = null;
+		State = (int)ShoppingState.GoingToObject;
+	}
+
     private void TryOtherIpad()
     {
-        if(!hasSwitchedSides)
+        FindClosestIpad.GetComponent<FindClosestTargetCollision>().SetPreviousIpad(_desiredObj.transform);
+		resetDesiredObj();
+        if (!hasSwitchedSides)
 		{
 			switchSides();
 		}
@@ -951,7 +1002,7 @@ public class ShopperBehavior : MonoBehaviour
         }
 
     }
-
+	/*
 	public void CrowdedChangeDirection()
 	{
 		//check these two spots when needed rather than always check them
@@ -1086,7 +1137,7 @@ public class ShopperBehavior : MonoBehaviour
         return Vector3.zero;
     }*/
 	   
-}
+	//}
 
     IEnumerator PauseAgent(float seconds)
     {
@@ -1184,11 +1235,6 @@ public class ShopperBehavior : MonoBehaviour
         }
     }
 
-    public void ResetDesiredObj()
-    {
-		_desiredObj = null;
-    }
-
     public void setIsCrowded(bool v)
     {
 		IsCrowded = v;
@@ -1207,7 +1253,21 @@ public class ShopperBehavior : MonoBehaviour
 
 	public int getShelfOrderIndex()
 	{
-		return _shelfOrder[_shelfInd];
+		if(_shelfInd <= 10)
+		{
+            return _shelfOrder[_shelfInd];
+        }
+		else
+		{
+            return _shelfOrder[10];
+        }
+    }
 
+    public void getNewDesiredObj(Transform ipad)
+    {
+		//if closestAgent > 1 away from desiredObj
+		resetDesiredObj();
+        FindClosestIpad.GetComponent<FindClosestTargetCollision>().SetPreviousIpad(ipad);
+		EnableFindClosestIpad();
     }
 }

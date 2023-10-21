@@ -31,6 +31,71 @@ Transform:
   m_Father: {fileID: 8343196568428451549}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1904832962149678880
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6581603340244274042}
+  - component: {fileID: 1969587295577042109}
+  - component: {fileID: 3973630587197484664}
+  m_Layer: 8
+  m_Name: ObjComponent
+  m_TagString: Ipad
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6581603340244274042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904832962149678880}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8343196568428451549}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1969587295577042109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904832962149678880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14d4dce324b32e048b101e23f8a9d596, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _achieved: 0
+  _desiringShopperIsClose: 0
+  ClosestAgent: {fileID: 0}
+  AchievingAgent: {fileID: 0}
+  ShoppersDesiringThisObj: []
+  height: 0
+  sideOfIsle: 0
+--- !u!135 &3973630587197484664
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904832962149678880}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2
+  m_Center: {x: 0, y: 0.003785193, z: 0.099999905}
 --- !u!1 &8343196568427956989
 GameObject:
   m_ObjectHideFlags: 0
@@ -44,7 +109,6 @@ GameObject:
   - component: {fileID: 8343196568426026045}
   - component: {fileID: 8343196568437487933}
   - component: {fileID: 8343196568304736155}
-  - component: {fileID: 8343196568304736154}
   - component: {fileID: 811128554807376083}
   - component: {fileID: -2276582117974686003}
   - component: {fileID: -4633934504145851528}
@@ -68,6 +132,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6572610862070899113}
+  - {fileID: 6581603340244274042}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -154,24 +219,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.2
   m_Center: {x: 0, y: 0.003785193, z: 0.099999905}
---- !u!114 &8343196568304736154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8343196568427956989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14d4dce324b32e048b101e23f8a9d596, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _achieved: 0
-  ClosestAgent: {fileID: 0}
-  AchievingAgent: {fileID: 0}
-  ShoppersDesiringThisObj: []
-  height: 0
-  sideOfIsle: 0
 --- !u!54 &811128554807376083
 Rigidbody:
   m_ObjectHideFlags: 0

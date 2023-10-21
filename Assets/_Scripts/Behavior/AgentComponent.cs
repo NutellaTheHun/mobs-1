@@ -89,7 +89,6 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 
 	void Start()
 	{
-        _navMeshAgent.avoidancePriority = 9;
         //StaggerStart(); //Enables nav mesh agent component to help stagger the crowd of shoppers into the store
         //Added by Nathan Brilmayer FOR VR
         _shopperAnimationController = GetComponent<VRShopperAnimationController>();

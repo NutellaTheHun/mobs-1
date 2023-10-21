@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using static ShopperBehavior;
 
 public class AIManager : MonoBehaviour
@@ -28,9 +29,9 @@ public class AIManager : MonoBehaviour
 
     void Start()
     {
-        InitializeManager();
         Crowd = GameObject.Find("Crowd");
         shoppers = GameObject.FindGameObjectsWithTag("Player").ToList<GameObject>();
+        InitializeManager();
         //StartCoroutine(MoveShoppersIntoPosition());
     }
 
@@ -131,11 +132,21 @@ public class AIManager : MonoBehaviour
     {
         InitializeShopperControllers();
         InitializeAnimationDictionarys();
+        SetAvoidancePriority();
     }
 
     public void MoveShoppersIntoScene()
     {
         StartCoroutine(MoveShoppersIntoPosition());
+    }
+
+    private void SetAvoidancePriority()
+    {
+        int i = 1;
+        foreach(GameObject shopper in shoppers){
+            shopper.GetComponent<NavMeshAgent>().avoidancePriority = i;
+            i++;
+        }
     }
 }
 

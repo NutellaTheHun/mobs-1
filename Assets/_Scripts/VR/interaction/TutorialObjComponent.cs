@@ -150,7 +150,7 @@ public class TutorialObjComponent : MonoBehaviour {
      public void ObjPickupSuccess()
     {
         //_isleComponent.UpdateIsleCount(sideOfIsle);
-        AchievingAgent.GetComponent<ShopperBehavior>().ResetDesiredObj();
+        AchievingAgent.GetComponent<ShopperBehavior>().resetDesiredObj();
         Destroy(this.gameObject);
     }
 

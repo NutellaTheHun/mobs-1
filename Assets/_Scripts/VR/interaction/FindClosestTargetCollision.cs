@@ -11,6 +11,8 @@ public class FindClosestTargetCollision : MonoBehaviour
     [SerializeField] float MaximumRange;
     [SerializeField] float Frequency;
     [SerializeField] UnityEvent FireEvent;
+
+    private Transform previousDesiredObj;
     public SphereCollider Collider;
     public int pulses = 3;
     public int currentPulses;
@@ -42,36 +44,35 @@ public class FindClosestTargetCollision : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(TargettedTag) && other.GetComponentInParent<IsleComponent>().IsleIndex == shelfIndex)
+        if (other.CompareTag(TargettedTag) && 
+            other.GetComponentInParent<IsleComponent>().IsleIndex == shelfIndex)
         {
-            if (ClosestTarget == null)
+            if (other.GetComponent<ObjComponent>()._desiringShopperIsClose == false  && notPreviousIpad(other))
             {
-                ClosestTarget = other.gameObject;
-                this.GetComponentInParent<AgentComponent>().SteerTo(ClosestTarget.transform.position);
-            }
-            else if (Vector3.Distance(other.gameObject.transform.position, transform.position) < 
-                Vector3.Distance(ClosestTarget.transform.position, transform.position))
-            {
-                ClosestTarget = other.gameObject;
-            }
-
-            if (FireEvent != null && currentPulses < 1)
-            {
-                currentPulses = pulses;
-                //ClosestTarget = other.gameObject;
-                if (!EventFired)
+                if (ClosestTarget == null)
                 {
-                    FireEvent.Invoke();
-                    EventFired = true;
-                    //currentPulses = pulses;
+                    ClosestTarget = other.gameObject;
+                    this.GetComponentInParent<AgentComponent>().SteerTo(ClosestTarget.transform.position);
                 }
-                
-            }    
+                else if (Vector3.Distance(other.gameObject.transform.position, transform.position) <
+                    Vector3.Distance(ClosestTarget.transform.position, transform.position))
+                {
+                    ClosestTarget = other.gameObject;
+                }
+
+                if (FireEvent != null && currentPulses < 1)
+                {
+                    currentPulses = pulses;
+                    if (!EventFired)
+                    {
+                        FireEvent.Invoke();
+                        EventFired = true;
+
+                    }
+                }
+            }
         }
-        /*else
-        {
-            Debug.Log("Collision at: " + Vector3.Distance(other.transform.position, transform.position));
-        }*/
+           
     }
 
     internal void PrimeEvent()
@@ -79,6 +80,18 @@ public class FindClosestTargetCollision : MonoBehaviour
         EventFired = false;
         shelfIndex = GetComponentInParent<ShopperBehavior>().getShelfOrderIndex();
         ClosestTarget = null;
+    }
+
+    public void SetPreviousIpad(Transform ipad)
+    {
+        previousDesiredObj = ipad;
+    }
+
+    private bool notPreviousIpad(Collider other)
+    {
+       if(previousDesiredObj == null) { return true; }
+       if(other.transform == previousDesiredObj) { return true; }
+       return false;
     }
 }
 
