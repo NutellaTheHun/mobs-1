@@ -165,6 +165,7 @@
     <Compile Include="Assets\RootMotion\Baker\_DEMOS\Scripts\FKOffset.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Constraints\ConstraintPositionOffset.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\EffectorOffset.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\WayPointComponent.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\RecoilTest.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\TwistSolver.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\FBIKChain.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\CharacterAnimationThirdPersonIK.cs" />
     <Compile Include="Assets\_Scripts\VR\interaction\DetermineAlternatePath.cs" />
     <Compile Include="Assets\RootMotion\Baker\Scripts\Helpers\AvatarUtility.cs" />
+    <Compile Include="Assets\_Prefabs\managers\IsleVolumeManager.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\VRIK\Scripts\VRIKPlatform.cs" />
     <Compile Include="Assets\_Scripts\Utilities.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Constraints\Constraint.cs" />

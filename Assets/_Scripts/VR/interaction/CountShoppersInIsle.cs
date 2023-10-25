@@ -6,7 +6,7 @@ public class CountShoppersInIsle : MonoBehaviour
 {
     [SerializeField] IsleCountData _isleCountData;
     [SerializeField] private int Index;
-    private List<ShopperBehavior> ShopperList;
+    public List<ShopperBehavior> ShopperList;
     // Start is called before the first frame update
     void Start()
     {

@@ -10,7 +10,7 @@ public class FindClosestTargetCollision : MonoBehaviour
     [SerializeField] float MinimumRange;
     [SerializeField] float MaximumRange;
     [SerializeField] float Frequency;
-    [SerializeField] UnityEvent FireEvent;
+    [SerializeField] UnityEvent<UnityEngine.Object> FireEvent;
 
     private Transform previousDesiredObj;
     public SphereCollider Collider;
@@ -27,7 +27,7 @@ public class FindClosestTargetCollision : MonoBehaviour
         currentPulses = pulses;
         ActiveRadius = MinimumRange;
         Collider.radius = ActiveRadius;
-        shelfIndex = GetComponentInParent<ShopperBehavior>().getShelfOrderIndex();
+        shelfIndex = GetComponentInParent<ShopperBehavior>().getCurrentIsleIndex();//must replace with currentIndex
     }
 
     // Update is called once per frame
@@ -38,16 +38,16 @@ public class FindClosestTargetCollision : MonoBehaviour
         if (ActiveRadius >= MaximumRange)
         {
             ActiveRadius = MinimumRange;
-            currentPulses -= 1;
+            //currentPulses -= 1;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(TargettedTag) && 
-            other.GetComponentInParent<IsleComponent>().IsleIndex == shelfIndex)
+            other.GetComponentInParent<IsleComponent>().IsleIndex == shelfIndex)//must replace with currentIndex
         {
-            if (other.GetComponent<ObjComponent>()._desiringShopperIsClose == false  && notPreviousIpad(other))
+            /*if (other.GetComponent<ObjComponent>()._desiringShopperIsClose == false  && notPreviousIpad(other))
             {
                 if (ClosestTarget == null)
                 {
@@ -70,6 +70,16 @@ public class FindClosestTargetCollision : MonoBehaviour
 
                     }
                 }
+            }*/
+            ClosestTarget = other.gameObject;
+            if (FireEvent != null/* && currentPulses < 1*/)
+            {
+                //currentPulses = pulses;
+                if (!EventFired)
+                {
+                    FireEvent.Invoke(other.gameObject);
+                    EventFired = true;
+                }
             }
         }
            
@@ -78,7 +88,7 @@ public class FindClosestTargetCollision : MonoBehaviour
     internal void PrimeEvent()
     {
         EventFired = false;
-        shelfIndex = GetComponentInParent<ShopperBehavior>().getShelfOrderIndex();
+        shelfIndex = GetComponentInParent<ShopperBehavior>().getCurrentIsleIndex();
         ClosestTarget = null;
     }
 
@@ -90,7 +100,7 @@ public class FindClosestTargetCollision : MonoBehaviour
     private bool notPreviousIpad(Collider other)
     {
        if(previousDesiredObj == null) { return true; }
-       if(other.transform == previousDesiredObj) { return true; }
+       if(other.transform != previousDesiredObj) { return true; }
        return false;
     }
 }

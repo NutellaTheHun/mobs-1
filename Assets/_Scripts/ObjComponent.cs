@@ -29,9 +29,12 @@ public class ObjComponent : MonoBehaviour {
     public ShopperBehavior ClosestAgent;
     public GameObject AchievingAgent;
     public List<ShopperBehavior> ShoppersDesiringThisObj;
-
+    private ShopperBehavior targetAgent;
+    public bool isDesired;
     public ArrayList _collidingAgents;
     private float minDist = 10000f;
+    //SphereCollider
+    SphereCollider _sphereCollider;
 
     //FOR VR, reflects if on high, middle, or low shelves, used for calling correct grabbing animations in VRShopperAnimationControllers
     public Height height;
@@ -61,7 +64,7 @@ public class ObjComponent : MonoBehaviour {
         {
             _isleComponent = GetComponentInParent<IsleComponent>();
         }
-        
+        _sphereCollider = GetComponentInChildren<SphereCollider>();
     }
 
     private void Update()
@@ -126,8 +129,27 @@ public class ObjComponent : MonoBehaviour {
     }
 
 
-    /// Finds the agents around me
+   
     void OnTriggerEnter(Collider collider) {
+        if (!isDesired)
+        {
+            if (collider.gameObject.CompareTag("IpadConsumer"))
+            {
+                ShopperBehavior sb = collider.GetComponentInParent<ShopperBehavior>();
+                //check for proper state
+                if (sb.State != (int)ShopperBehavior.ShoppingState.Exiting &&
+                    sb.State != (int)ShopperBehavior.ShoppingState.GoingToLine &&
+                    sb.isPickingUpObj == false)
+                {
+                    targetAgent = sb;
+                    isDesired = true;
+                    targetAgent.PickUpIpad(transform.parent.transform);
+                    return;
+                    //achieving agent here?
+                }
+            }
+        }
+        
        /* if (collider.gameObject.CompareTag("Player") || collider.gameObject.CompareTag("RealPlayer")) {
           
             if (!_collidingAgents.Contains(collider)) {
@@ -184,6 +206,7 @@ public class ObjComponent : MonoBehaviour {
         
         //AchievingAgent.GetComponent<ShopperBehavior>().resetDesiredObj();
         AchievingAgent.GetComponent<ShopperBehavior>().isPickingUpObj = false;
+        AchievingAgent.GetComponent<ShopperBehavior>().resetTargets();
         //RefocusOtherShoppers();
         Destroy(transform.parent.gameObject);
      }
@@ -214,7 +237,16 @@ public class ObjComponent : MonoBehaviour {
     {
         if (!ShoppersDesiringThisObj.Contains(shopperBehavior))
         {
-            ShoppersDesiringThisObj.Remove(shopperBehavior);
+            if(shopperBehavior == ClosestAgent)
+            {
+                ShoppersDesiringThisObj.Remove(shopperBehavior);
+                _desiringShopperIsClose = false;
+                if(ShoppersDesiringThisObj.Count > 0)
+                {
+                    SetClosestShopper();
+                }
+            }
+            
         }
     }
 }

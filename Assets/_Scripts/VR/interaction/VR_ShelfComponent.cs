@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 
@@ -20,7 +21,12 @@ public class VR_ShelfComponent:MonoBehaviour {
     float _halfShelfLength = 6.8f; //previos val 5.5f*/
     public int[] shopperInIsleCount = new int[IsleNum];
     public aisle[] aisles = new aisle[IsleNum];
+    private IsleComponent[] isleComponents= new IsleComponent[IsleNum];
+    private const float generalIsleDistance = 7.0f;
+
     void  Start() {
+        isleComponents = GetComponentsInChildren<IsleComponent>();
+
         for (int i = 0; i < IsleNum; i++)
         {
             Transform go = GameObject.Find("Objects" + i).transform;
@@ -64,6 +70,11 @@ public class VR_ShelfComponent:MonoBehaviour {
          Shelves[10].v4 = new Vector3(sh.position.x, 0, sh.position.z + _halfShelfLength);
          */
     }
+
+    public ObjComponent[] getIpadsInIsle(int index)
+    {
+        return isleComponents[index].IpadList;
+    }
     public Vector3 FindClosestIsleWaypoint(Vector3 p, int IsleInd)
     {
         Vector3 wp1 = aisles[IsleInd].wp1;
@@ -106,13 +117,51 @@ public class VR_ShelfComponent:MonoBehaviour {
         return shopperCount;
     }
 
-    public Vector3 getOtherWaypoint(Vector3 closestShelfPos, int isleIndex)
+    public Vector3 getOtherWaypoint(Transform caller, int isleIndex)
     {
-        if (aisles[isleIndex].wp1 == closestShelfPos)
+        if(aisles[isleIndex].wp1.z - caller.transform.position.z < 1)
         {
             return aisles[isleIndex].wp2;
         }
-        else return aisles[isleIndex].wp1;
+        else
+        {
+            return aisles[isleIndex].wp1;
+        }
+        /*if (aisles[isleIndex].wp1 == closestShelfPos)
+        {
+           
+        }
+        else return aisles[isleIndex].wp1;*/
+    }
+
+    public Vector3 getOtherWaypoint(Vector3 wp, int isleIndex)
+    {
+        if (aisles[isleIndex].wp1 == wp)
+        {
+            return aisles[isleIndex].wp1;
+        }
+        else
+        {
+            return aisles[isleIndex].wp2;
+        }
+
+    }
+
+    public Vector3 getWaypoint(int isleIndex)
+    {
+        float distance = transform.position.z - aisles[isleIndex].wp1.z;
+        Random.InitState(System.DateTime.Now.Millisecond);
+        float p = Random.Range(0, generalIsleDistance);
+        Random.InitState(System.DateTime.Now.Millisecond);
+        Vector2 pos = Random.insideUnitCircle * 0.3f;
+        if (p <= distance)
+        {
+            return aisles[isleIndex].wp1 += new Vector3(pos.x, 0 ,pos.y);
+        }
+        else
+        {
+            return aisles[isleIndex].wp2 += new Vector3(pos.x, 0, pos.y);
+        }
     }
 
 private void OnDrawGizmos()

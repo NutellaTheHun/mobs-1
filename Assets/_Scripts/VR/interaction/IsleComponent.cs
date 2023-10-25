@@ -5,11 +5,13 @@ public class IsleData
     public int _left;
     public int _right;
     public int _total;
-    public IsleData(int left, int right)
+    public int _isleIndex;
+    public IsleData(int left, int right, int isleIndex)
     {
         _left = left;
         _right = right;
         _total = left + right;
+        _isleIndex = isleIndex;
     }
 
 }
@@ -17,7 +19,8 @@ public class IsleComponent : MonoBehaviour
 {
     [SerializeField] public int IsleIndex;
     [SerializeField] IpadCountData _IpadCountData;
-    private ObjComponent[] IpadList;
+    public ObjComponent[] IpadList;
+    public int isleID;
     private int LeftIpadCount = 0;
     private int RightIpadCount = 0;
 
@@ -28,14 +31,18 @@ public class IsleComponent : MonoBehaviour
         _IpadCountData.Isle[IsleIndex] = GetIpadCount();
     }
 
-    private IsleData GetIpadCount()
+    public int GetIsleID()
+    {
+        return isleID;
+    }
+    public IsleData GetIpadCount()
     {
         foreach(ObjComponent ipad in IpadList)
         {
             if (ipad.sideOfIsle == ObjComponent.ShelfSide.Left) LeftIpadCount++;
             else RightIpadCount++;
         }
-        return new IsleData(LeftIpadCount, RightIpadCount);
+        return new IsleData(LeftIpadCount, RightIpadCount, IsleIndex);
     }
 
     // Update is called once per frame
