@@ -139,7 +139,8 @@ public class ObjComponent : MonoBehaviour {
                 //check for proper state
                 if (sb.State != (int)ShopperBehavior.ShoppingState.Exiting &&
                     sb.State != (int)ShopperBehavior.ShoppingState.GoingToLine &&
-                    sb.isPickingUpObj == false)
+                    sb.isPickingUpObj == false && 
+                    sb.currentIsleIndex == _isleComponent.IsleIndex)
                 {
                     targetAgent = sb;
                     isDesired = true;

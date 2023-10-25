@@ -406,9 +406,12 @@ public class ShopperBehavior : MonoBehaviour
 		{
 			case (int)ShoppingState.GoingToObject:
 			{
-					//isPickingUpObj = false;
-					//IsShopperCrowdedComponent.SetActive(true); //Enables collider in front of shopper to detect if somone is infront of them
-                    _totalObjCnt = _ipadCountData.Isle[_shelfOrder[_shelfInd]]._total;UpdateIsleTravelFlags(currentIsleIndex);
+                    //isPickingUpObj = false;
+                    //IsShopperCrowdedComponent.SetActive(true); //Enables collider in front of shopper to detect if somone is infront of them
+
+                    //_totalObjCnt = _ipadCountData.Isle[_shelfOrder[_shelfInd]]._total;
+                    _totalObjCnt = _ipadCountData.Isle[currentIsleIndex]._total;
+                    //UpdateIsleTravelFlags(currentIsleIndex);
                     if (_totalObjCnt <= 0)
 					{
                         IsShopperCrowdedComponent.SetActive(false);
@@ -419,10 +422,12 @@ public class ShopperBehavior : MonoBehaviour
 						{
                             
                             PayOrLeave();
+							return;
 						}
 						else
 						{
                             GetNextIsle();
+							return;
                         }
                     }
 					/*
@@ -585,7 +590,7 @@ public class ShopperBehavior : MonoBehaviour
 				if(_desiredObj != null)
 				{
                     //_agentComponent.LookAt(_desiredObj.transform.position, 2);
-                    if (!transform.GetComponent<VRShopperAnimationController>().IsAnimated() && !isPickingUpObj)
+                    if (!transform.GetComponent<VRShopperAnimationController>().IsAnimated())
                     {
                         if (!isPickingUpObj)
 						{
@@ -815,7 +820,7 @@ public class ShopperBehavior : MonoBehaviour
 	{
         //UpdateIsleTravelFlags(currentIsleIndex);
         secondaryIsleDestination = _shelfComp.getOtherWaypoint(transform, currentIsleIndex); //if random then secondaryDestination check will fail
-		IsleDestination = _shelfComp.getOtherWaypoint(IsleDestination, currentIsleIndex);
+		IsleDestination = _shelfComp.getOtherWaypoint(IsleDestination, nextIsleIndex);
         _agentComponent.SteerTo(secondaryIsleDestination);
 		switchingLaneSides = true;
         State = (int)ShoppingState.ShelfChanging;
@@ -908,13 +913,17 @@ public class ShopperBehavior : MonoBehaviour
             int shopperLaneCount = howManyShoppersThisWay(_shelfComp.getWaypoint(nextIsleIndex));
             int remainingIsles = nextIsleIndex - currentIsleIndex;
 
-            if ((shopperLaneCount / remainingIsles) > shopperIsleCount)
+            if (/*(*/shopperLaneCount /*/ remainingIsles)*/> shopperIsleCount)
             {
                 switchLaneSide();
                 return;
                 //GoToOtherSide
                 //mainly to other side?
             }
+        }
+		else
+		{
+            ShopInIsle();
         }
 		
         //if closest to ipad by signifant margin => goToIpad, InIsleState now?
@@ -1036,7 +1045,8 @@ public class ShopperBehavior : MonoBehaviour
                 }
             }
         }
-        return closestIpad;
+		//objComponent is child of physical ipad, which is offset for the colliders to be in the aisle
+        return closestIpad.parent.transform;
     }
 
     //colliding with ipad chooses who consumes it, not other way around
@@ -1113,7 +1123,7 @@ public class ShopperBehavior : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         _animationController.PlayPickupAnimation(_desiredObj.GetComponentInChildren<ObjComponent>().height);
         _acquiredObjCnt++;
-        _aquiredObjUI.setAquiredObjCount(_acquiredObjCnt);
+        //_aquiredObjUI.setAquiredObjCount(_acquiredObjCnt);
         yield return new WaitForSeconds(0.1f);
 		State = (int)ShoppingState.GoingToObject;
 		//isPickingUpObj = false;
@@ -1231,6 +1241,8 @@ public class ShopperBehavior : MonoBehaviour
 		{
             _desiredObj.GetComponentInChildren<ObjComponent>().ObjPickupSuccess();
         }
+       isPickingUpObj = false;
+        _aquiredObjUI.setAquiredObjCount(_acquiredObjCnt);
     }
 
     void LateUpdate()
