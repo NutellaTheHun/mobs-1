@@ -17,9 +17,10 @@ public class IsleVolumeManager : MonoBehaviour
         
     }
 
+    /*
     public List<ShopperBehavior> GetShoppersInIsle(int index)
     {
         return isleVolumes[index].ShopperList;
     }
-
+    */
 }

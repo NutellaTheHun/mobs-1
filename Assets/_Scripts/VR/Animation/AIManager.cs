@@ -1,9 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
-using static ShopperBehavior;
 
 public class AIManager : MonoBehaviour
 {
@@ -26,7 +26,10 @@ public class AIManager : MonoBehaviour
         moving,
         fighting
     }
-
+    private void Awake()
+    {
+        
+    }
     void Start()
     {
         Crowd = GameObject.Find("Crowd");
@@ -54,11 +57,12 @@ public class AIManager : MonoBehaviour
 
     private void CheckQuirkAnimationChance()
     {
-        int ranNum = Random.Range(0, 100);
+        UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
+        int ranNum = UnityEngine.Random.Range(0, 100);
         if (ranNum < GlobalAnimationfrequency)
         {
             int shopperIndex = Utilities.getRandomSmallestElement(shopperControllerIndex);
-            if(!shopperControllers[shopperIndex].isFighting())
+            if(!shopperControllers[shopperIndex].isFighting() && !shopperControllers[shopperIndex].isAnimated && !shopperControllers[shopperIndex].isInteracting)
             {
                 shopperControllerIndex[shopperIndex]++;
                 ProvideRandomQuirkAnimations(shopperIndex);
@@ -145,6 +149,7 @@ public class AIManager : MonoBehaviour
         int i = 1;
         foreach(GameObject shopper in shoppers){
             shopper.GetComponent<NavMeshAgent>().avoidancePriority = i;
+            //shopper.GetComponent<ShopperBehavior>().setAssignedAvoidancePriority();
             i++;
         }
     }

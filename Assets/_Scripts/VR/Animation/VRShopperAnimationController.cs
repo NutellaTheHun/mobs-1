@@ -12,10 +12,12 @@ public class VRShopperAnimationController : MonoBehaviour
     private FootStep _Footstep;
     [SerializeField] private AnimationData _AnimationData;
 
+    private ShopperBehavior thisShopper;
     public State _state;
     public bool isAnimated = false;
     private bool noFightSequence = true;
     public bool IsInIsle = false; //no quirks are played in isle as people are focused on grabbing items
+    public bool isInteracting = false;
 
     [Range(0, 100)]
     [SerializeField] private int handsAnimationFrequency;
@@ -29,6 +31,7 @@ public class VRShopperAnimationController : MonoBehaviour
     [SerializeField] private int beginningAnimationFrequency;
 
     private string[] punchSequence;
+    private bool beginningComplete;
 
     public enum State
     {
@@ -42,6 +45,7 @@ public class VRShopperAnimationController : MonoBehaviour
         _Animator = GetComponentInChildren<Animator>();
         _AIManager = GameObject.Find("AIManager").GetComponent<AIManager>();
         _Footstep = GetComponentInChildren<FootStep>();
+        thisShopper = GetComponent<ShopperBehavior>();
         //_AIManager.RegisterAnimationController(this);
         _state = State.beginning;
         PlayIdleAnimation();
@@ -195,16 +199,17 @@ public class VRShopperAnimationController : MonoBehaviour
 
     private void PlayChosenInteractionAnimation(AnimationChoice ac)
     {
-        if (!isAnimated)
+        if (!isInteracting)
         {
+            isInteracting = true;
             if (ac == null){ Debug.Log("AnimationChoice is null"); return; }
-            isAnimated = true;
-
+            
             string animationToPlay = ac.ConvertToString();
-            _Animator.Play(_AnimationData.layer + animationToPlay);
+            //_Animator.Play(_AnimationData.layer + animationToPlay);
             //_Animator.CrossFade(_AnimationData.layer + animationToPlay, 0.3f);
+            _Animator.CrossFadeInFixedTime(_AnimationData.layer + animationToPlay, 0.2f);
 
-            Invoke("AnimationComplete", _AIManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
+            //Invoke("InteractionAnimationComplete", _AIManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
         }
     }
     #endregion
@@ -214,24 +219,23 @@ public class VRShopperAnimationController : MonoBehaviour
     {
         int chance = 0;
         isAnimated = false;
+        UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
+        chance = UnityEngine.Random.Range(0, _AnimationData.totalIdleHandsAnimations);
         switch (_state)
         {
             case State.moving:
-                chance = UnityEngine.Random.Range(0, _AnimationData.totalIdleHandsAnimations);
+                
                 _Animator.Play(_AnimationData.layer + _AnimationData.indleHands + chance.ToString());
-                //_Animator.CrossFade(_AnimationData.layer + _AnimationData.indleHands + chance.ToString(), 0.3f);
                 break;
 
             case State.beginning:
-                chance = UnityEngine.Random.Range(0, _AnimationData.totalIdleHandsAnimations);
+                //chance = UnityEngine.Random.Range(0, _AnimationData.totalIdleHandsAnimations);
                 _Animator.Play(_AnimationData.layer + _AnimationData.indleHands + chance.ToString());
-                //_Animator.CrossFade(_AnimationData.layer + _AnimationData.indleHands + chance.ToString(), 0.3f);
                 break;
 
             case State.fighting:
-                chance = UnityEngine.Random.Range(0, _AnimationData.totalFightingIdleAnimations);
+               // chance = UnityEngine.Random.Range(0, _AnimationData.totalFightingIdleAnimations);
                 _Animator.Play(_AnimationData.layer + _AnimationData.fightingIdle + chance.ToString());
-                //_Animator.CrossFade(_AnimationData.layer + _AnimationData.fightingIdle + chance.ToString(), 0.3f);
                 break;
 
             default:
@@ -250,12 +254,16 @@ public class VRShopperAnimationController : MonoBehaviour
     public void ChooseQuirk(AnimationChoice[] quirks)
     {
         AnimationChoice _animationToPlay = null;
-
-        if (_state == State.beginning)
+        if (!beginningComplete)
         {
-            //beginning animation
-            _animationToPlay = unpackChoice(_AnimationData.beginning, quirks);
+            if (_state == State.beginning)
+            {
+                //beginning animation
+                beginningComplete = true;
+                _animationToPlay = unpackChoice(_AnimationData.beginning, quirks);
+            }
         }
+       
 
         if (_state == State.moving)
         {
@@ -285,8 +293,9 @@ public class VRShopperAnimationController : MonoBehaviour
                 //quick quirk
                 _animationToPlay = unpackChoice(_AnimationData.quirkQuick, quirks);
             }
+            PlayChosenQuirkAnimation(_animationToPlay);
         }
-        PlayChosenQuirkAnimation(_animationToPlay);
+       
     }
 
     
@@ -307,19 +316,35 @@ public class VRShopperAnimationController : MonoBehaviour
 
     private void PlayChosenQuirkAnimation(AnimationChoice ac)
     {
-        if (!isAnimated && !IsInIsle)
+        /*if (thisShopper.isWaitingOnAnimation)
+        {
+            flushShopperAnimations();
+        }*/
+        if (!isInteracting && !IsInIsle && !isAnimated)
         {
             string animationToPlay = ac.ConvertToString();
             isAnimated = true;
             _Animator.Play(_AnimationData.layer + animationToPlay);
             //_Animator.CrossFade(_AnimationData.layer + animationToPlay, 0.3f);
             _AIManager.UpdateQuirkCount(ac);
-            Invoke("AnimationComplete", _AIManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
+            //Invoke("AnimationComplete", _AIManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
         }
     }
+
+    private void flushShopperAnimations()
+    {
+        throw new NotImplementedException();
+    }
+
     void AnimationComplete()
     {
-        //isAnimated = false;
+        isAnimated = false;
+        PlayIdleAnimation();
+    }
+    void InteractionAnimationComplete()
+    {
+        isInteracting = false;
+        thisShopper.isPickingUpObj = false;
         PlayIdleAnimation();
     }
 
@@ -371,7 +396,8 @@ public class VRShopperAnimationController : MonoBehaviour
 
     public bool IsAnimated()
     {
-        return isAnimated;
+        //return isAnimated;
+        return false;
     }
 
     public void PlayFootStepAudio()

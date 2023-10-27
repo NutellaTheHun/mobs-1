@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class IsleData
@@ -18,17 +19,20 @@ public class IsleData
 public class IsleComponent : MonoBehaviour
 {
     [SerializeField] public int IsleIndex;
-    [SerializeField] IpadCountData _IpadCountData;
+    //[SerializeField] IpadCountData _IpadCountData;
     public ObjComponent[] IpadList;
     public int isleID;
     private int LeftIpadCount = 0;
     private int RightIpadCount = 0;
+    public IsleDataSO isleDataSO;
 
     // Start is called before the first frame update
     void Start()
     {
         IpadList = GetComponentsInChildren<ObjComponent>();
-        _IpadCountData.Isle[IsleIndex] = GetIpadCount();
+        //_IpadCountData.Isle[IsleIndex] = GetIpadCount();
+        isleDataSO.ipads[IsleIndex] = IpadList.ToList<ObjComponent>();
+        isleDataSO.ipadCount[IsleIndex] = IpadList.Length;
     }
 
     public int GetIsleID()
@@ -53,6 +57,6 @@ public class IsleComponent : MonoBehaviour
 
     public void UpdateIsleCount(ObjComponent.ShelfSide sideOfIsle)
     {
-        _IpadCountData.removeIpad(IsleIndex,sideOfIsle);
+        //_IpadCountData.removeIpad(IsleIndex,sideOfIsle);
     }
 }

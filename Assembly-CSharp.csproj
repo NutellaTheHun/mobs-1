@@ -89,6 +89,7 @@
     <Compile Include="Assets\_Scripts\GroupBuilder.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\OffsetEffector.cs" />
     <Compile Include="Assets\_Scripts\VR\player\InteractableIsTag.cs" />
+    <Compile Include="Assets\_Scripts\VR\ScriptableObjects\scripts\IsleDataSO.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\FBBIKHeadEffector.cs" />
     <Compile Include="Assets\_Scripts\Human\HumanFightBehavior.cs" />
     <Compile Include="Assets\_Scripts\VR\ScriptableObjects\scripts\AnimationData.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\VRIK\Scripts\VRIKCalibrationBasic.cs" />
     <Compile Include="Assets\_Scripts\Behavior\LeaderComponent.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Rotation Limits\RotationLimitHinge.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\CountShoppersInLane.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverFullBody.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\InspectorComment.cs" />
     <Compile Include="Assets\_Scripts\Human\HumanShoppingBehavior.cs" />

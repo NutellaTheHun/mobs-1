@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering.LookDev;
 
 //[RequireComponent (typeof (AffectComponent))]
 public class AgentComponent : MonoBehaviour, GeneralStateComponent
@@ -530,6 +531,36 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 		_navMeshAgent.updateRotation = false; //rotate towards the desired object
 
 		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDir, Vector3.up), Time.time * speed);
+	}
+
+    //reference https://www.youtube.com/watch?v=2XEiHf1N_EY&ab_channel=LlamAcademy
+    public void LookAtTargetSmooth(Transform target, float speed)
+	{
+		/*if(lookCoroutine != null)
+		{
+			StopCoroutine(lookCoroutine);
+		}*/
+
+		StartCoroutine(LookAt(target, speed));
+	}
+
+	public IEnumerator LookAt(Transform target, float speed)
+	{
+        Vector3 lookDir = target.position - transform.position;
+        lookDir.y = 0;
+
+        Quaternion lookrotation = Quaternion.LookRotation(lookDir, Vector3.up);
+
+        float time = 0;
+
+		while(time < 1)
+		{
+			transform.rotation = Quaternion.Slerp(transform.rotation, lookrotation, time);
+
+			time += Time.deltaTime * speed;
+
+			yield return null;
+		}
 	}
 
 	public void Watch(GameObject other)

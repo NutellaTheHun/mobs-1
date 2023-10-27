@@ -18,7 +18,7 @@ public class WayPointComponent : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("IpadConsumer"))
+        if(other.CompareTag("IpadConsumer"))
         {
             other.GetComponentInParent<ShopperBehavior>().wpEvaluation(transform);
         }

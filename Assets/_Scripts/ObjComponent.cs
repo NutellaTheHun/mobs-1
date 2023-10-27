@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.XR.Interaction.Toolkit;
 using System.Collections.Generic;
 using System;
+using UnityEngine.Events;
+using static ShopperBehavior;
 
 public class ObjComponent : MonoBehaviour {
     [SerializeField]
@@ -26,18 +28,24 @@ public class ObjComponent : MonoBehaviour {
         get { return _collidingAgents.Count; }
     }
 
-    public ShopperBehavior ClosestAgent;
+    private ShopperBehavior ClosestAgent;
     public GameObject AchievingAgent;
-    public List<ShopperBehavior> ShoppersDesiringThisObj;
-    private ShopperBehavior targetAgent;
+    private List<ShopperBehavior> ShoppersDesiringThisObj;
+    public ShopperBehavior targetAgent;
+    private int targetShoppersAvoidancePriority;
     public bool isDesired;
-    public ArrayList _collidingAgents;
+    private ArrayList _collidingAgents;
     private float minDist = 10000f;
+    public int isleIndex;
+    public IsleDataSO isleDataSO;
     //SphereCollider
     SphereCollider _sphereCollider;
+    SphereCollider parentSphereCollider;
 
     //FOR VR, reflects if on high, middle, or low shelves, used for calling correct grabbing animations in VRShopperAnimationControllers
     public Height height;
+
+    UnityEvent onIpadConsumed;
     public enum Height
     { 
         None,
@@ -55,6 +63,9 @@ public class ObjComponent : MonoBehaviour {
 
 
     private void Start() {
+        if (onIpadConsumed == null)
+            onIpadConsumed = new UnityEvent();
+
         _collidingAgents = new ArrayList();
         _meshRenderer = GetComponentInParent<MeshRenderer>();
         _interactable = GetComponentInParent<XRGrabInteractable>();
@@ -64,16 +75,17 @@ public class ObjComponent : MonoBehaviour {
         {
             _isleComponent = GetComponentInParent<IsleComponent>();
         }
-        _sphereCollider = GetComponentInChildren<SphereCollider>();
+        parentSphereCollider = GetComponentInParent<SphereCollider>();
+        _sphereCollider = GetComponent<SphereCollider>();
     }
 
     private void Update()
     {
-        if (Achieved)
+       /* if (Achieved)
             GetComponentInParent<Collider>().enabled = false;
         else
             GetComponentInParent<Collider>().enabled = true;
-
+       */
         /*
         if(ClosestAgent != null)
         {
@@ -142,10 +154,21 @@ public class ObjComponent : MonoBehaviour {
                     sb.isPickingUpObj == false && 
                     sb.currentIsleIndex == _isleComponent.IsleIndex)
                 {
-                    targetAgent = sb;
+                    if(!isDesired)
+                    {
+                        targetAgent = sb;
+                        targetShoppersAvoidancePriority = sb.assignedAvoidancePriority;
+                    }
+                    else if(sb.assignedAvoidancePriority < targetShoppersAvoidancePriority)
+                    {
+                        targetAgent.resetDesiredObj();
+                        removeShopperListener(targetAgent);
+                        targetAgent = sb;
+                        targetShoppersAvoidancePriority = sb.assignedAvoidancePriority;
+                    }
                     isDesired = true;
+                    addShopperListener(targetAgent);
                     targetAgent.PickUpIpad(transform.parent.transform);
-                    return;
                     //achieving agent here?
                 }
             }
@@ -173,13 +196,18 @@ public class ObjComponent : MonoBehaviour {
 
     }
 
+    
 
     void OnTriggerExit(Collider collider) {
         /*if (collider.gameObject.CompareTag("Player")|| collider.gameObject.CompareTag("RealPlayer")) {
             _collidingAgents.Remove(collider.gameObject);
             UpdateClosestAgent();
         }*/
-        
+        if(collider.GetComponentInParent<ShopperBehavior>() == targetAgent)
+        {
+            isDesired = false;
+            targetAgent = null;
+        }
     }
 
     void UpdateClosestAgent() {
@@ -199,18 +227,32 @@ public class ObjComponent : MonoBehaviour {
 
      public void ObjPickupSuccess()
      {
-        //AchievingAgent.GetComponent<aquiredObjUI>().setAquiredObjCount(AchievingAgent.GetComponent<ShopperBehavior>().getAquiredObjCount());
-        if (_isleComponent != null)
-        {
-            _isleComponent.UpdateIsleCount(sideOfIsle);
-        }
-        
-        //AchievingAgent.GetComponent<ShopperBehavior>().resetDesiredObj();
-        AchievingAgent.GetComponent<ShopperBehavior>().isPickingUpObj = false;
         AchievingAgent.GetComponent<ShopperBehavior>().resetTargets();
-        //RefocusOtherShoppers();
-        Destroy(transform.parent.gameObject);
-     }
+        isleDataSO.RemoveIpad(this, isleIndex);
+        AchievingAgent.GetComponent<ShopperBehavior>().State = (int)ShoppingState.GoingToObject;
+        onIpadConsumed.Invoke();
+        removeIpad();
+        //AchievingAgent.GetComponent<ShopperBehavior>().isPickingUpObj = false;
+    }
+
+    private void removeIpad()
+    {
+        _meshRenderer.enabled = false;
+        _interactable.enabled = false;
+        _boxCollider.enabled = false;
+        _sphereCollider.enabled = false;
+        parentSphereCollider.enabled = false;
+    }
+
+    public void addShopperListener(ShopperBehavior shopper)
+    {
+        onIpadConsumed.AddListener(delegate { shopper.updateShopperTargets(this);});
+    }
+
+    private void removeShopperListener(ShopperBehavior shopper)
+    {
+        onIpadConsumed.RemoveListener(delegate { shopper.updateShopperTargets(this);});
+    }
 
     public void HumanObjPickupSuccess()
     {
