@@ -21,7 +21,6 @@ public class IsleComponent : MonoBehaviour
     [SerializeField] public int IsleIndex;
     //[SerializeField] IpadCountData _IpadCountData;
     public ObjComponent[] IpadList;
-    public int isleID;
     private int LeftIpadCount = 0;
     private int RightIpadCount = 0;
     public IsleDataSO isleDataSO;
@@ -35,10 +34,6 @@ public class IsleComponent : MonoBehaviour
         isleDataSO.ipadCount[IsleIndex] = IpadList.Length;
     }
 
-    public int GetIsleID()
-    {
-        return isleID;
-    }
     public IsleData GetIpadCount()
     {
         foreach(ObjComponent ipad in IpadList)

@@ -14,6 +14,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 	Animator _animator;
     //private AnimationSelector _animationSelector; //yelling in EmotionalBehaviorUpdate() commented out for VR switch, MType.Disdainful and MType.Bored commented out
     private VRShopperAnimationController _shopperAnimationController;
+	private ShopperBehavior thisShopper;
 	//public GameObject IndicatorAgent;
 	//public GameObject IndicatorParticle;
 	//public GameObject IndicatorCircle;
@@ -60,8 +61,8 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 	{
 		VisibilityMesh = null;
 		CollidingAgents = new ArrayList(); //agents that are colliding with me
-
-		if (!GetComponent<UnityEngine.AI.NavMeshAgent>())
+        thisShopper = GetComponent<ShopperBehavior>();
+        if (!GetComponent<UnityEngine.AI.NavMeshAgent>())
 			gameObject.AddComponent<UnityEngine.AI.NavMeshAgent>();
 
 		//_animationSelector = GetComponent<AnimationSelector>();
@@ -189,10 +190,12 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 		if(_navMeshAgent.velocity.magnitude > 0.3)
 		{
 			_animator.SetBool("VRIK_IsMoving", true);
-		}
+            thisShopper.RemoveShopperStatusCheck(); //if this is called within a given timeframe, no need to handle shopper
+        }
 		else
 		{
             _animator.SetBool("VRIK_IsMoving", false);
+            thisShopper.ShopperStatusCheck(); //if agent is standing still for to long, reset its status to keep shopping
         }
 		if (Impact.magnitude > 0.2)
 		{
@@ -536,11 +539,6 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
     //reference https://www.youtube.com/watch?v=2XEiHf1N_EY&ab_channel=LlamAcademy
     public void LookAtTargetSmooth(Transform target, float speed)
 	{
-		/*if(lookCoroutine != null)
-		{
-			StopCoroutine(lookCoroutine);
-		}*/
-
 		StartCoroutine(LookAt(target, speed));
 	}
 

@@ -99,6 +99,9 @@ public class ShopperBehavior : MonoBehaviour
     public IsleDataSO isleDataSO;
     private bool attemptItemPickup;
     public bool isWaitingOnAnimation;
+    private int isMoving;
+
+    public bool ShopperStatusWatch { get; private set; }
 
     public int State
 	{
@@ -408,24 +411,18 @@ public class ShopperBehavior : MonoBehaviour
 
 	void UpdateState()
 	{
-		//float minDist = 100000f;
-		//_totalObjCnt = 0;
-
 		switch (State)
 		{
 			case (int)ShoppingState.GoingToObject:
 			{
-                    //isPickingUpObj = false;
-                    //IsShopperCrowdedComponent.SetActive(true); //Enables collider in front of shopper to detect if somone is infront of them
 
-                    //_totalObjCnt = _ipadCountData.Isle[_shelfOrder[_shelfInd]]._total;
-                    //_totalObjCnt = _ipadCountData.Isle[currentIsleIndex]._total;
+
                     _totalObjCnt = isleDataSO.ipadCount[currentIsleIndex];
-                    //UpdateIsleTravelFlags(currentIsleIndex);
+
                     if (_totalObjCnt <= 0)
 					{
-                        IsShopperCrowdedComponent.SetActive(false);
-                        FindClosestIpad.SetActive(false);
+                        //IsShopperCrowdedComponent.SetActive(false);
+                        //FindClosestIpad.SetActive(false);
                         UpdateIsleTravelFlags(currentIsleIndex);
 
                         if (islesTravelledSignature == ALLISLESDONE)
@@ -440,47 +437,12 @@ public class ShopperBehavior : MonoBehaviour
 							return;
                         }
                     }
-					/*
-                    if (_totalObjCnt <= 0)
-                    { //all objects in my shelf are consumed
-					  //++_shelfInd;
-						
-                        // if ( _affectComponent.Ekman[(int)EkmanType.Afraid] > 0.5) {
-                        if (_shelfInd > 10)
-                        { //all objects in the store are consumed
-                            _allConsumed = true;
-
-                            if (_acquiredObjCnt > 0)
-                            {//if I bought something
-                             //Let them all pay
-                                IsShopperCrowdedComponent.SetActive(false);
-                                FindClosestIpad.SetActive(false);
-                                State = (int)ShoppingState.GoingToLine;
-                                //if (_affectComponent.Emotion[(int)EType.Reproach] < 0.5f)
-                                //	State = (int)ShoppingState.GoingToLine;
-                                //else
-                                //	State = (int)ShoppingState.Exiting; //go out without paying                          
-                            }
-                            else
-                            { // I have nothing to buy
-                                IsShopperCrowdedComponent.SetActive(false);
-                                FindClosestIpad.SetActive(false);
-                                State = (int)ShoppingState.Exiting;
-                            }
-                        }
-                        else
-                        {
-                            IsShopperCrowdedComponent.SetActive(false);
-                            FindClosestIpad.SetActive(false);
-                            State = (int)ShoppingState.ShelfChanging;
-                        }
-                    }*/
-					//if no desiredObj, (non greedy shop), should switch closestIpad result to be targedIpad, reserve desiredObj for when pickingup Ipad
+					
 					if(_desiredObj != null & !isPickingUpObj)
 					{
                         _agentComponent.SteerTo(_desiredObj.position);
-                        //_agentComponent.LookAt(_desiredObj.position, 0.2f);
-                        _agentComponent.LookAtTargetSmooth(_desiredObj, 3);
+
+                        _agentComponent.LookAtTargetSmooth(_desiredObj, 2);
                         float dist = Vector2.Distance(new Vector2(_desiredObj.transform.position.x, _desiredObj.transform.position.z), new Vector2(transform.position.x, transform.position.z));
                         if (dist < 1f)
                         {
@@ -512,8 +474,8 @@ public class ShopperBehavior : MonoBehaviour
 				
 				if(_desiredObj != null)
 				{
-                    //_agentComponent.LookAt(_desiredObj.position, 0.5f);
-                    _agentComponent.SteerTo(_desiredObj.position);
+                    //_agentComponent.SteerTo(_desiredObj.position);
+                    _agentComponent.LookAtTargetSmooth(_desiredObj, 3);
                     if (!transform.GetComponent<VRShopperAnimationController>().IsAnimated()) //one function, coroutine time delay?
                     {
                         if (isFacingTarget(_desiredObj))
@@ -533,19 +495,9 @@ public class ShopperBehavior : MonoBehaviour
 				{
 					State = (int)ShoppingState.GoingToObject;
 				}
-				/*
-				else if(_desiredObj != null) {
-                    if (_desiredObj.GetComponent<ObjComponent>().Achieved == true)
-                    {
-                        if (_desiredObj.GetComponent<ObjComponent>().AchievingAgent != this.gameObject)
-                        {
-                            TryOtherIpad();
-                        }
-                    }
-                }
-				*/
+
                 _navmeshAgent.updateRotation = true;
-					//_agentComponent.StartedWaiting = false;
+
 				if (_acquiredObjCnt >= _desiredObjCnt)
 				{ 
 					if (_affectComponent.Emotion[(int)EType.Reproach] < 0.5f)
@@ -637,7 +589,6 @@ public class ShopperBehavior : MonoBehaviour
 						hasLeft = true;
                     }
                 }
-                
 
 				//if they are outside the store
 				if (Vector3.Distance(transform.position, _exit) < 20)
@@ -648,12 +599,6 @@ public class ShopperBehavior : MonoBehaviour
 				break;
 
 			case (int)ShoppingState.ShelfChanging:
-
-                //GetNextIsle(); //maybe use when isle is empty check in different state
-                //_agentComponent.SteerTo(_shelfComp.getWaypoint(nextIsleIndex));
-
-                //when wpEvaluate == secondaryIsleDestination, no longer switching sides
-               
 
                 if (islesTravelledSignature == ALLISLESDONE)
 				{
@@ -668,87 +613,11 @@ public class ShopperBehavior : MonoBehaviour
                     _agentComponent.SteerTo(IsleDestination);
                 }
                 
-                //wpEval takes care of state change
-
-                /*evaluate when done?
-				number of aisles checked
-				 */
-                /*
-                if (_shelfInd > 10)
-				{
-					PayOrLeave();
-				}
-				else
-				{
-					resetDesiredObj();
-				}
-				hasSwitchedSides = false;
-				sideOfIsle = ShelfSide.None;
-				resetDesiredObj();
-				*/
-                hasSwitchedSides = false;
-                sideOfIsle = ShelfSide.None;
-                //_closestShelfPos = _shelfComp.FindClosestIsleWaypoint(transform.position, _shelfOrder[_shelfInd]);
-
-                //_agentComponent.SteerTo(_closestShelfPos);
-
-                //				Debug.DrawLine(transform.position, _closestShelfPos);
-
-                //_objs = _allObjs[_shelfOrder[_shelfInd]];
-
-				/*
-				if (Vector3.Distance(IsleDestination, transform.position) < 1f) //close enough ,changed from 2f to 1f
-				{
-					if (_isleCountData.ShopperCountInIsle[_shelfOrder[_shelfInd]] < _isleCountData.IslePerShopperMax) //If to many shoppers in isle then that isle is skipped, logical choice and prevents AI clumping as much
-					{
-                        State = (int)ShoppingState.GoingToObject;
-                    }
-					else
-					{
-						if (_shelfInd != numberOfIsles - 1)
-							_shelfInd++;
-						else State = (int)ShoppingState.GoingToLine;
-
-                    }
-                }
-				*/
 				break;
 
 		}
 
 	}
-
-    private void AtteptIpadPickup()
-    {/*
-        attemptItemPickup = true;
-        if (!transform.GetComponent<VRShopperAnimationController>().IsAnimated()) //one function, coroutine time delay?
-        {
-            if (isFacingTarget(_desiredObj))
-            {
-                if (!isPickingUpObj)
-                {
-                    isPickingUpObj = true;
-                    _desiredObj.GetComponentInChildren<ObjComponent>().AchievingAgent = this.gameObject;
-                    _desiredObj.GetComponentInChildren<ObjComponent>().Achieved = true;
-                    StartCoroutine(PickUpObj());
-                }
-            }
-        }
-        else
-        {
-            attemptItemPickup = false;
-        }
-        */
-    }
-
-    private bool isMatchedDesiredObj(Transform desiredObj)
-    {
-        if(desiredObj.GetComponentInChildren<ObjComponent>().targetAgent == this)
-        {
-            return true;
-        }
-        return false;
-    }
 
     private bool isFacingTarget(Transform desiredObj)
     {
@@ -756,7 +625,7 @@ public class ShopperBehavior : MonoBehaviour
         target.y = 0;
         Vector3 shopper = transform.position;
         shopper.y = 0;
-        float angle = 20;
+        float angle = 15;
         //float x = Vector3.Angle(transform.forward, desiredObj.transform.position - transform.position);
         float x = Vector3.Angle(transform.forward, target - shopper);
         if ( x < angle)
@@ -833,31 +702,29 @@ public class ShopperBehavior : MonoBehaviour
         float distTolerance = 1.3f;
 		float shopperRatioTolerance = 3;
 
-        IsleData isleData = wp.GetComponentInParent<IsleComponent>().GetIpadCount();
-        currentIsleIndex = isleData._isleIndex;
+        currentIsleIndex = wp.GetComponentInParent<IsleComponent>().IsleIndex;
+        float ipadCount = isleDataSO.ipadCount[currentIsleIndex]; ; //REPALCE WITH ISLEDATASO
+        
 
-        if (isleData._total == 0)
+        if (ipadCount == 0)
 		{
             UpdateIsleTravelFlags(currentIsleIndex);
             if(currentIsleIndex == nextIsleIndex)
             {
                 GetNextIsle();
             }
-			return;
-		}
-
-        //int shopperIsleCount = _isleCountData.ShopperCountInIsle[isleData._isleIndex];
-        int shopperIsleCount = isleDataSO.shoppersCount[currentIsleIndex];
-        float ipadShopperRatio = isleData._total;
-        if (shopperIsleCount != 0)
-		{
-           ipadShopperRatio = isleData._total / (float)shopperIsleCount;
+            return;
         }
 
-        Transform closestIpad;// = GetClosestIpad(wp);
-        closestIpad = GetClosestIpad(transform, currentIsleIndex);
-        //if (closestIpad == null) wpEvaluation(wp); //stack overslow error
+        int shopperIsleCount = isleDataSO.shoppersCount[currentIsleIndex];
+        float ipadShopperRatio = ipadCount;
+        if (shopperIsleCount != 0)
+		{
+           ipadShopperRatio = ipadCount / (float)shopperIsleCount;
+        }
 
+        Transform closestIpad = GetClosestIpad(transform, currentIsleIndex);
+ 
         if (shopperIsleCount != 0)
 		{
             Transform nextClosestShopper = GetClosestShopperToTargetObj(closestIpad, wp, currentIsleIndex);
@@ -873,31 +740,24 @@ public class ShopperBehavior : MonoBehaviour
                Vector3.Distance(closestIpad.position, nextClosestShopper.position))
                 {
                     islesChecked++;
-                    GreedyShop(closestIpad);
+                    ShopInIsle();
                     return;
-                    //GoToIpad()
-                    //keep going until fail, then shelfChange
-                    //Shop()
-                    //return
                 }
             }
            
             if (ipadShopperRatio >= shopperRatioTolerance)
             {
-                islesChecked++;
+                //islesChecked++;
                 ShopInIsle();
                 return;
-                //GoDownIsle
-                //return
-                //Shop()
-                //return
             }
 
             int shopperLaneCount = howManyShoppersThisWay(_shelfComp.getWaypoint(nextIsleIndex));
-            int remainingIsles = nextIsleIndex - currentIsleIndex;
+            //int remainingIsles = nextIsleIndex - currentIsleIndex;
 
-            if (/*(*/shopperLaneCount /*/ remainingIsles)*/> shopperIsleCount)
+            if (shopperLaneCount > shopperIsleCount)
             {
+                UpdateIsleTravelFlags(currentIsleIndex);
                 switchLaneSide();
                 return;
                 //GoToOtherSide
@@ -907,8 +767,14 @@ public class ShopperBehavior : MonoBehaviour
 		else
 		{
             ShopInIsle();
+            return;
         }
-		
+        if(nextIsleIndex == currentIsleIndex)
+        {
+            UpdateIsleTravelFlags(currentIsleIndex);
+            GetNextIsle();
+        }
+        
         //if closest to ipad by signifant margin => goToIpad, InIsleState now?
         //if myDistance * 1.3 < otherDistance, GO FOR IT, 1.3 should be variable
 
@@ -983,51 +849,11 @@ public class ShopperBehavior : MonoBehaviour
         return closestShopper;
     }
 
-   /* private Transform GetClosestIpad(Transform wp)
-    {
-		ObjComponent[] ipads = wp.GetComponentInParent<IsleComponent>().IpadList;
-
-		float zPos = transform.position.z;
-		float minDist = 100;
-        int count = 0;
-        Transform closestIpad = null;
-		foreach(ObjComponent ipad in ipads)
-		{
-			if(ipad != null)
-			{
-                if (!ipad.isDesired)
-                {
-                    count++;
-                    float ipadDist = ipad.transform.position.z;
-
-                    if (minDist > System.Math.Abs(ipadDist - zPos))
-                    {
-                        minDist = ipadDist - zPos;
-                        closestIpad = ipad.transform;
-                    }
-                }
-            }
-		}
-        if (count == 0)
-        {
-            GetNextIsle();
-        }
-        if (closestIpad != null)
-        {
-            return closestIpad.parent.transform;
-        }
-        else
-        {
-            return null;
-        }
-        
-    }
-   */
     private Transform GetClosestIpad(Transform Shopper, int index)
     {
         List<ObjComponent> ipads = isleDataSO.ipads[index];
 
-        float zPos = transform.position.z;
+        //float zPos = transform.position.z;
         float minDist = 100;
         int count = 0;
         Transform closestIpad = null;
@@ -1038,7 +864,7 @@ public class ShopperBehavior : MonoBehaviour
                 if (!ipad.isDesired)
                 {
                     count++;
-                    float ipadDist = System.Math.Abs(ipad.transform.position.z - zPos);
+                    float ipadDist = Vector3.Distance(ipad.transform.parent.position, transform.position); //DONT DO JUST Z, ALSO X
 
                     if (minDist > ipadDist)
                     {
@@ -1071,41 +897,42 @@ public class ShopperBehavior : MonoBehaviour
 		_desiredObj = targetIpad;
 		_agentComponent.SteerTo(targetIpad.position);
 		State = (int)ShoppingState.GoingToObject;
-
-		//desiredObj = targetIpad?
-		//State = pickingUpObJ?
-		//if minDist
-		//pickupObj()
-
-
-		//isPickingUpObj = false;
     }
     private void GetNextIsle()
     {
-        //UpdateIsleTravelFlags(currentIsleIndex);
         float[] isleIndexes = new float[NUMOFISLES];
         float summation = 0;
-        if(currentIsleIndex != 0)
+        /*
+        if(currentIsleIndex != 0)//remove
         {
-            isleIndexes[0] = 1 / (currentIsleIndex - 0);
+            isleIndexes[0] = 1f / (float)currentIsleIndex;
         }
         else
         {
             isleIndexes[0] = 0;
         }
-        summation += isleIndexes[0];
+        */
 
-        for (int i = 1; i < NUMOFISLES; i ++)
+        if (!hasAlreadyTraversedIsle(0))
+        {
+            isleIndexes[0] = (1f / System.Math.Abs((float)currentIsleIndex));
+            summation += isleIndexes[0];
+        }
+        else
+        {
+            isleIndexes[0] = 0;
+        }
+        for (int i = 1; i < NUMOFISLES; i++)
 		{
 			if (!hasAlreadyTraversedIsle(i))
 			{
-				float val = (1f / (float)System.Math.Abs(currentIsleIndex - i));
+				float val = (1f / System.Math.Abs((float)currentIsleIndex - (float)i));
                 isleIndexes[i] = val + isleIndexes[i-1];
 				summation += val;
 			}
 			else
 			{
-				isleIndexes[i] = 0;
+				isleIndexes[i] = isleIndexes[i - 1];
             }
         }
 		if(summation == 0)
@@ -1149,7 +976,7 @@ public class ShopperBehavior : MonoBehaviour
         _animationController.PlayPickupAnimation(_desiredObj.GetComponentInChildren<ObjComponent>().height);
         _acquiredObjCnt++;
         //_aquiredObjUI.setAquiredObjCount(_acquiredObjCnt);
-        yield return new WaitForSeconds(0.1f);
+        //return new WaitForSeconds(0.1f);
 		//State = (int)ShoppingState.GoingToObject;
 		//isPickingUpObj = false;
     }
@@ -1273,21 +1100,6 @@ public class ShopperBehavior : MonoBehaviour
         //isPickingUpObj = false;
         //_animationController.isAnimated = false;
     }
-
-    void LateUpdate()
-	{
-		//if (_currentObj != null) {
-		//for (int i = 0; i < CurrentObjs.Count; i++) {
-
-		//CurrentObjs.transform.position = _leftHand.position;
-		//   for (int i = 0; i < CurrentObjs.transform.childCount; i++) {
-		//CurrentObjs.transform.GetChild(i).position = _hand.position - 0.05f * Vector3.up + i * 0.05f * Vector3.up;
-		//CurrentObjs[i].position = _hand.position - 0.05f* Vector3.up + i * 0.05f * Vector3.up;
-		//CurrentObjs[i].gameObject.SetActive(true);
-		//   _agentComponent.HandPos = _currentObjs[i].transform.position;
-
-		//   }
-	}
 
 	void InitAppraisalStatus()
 	{
@@ -1789,5 +1601,61 @@ public class ShopperBehavior : MonoBehaviour
             isPickingUpObj = false;
             State = (int)ShoppingState.GoingToObject;
         }
+    }
+
+    public void ShopperStatusCheck()
+    {
+        if(State == (int)ShoppingState.ShelfChanging ||
+            State == (int)ShoppingState.GoingToObject ||
+            State == (int)ShoppingState.PickingUpObject)
+        {
+            isMoving = 0;
+
+            if (!ShopperStatusWatch)
+            {
+                ShopperStatusWatch = true;
+                StartCoroutine(CountDownToHandle(3f));
+            }
+        }
+    }
+
+    public void RemoveShopperStatusCheck()
+    {
+        isMoving++;
+    }
+
+    IEnumerator CountDownToHandle(float time)
+    {
+        yield return new WaitForSeconds(time);
+        if(isMoving > 0)
+        {
+            HandleShopperStuck();
+        }
+        ShopperStatusWatch = false;
+    }
+
+    private void HandleShopperStuck()
+    {
+        switch (State) {
+            case (int)ShoppingState.ShelfChanging:
+
+                break;
+            case (int)ShoppingState.GoingToObject:
+                //if shopper has target object
+                    //reset ispicking up Obj, targets,
+                    //get new goal
+                break;
+            case (int)ShoppingState.PickingUpObject:
+                //if has desired obj
+                //if desired obj matches shopper
+                    //reset ispicking up Obj, targets,
+                    //get new goal
+
+                break;
+
+        }
+
+        //obj status, is it partially disabled...
+
     }
 }
