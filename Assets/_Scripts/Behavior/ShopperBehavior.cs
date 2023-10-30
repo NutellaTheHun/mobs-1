@@ -416,7 +416,6 @@ public class ShopperBehavior : MonoBehaviour
 			case (int)ShoppingState.GoingToObject:
 			{
 
-
                     _totalObjCnt = isleDataSO.ipadCount[currentIsleIndex];
 
                     if (_totalObjCnt <= 0)
@@ -466,6 +465,7 @@ public class ShopperBehavior : MonoBehaviour
                         if(targetObject != null)
                         {
                             targetObject.GetComponentInChildren<ObjComponent>().addShopperListener(this);
+                            _agentComponent.SteerTo(targetObject.position);
                         }
                     }
             }
@@ -695,8 +695,8 @@ public class ShopperBehavior : MonoBehaviour
 		{
 			destinationSet = false;
 			currentIsleIndex = nextIsleIndex;
-			ShopInIsle();
-			return;
+			//ShopInIsle();
+			//return;
 		}
 
         float distTolerance = 1.3f;
@@ -723,12 +723,10 @@ public class ShopperBehavior : MonoBehaviour
            ipadShopperRatio = ipadCount / (float)shopperIsleCount;
         }
 
-        Transform closestIpad = GetClosestIpad(transform, currentIsleIndex);
- 
         if (shopperIsleCount != 0)
 		{
+            Transform closestIpad = GetClosestIpad(transform, currentIsleIndex);
             Transform nextClosestShopper = GetClosestShopperToTargetObj(closestIpad, wp, currentIsleIndex);
-
 
             //remainingIsles vs checkedIsles
             //aquiredIpad vs checkedIsles
@@ -763,17 +761,23 @@ public class ShopperBehavior : MonoBehaviour
                 //GoToOtherSide
                 //mainly to other side?
             }
+
+            UpdateIsleTravelFlags(currentIsleIndex);
+            GetNextIsle();
+            return;
+                    
         }
 		else
 		{
             ShopInIsle();
             return;
         }
+        /*
         if(nextIsleIndex == currentIsleIndex)
         {
             UpdateIsleTravelFlags(currentIsleIndex);
             GetNextIsle();
-        }
+        }*/
         
         //if closest to ipad by signifant margin => goToIpad, InIsleState now?
         //if myDistance * 1.3 < otherDistance, GO FOR IT, 1.3 should be variable
@@ -851,6 +855,7 @@ public class ShopperBehavior : MonoBehaviour
 
     private Transform GetClosestIpad(Transform Shopper, int index)
     {
+        Ray ray;
         List<ObjComponent> ipads = isleDataSO.ipads[index];
 
         //float zPos = transform.position.z;
@@ -864,8 +869,32 @@ public class ShopperBehavior : MonoBehaviour
                 if (!ipad.isDesired)
                 {
                     count++;
-                    float ipadDist = Vector3.Distance(ipad.transform.parent.position, transform.position); //DONT DO JUST Z, ALSO X
+                    float ipadDist = Vector3.Distance(ipad.transform.parent.position, transform.position);
 
+                    ray = new Ray(transform.position, 
+                          ipad.transform.parent.position - transform.position);
+
+                    /*Debug.DrawRay(transform.position,
+                        ipad.transform.parent.position - transform.position, 
+                        Color.green, 3f);*/
+                    int layermask = LayerMask.GetMask("IpadDetection");
+                    RaycastHit[] hits;
+                    hits = Physics.RaycastAll(ray, ipadDist, layermask, QueryTriggerInteraction.Collide);
+                    foreach(RaycastHit hit in hits)
+                    {
+                        if (hit.collider.transform.CompareTag("IpadConsumer"))
+                        {
+                            ipadDist += 5f;
+                        }
+                    }
+                    /*
+                    if (Physics.Raycast(ray, out RaycastHit hit, ipadDist, (1 << 8)))
+                    {
+                       if(hit.transform.CompareTag("IpadConsumer"))
+                        {
+                            ipadDist += 5f;
+                        }
+                    }*/
                     if (minDist > ipadDist)
                     {
                         minDist = ipadDist;
@@ -874,11 +903,12 @@ public class ShopperBehavior : MonoBehaviour
                 }
             }
         }
-        if(count == 0)
+        if(count == 0 || minDist > 5)
         {
             UpdateIsleTravelFlags(currentIsleIndex);
             GetNextIsle();
         }
+
         //objComponent is child of physical ipad, which is offset for the colliders to be in the aisle
         if (closestIpad != null)
         {
