@@ -209,7 +209,7 @@ public class VRShopperAnimationController : MonoBehaviour
             //_Animator.CrossFade(_AnimationData.layer + animationToPlay, 0.3f);
             _Animator.CrossFadeInFixedTime(_AnimationData.layer + animationToPlay, 0.2f);
 
-            //Invoke("InteractionAnimationComplete", _AIManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
+            Invoke("InteractionAnimationComplete", _AIManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
         }
     }
     #endregion
@@ -261,6 +261,7 @@ public class VRShopperAnimationController : MonoBehaviour
                 //beginning animation
                 beginningComplete = true;
                 _animationToPlay = unpackChoice(_AnimationData.beginning, quirks);
+                PlayChosenQuirkAnimation(_animationToPlay);
             }
         }
        
@@ -295,7 +296,7 @@ public class VRShopperAnimationController : MonoBehaviour
             }
             PlayChosenQuirkAnimation(_animationToPlay);
         }
-       
+        
     }
 
     
@@ -316,10 +317,6 @@ public class VRShopperAnimationController : MonoBehaviour
 
     private void PlayChosenQuirkAnimation(AnimationChoice ac)
     {
-        /*if (thisShopper.isWaitingOnAnimation)
-        {
-            flushShopperAnimations();
-        }*/
         if (!isInteracting && !IsInIsle && !isAnimated)
         {
             string animationToPlay = ac.ConvertToString();
@@ -327,13 +324,8 @@ public class VRShopperAnimationController : MonoBehaviour
             _Animator.Play(_AnimationData.layer + animationToPlay);
             //_Animator.CrossFade(_AnimationData.layer + animationToPlay, 0.3f);
             _AIManager.UpdateQuirkCount(ac);
-            //Invoke("AnimationComplete", _AIManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
+            Invoke("AnimationComplete", _AIManager.animationDurations[animationToPlay]); //Ensures Animation will complete, equal to HasExitTime bool for transitions
         }
-    }
-
-    private void flushShopperAnimations()
-    {
-        throw new NotImplementedException();
     }
 
     void AnimationComplete()

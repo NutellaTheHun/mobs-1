@@ -292,4 +292,12 @@ public class ObjComponent : MonoBehaviour {
             
         }
     }
+
+    public void reset()
+    {
+        targetAgent = null;
+        isDesired = false;
+        Achieved = false;
+        AchievingAgent = null;
+    }
 }

@@ -91,7 +91,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 
 	void Start()
 	{
-        //StaggerStart(); //Enables nav mesh agent component to help stagger the crowd of shoppers into the store
+        StaggerStart(); //Enables nav mesh agent component to help stagger the crowd of shoppers into the store
         //Added by Nathan Brilmayer FOR VR
         _shopperAnimationController = GetComponent<VRShopperAnimationController>();
         _animator = GetComponentInChildren<Animator>();
@@ -190,12 +190,19 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 		if(_navMeshAgent.velocity.magnitude > 0.3)
 		{
 			_animator.SetBool("VRIK_IsMoving", true);
-            thisShopper.RemoveShopperStatusCheck(); //if this is called within a given timeframe, no need to handle shopper
+			/*if(thisShopper.ShopperStatusWatch == true)
+			{
+                thisShopper.RemoveShopperStatusCheck(); //if this is called within a given timeframe, no need to handle shopper
+            }*/
         }
 		else
 		{
             _animator.SetBool("VRIK_IsMoving", false);
-            thisShopper.ShopperStatusCheck(); //if agent is standing still for to long, reset its status to keep shopping
+          /*  if (thisShopper.ShopperStatusWatch == false)
+			{
+                thisShopper.ShopperStatusCheck(); //if agent is standing still for to long, reset its status to keep shopping
+            }*/
+                
         }
 		if (Impact.magnitude > 0.2)
 		{

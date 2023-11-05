@@ -23,6 +23,7 @@ public class IsleDataSO : ScriptableObject
 
     private void OnEnable()
     {
+        
         shoppers = new List<ShopperBehavior>[NUMOFISLES];
         for(int i = 0; i < NUMOFISLES; i++)
         {

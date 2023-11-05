@@ -10,6 +10,7 @@ public class LineHandler : MonoBehaviour
 	[SerializeField] public GameObject FrontOfLinePosition;
 	private GetShopperInPosition FrontOfLineCollider;
 
+	public Vector3 LineEntrance;
 	public Vector3 nextPosition;
 	public ShopperBehavior ShopperAtEndOfLine;
 	public ShopperBehavior ShopperAtFrontOfLine;
@@ -34,7 +35,9 @@ public class LineHandler : MonoBehaviour
 		//_originalPos = GameObject.Find("counter").transform.position;
 		//LineEnd = _originalPos;
 		linesize = 0;
-	}
+		LineEntrance = PayingCollider.transform.position + new Vector3(0,0,-1.5f);
+
+    }
 
 	private void Update()
 	{
@@ -46,7 +49,10 @@ public class LineHandler : MonoBehaviour
 		Gizmos.color = Color.green;
 		Gizmos.DrawSphere(nextPosition, 0.2f);
 
-	}
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(LineEntrance, 0.2f);
+
+    }
 
     public Vector3 RequestLinePosition(ShopperBehavior sb)
     {
@@ -81,10 +87,16 @@ public class LineHandler : MonoBehaviour
         if (linesize == 1)
         {
             nextPosition = PayingPosition.transform.position;
+			LineEntrance = FrontOfLinePosition.transform.position + new Vector3(0,0,-1.5f);
         }
         else
         {
             nextPosition = FrontOfLinePosition.transform.position;
+            LineEntrance = new Vector3(
+            (FrontOfLinePosition.transform.position.x + (LinePositionStepSize * linesize)),
+            FrontOfLinePosition.transform.position.y,
+            FrontOfLinePosition.transform.position.z
+            ) + new Vector3(0, 0, -1.5f);
         }
     }
 
@@ -117,9 +129,11 @@ public class LineHandler : MonoBehaviour
 
     private void UpdateShopperPositions()
     {
+		int i = 0;
         foreach(ShopperBehavior sb in LineList)
 		{
-			sb.MoveUpInLine();
+			sb.MoveUpInLine(i);
+			i++;
 		}
     }
 }

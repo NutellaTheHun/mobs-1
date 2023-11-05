@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 public class AIManager : MonoBehaviour
 {
-    [Range(0,100)]
+    [Range(0, 100)]
     [SerializeField] private float GlobalAnimationfrequency; //This number is checked every frame... should be very low or use time instead?
     [Range(0, 100)]
     [SerializeField] private float frequencyThrottle; //not used yet
@@ -20,6 +20,8 @@ public class AIManager : MonoBehaviour
     private Dictionary<string, QuirkStack> animationType;
     public Dictionary<string, float> animationDurations;
     private GameObject Crowd;
+    private List<float[]> IsleIndexStates = new List<float[]>();
+    private List<float> IsleIndexSummationStates= new List<float>();
     public enum State
     {
         beginning,
@@ -28,27 +30,65 @@ public class AIManager : MonoBehaviour
     }
     private void Awake()
     {
-        
+        //IsleIndexStates = new List<float[]>();
     }
     void Start()
     {
+        
+        CalculateIsleIndexStates();
         Crowd = GameObject.Find("Crowd");
         shoppers = GameObject.FindGameObjectsWithTag("Player").ToList<GameObject>();
         InitializeManager();
         //StartCoroutine(MoveShoppersIntoPosition());
     }
 
+    private void CalculateIsleIndexStates()
+    {
+        for (int i = 0; i < 11; i++)
+        {
+            float[] isleIndexes = new float[11];
+            float summation = 0;
+
+            if (i != 0)
+            {
+                isleIndexes[0] = (1f / System.Math.Abs((float)i));
+            }
+            else
+            {
+                isleIndexes[0] = 0;
+            }
+            summation += isleIndexes[0];
+
+            for (int j = 1; j < 11; j++)
+            {
+                if (j != i)
+                {
+                    float val = (1f / System.Math.Abs((float)i - (float)j));
+                    isleIndexes[j] = val + isleIndexes[j - 1];
+                    summation += val;
+                }
+                else
+                {
+                    isleIndexes[i] = isleIndexes[i - 1];
+                }
+            }
+            IsleIndexStates.Add(isleIndexes);
+            IsleIndexSummationStates.Add(summation);
+        }
+    }
+
+
     IEnumerator MoveShoppersIntoPosition()
     {
 
-       yield return new WaitForSeconds(2);
-       Crowd.transform.position = new Vector3(-26.0800018f, 8.4f, 14.1999998f);
-       yield return new WaitForSeconds(1);
-       foreach (GameObject shopper in shoppers)
-       {
-           shopper.GetComponent<AgentComponent>().StaggerStart();
-       }
-     }
+        yield return new WaitForSeconds(2);
+        Crowd.transform.position = new Vector3(-26.0800018f, 8.4f, 14.1999998f);
+        yield return new WaitForSeconds(1);
+        foreach (GameObject shopper in shoppers)
+        {
+            shopper.GetComponent<AgentComponent>().StaggerStart();
+        }
+    }
 
     void Update()
     {
@@ -62,7 +102,7 @@ public class AIManager : MonoBehaviour
         if (ranNum < GlobalAnimationfrequency)
         {
             int shopperIndex = Utilities.getRandomSmallestElement(shopperControllerIndex);
-            if(!shopperControllers[shopperIndex].isFighting() && !shopperControllers[shopperIndex].isAnimated && !shopperControllers[shopperIndex].isInteracting)
+            if (!shopperControllers[shopperIndex].isFighting() && !shopperControllers[shopperIndex].isAnimated && !shopperControllers[shopperIndex].isInteracting)
             {
                 shopperControllerIndex[shopperIndex]++;
                 ProvideRandomQuirkAnimations(shopperIndex);
@@ -108,7 +148,7 @@ public class AIManager : MonoBehaviour
             { "quirk_headset", new QuirkStack(_AnimationData.totalHeadsetAnimations) },
             { "quirk_wave", new QuirkStack(_AnimationData.totalWaveAnimations) },
             { "quirk_quick", new QuirkStack(_AnimationData.totalQuickAnimations) },
-            { "beginning", new QuirkStack(_AnimationData.totalBeginningAnimations) } 
+            { "beginning", new QuirkStack(_AnimationData.totalBeginningAnimations) }
         };
 
         //Gets all clips from a Shoppers animation controller to map their durations in a dictionary, stored in AnimationData scriptable object
@@ -147,11 +187,22 @@ public class AIManager : MonoBehaviour
     private void SetAvoidancePriority()
     {
         int i = 1;
-        foreach(GameObject shopper in shoppers){
+        foreach (GameObject shopper in shoppers)
+        {
             shopper.GetComponent<NavMeshAgent>().avoidancePriority = i;
             //shopper.GetComponent<ShopperBehavior>().setAssignedAvoidancePriority();
             i++;
         }
+    }
+
+    public float[] getIsleIndexState(int currentIsleIndex)
+    {
+        return IsleIndexStates[currentIsleIndex];
+    }
+
+    public float getIsleSummationState(int currentIsleIndex)
+    {
+        return IsleIndexSummationStates[currentIsleIndex];
     }
 }
 
