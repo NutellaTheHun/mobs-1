@@ -78,7 +78,7 @@ public class HumanFightBehavior : MonoBehaviour
 					_lastPunchTime = Time.time;
 		
 					//_humanAnimationSelector.SelectAction("PUNCH");
-					_opponentAnimationSelector.SelectAction("RECEIVEPUNCH");
+					//_opponentAnimationSelector.SelectAction("RECEIVEPUNCH");
 
 					opponentComponent.AddDamage(0.5f);
 				}
@@ -95,7 +95,7 @@ public class HumanFightBehavior : MonoBehaviour
 	{
 		humanComponent.TimeLastFight = Time.time;
 		opponentComponent.TimeLastFight = Time.time;
-		_agentHealthbar.SetActive(false);		
+		//_agentHealthbar.SetActive(false);		
 		DestroyImmediate(this);
 	}
 }

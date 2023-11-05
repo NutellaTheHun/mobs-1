@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Runtime.InteropServices;
 using System;
+using UnityEngine.Rendering;
 
 public class UserStats {
     public float TimeSpent = 0f;
@@ -22,6 +23,11 @@ public class UserStats {
 }
 
 public class HumanShoppingBehavior : MonoBehaviour {
+
+    private AudioSource m_audioSource;
+    public AudioClip objPickupSound;
+    private playerAquiredObjUI _playerAquiredObjUI;
+
     public GameObject CurrentObjs;
     public Transform _rightHand, _leftHand;
 
@@ -84,7 +90,7 @@ public class HumanShoppingBehavior : MonoBehaviour {
     void Start() {
         Stats = new UserStats();
         _prevPosition = transform.position;
-
+        _playerAquiredObjUI = GameObject.Find("RightHand Controller").GetComponent<InteractableIsTag>().getPlayerAquiredUI();
         CurrentObjs = new GameObject("AchievedObjects");
         CurrentObjs.transform.parent = this.transform;
         //_animator = transform.Find("FpsArm2").GetComponent<Animator>();
@@ -95,9 +101,11 @@ public class HumanShoppingBehavior : MonoBehaviour {
 
         _hasCompletedShopping = false;
         _hasPaid = false;
+        
+        m_audioSource = GetComponentInParent<AudioSource>();
+        m_audioSource.clip = objPickupSound;
 
-    
-        if(_currSceneName == "Warmup") {
+        if (_currSceneName == "Warmup") {
             _missionMsg = "Walk around the store and grab " + _missionItemCnt + " iPads.\n Pay at the counter and exit the store when finished.";
 #if !UNITY_EDITOR && UNITY_WEBGL
             SendMissionMessageToPage(_missionMsg);
@@ -282,6 +290,7 @@ private void OnTriggerExit(Collider collider) {
          opponent.GetComponent<ShopperBehavior>().SortObjects();*/
         opponent.GetComponent<ShopperBehavior>().AddAquiredObjs(Stats.CollectedItemCnt);
         Stats.CollectedItemCnt = 0;
+        _playerAquiredObjUI.handUILabelActivation(getCollectedCount());
         CurrentObjs.SetActive(true);
 
         Debug.Log("yielded objects");
@@ -335,8 +344,8 @@ private void OnTriggerExit(Collider collider) {
     //Author Nathan Brilmayer, Methods for VR stuff
     public void DesiredObjectPickedUp(GameObject desiredObj)
     {
-        ObjComponent oc = desiredObj.GetComponent<ObjComponent>();
-        desiredObj.GetComponentInParent<Rigidbody>().isKinematic = true;
+        ObjComponent oc = desiredObj.GetComponentInChildren<ObjComponent>();
+        desiredObj.GetComponent<Rigidbody>().isKinematic = true;
 
         oc.AchievingAgent = this.gameObject;
         oc.Achieved = true;
@@ -348,7 +357,7 @@ private void OnTriggerExit(Collider collider) {
         }
         StartCoroutine(ObjPickupSuccessDelayed(desiredObj, 0.5f));
 
-        _ipadColliders.Remove(desiredObj.GetComponent<Collider>());
+        _ipadColliders.Remove(desiredObj.GetComponent<Collider>()); //why?
 
         //desiredObjInHand = true;
     }
@@ -360,7 +369,8 @@ private void OnTriggerExit(Collider collider) {
     IEnumerator ObjPickupSuccessDelayed(GameObject desiredObj, float time)
     {
         yield return new WaitForSeconds(time);
-        desiredObj.GetComponent<ObjComponent>().HumanObjPickupSuccess();
+        desiredObj.GetComponentInChildren<ObjComponent>().HumanObjPickupSuccess();
+        PlayPickupSound();
     }
 
     public void setIsPaying(bool val)
@@ -393,5 +403,17 @@ private void OnTriggerExit(Collider collider) {
         _paymentSystem.disablePaymentSystem();
     }
 
+    public void PlayPickupSound()
+    {
+        m_audioSource.clip = objPickupSound;
+        m_audioSource.Play();
+    }
+
+   /* IEnumerator PlayPickupSound()
+    {
+        m_AudioSource.Play();
+        yield return new WaitForSeconds(0.2f);
+        isPunching = false;
+    }*/
     //**************************************
 }

@@ -211,24 +211,30 @@ public class FightBehavior : MonoBehaviour
 		//TODO: Organize this part to be more modular
 		// send yield message
 		if(_agentComponent.IsShopper()) {
-			if(Opponent.CompareTag("Player")) {
+			if(Opponent.CompareTag("Player")) 
+			{
 
 				//The winner gets the items
-				if(Opponent.GetComponent<AgentComponent>().Damage > _agentComponent.Damage) { //opponent yields to me
+				if(Opponent.GetComponent<AgentComponent>().Damage > _agentComponent.Damage) 
+				{	//opponent yields to me
 					Opponent.GetComponent<ShopperBehavior>().YieldObjects(this.gameObject);
 				}
-				else { //agent yield to opponent
+				else 
+				{	//agent yield to opponent
 					GetComponent<ShopperBehavior>().YieldObjects(Opponent);
 				}
 
 			}
-			else if(Opponent.CompareTag("RealPlayer")) {
+			else if(Opponent.CompareTag("RealPlayer")) 
+			{
 
 				//The winner gets the items
-				if(Opponent.GetComponent<HumanComponent>().Damage > _agentComponent.Damage) { //opponent yields to me
+				if(Opponent.GetComponent<HumanComponent>().Damage > _agentComponent.Damage) 
+				{	//opponent yields to me
 					Opponent.GetComponent<HumanShoppingBehavior>().YieldObjects(this.gameObject);
 				}
-				else { //agent yield to opponent
+				else 
+				{	//agent yield to opponent
 					GetComponent<ShopperBehavior>().YieldObjects(Opponent);
 				}
 

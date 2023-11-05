@@ -27,14 +27,17 @@ public class ShopperInTheWay : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("LinePositionCollision"))
+        if(ParentShopperComp.State == (int)ShopperBehavior.ShoppingState.ShelfChanging)
         {
-            otherShopper = other.GetComponentInParent<ShopperBehavior>();
-            if (!ShoppersInTheWay.Contains(otherShopper) /*&& other != GetComponentInParent<ShopperBehavior>()*/)
+            if (other.CompareTag("LinePositionCollision"))
             {
-                ShoppersInTheWay.Add(otherShopper);
-                ParentShopperComp.setIsCrowded(true);
-                StartCoroutine(CrowdedToLongCheck(crowdedTolerance, otherShopper));
+                otherShopper = other.GetComponentInParent<ShopperBehavior>();
+                if (!ShoppersInTheWay.Contains(otherShopper) /*&& other != GetComponentInParent<ShopperBehavior>()*/)
+                {
+                    ShoppersInTheWay.Add(otherShopper);
+                    ParentShopperComp.setIsCrowded(true);
+                    StartCoroutine(CrowdedToLongCheck(crowdedTolerance, otherShopper));
+                }
             }
         }
     }

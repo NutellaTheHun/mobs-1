@@ -43,4 +43,9 @@ public class InteractableIsTag : MonoBehaviour
         }
         
     }
+
+    public playerAquiredObjUI getPlayerAquiredUI()
+    {
+        return _playerAquiredObjUI;
+    }
 }

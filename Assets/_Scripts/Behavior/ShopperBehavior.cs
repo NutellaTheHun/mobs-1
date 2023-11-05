@@ -426,6 +426,7 @@ public class ShopperBehavior : MonoBehaviour
 			opponent.GetComponent<ShopperBehavior>().AddAquiredObjs(_acquiredObjCnt);
 		}
         _acquiredObjCnt = 0;
+        _aquiredObjUI.setAquiredObjCount(_acquiredObjCnt);
         CurrentObjs.SetActive(true);
 	}
 
@@ -478,7 +479,7 @@ public class ShopperBehavior : MonoBehaviour
 					if(_desiredObj != null & !isPickingUpObj)
 					{
                         _agentComponent.SteerTo(_desiredObj.position);
-
+                        _desiredObj.GetComponentInChildren<ObjComponent>().addShopperListener(this);
                         _agentComponent.LookAtTargetSmooth(_desiredObj, 2);
                         float dist = Vector2.Distance(new Vector2(_desiredObj.transform.position.x, _desiredObj.transform.position.z), new Vector2(transform.position.x, transform.position.z));
                         if (dist < 1f)
@@ -556,12 +557,12 @@ public class ShopperBehavior : MonoBehaviour
 				{ 
 					if (_affectComponent.Emotion[(int)EType.Reproach] < 0.5f)
 					{
-                        IsShopperCrowdedComponent.SetActive(false);
+                        //IsShopperCrowdedComponent.SetActive(false);
                         State = (int)ShoppingState.GoingToLine; //go to line
                     }
 					else
 					{
-                        IsShopperCrowdedComponent.SetActive(false);
+                        //IsShopperCrowdedComponent.SetActive(false);
                         State = (int)ShoppingState.Exiting; //exit without paying
                     }
                       
@@ -696,6 +697,10 @@ public class ShopperBehavior : MonoBehaviour
 				else if (switchingLaneSides)
 				{
                     _agentComponent.SteerTo(secondaryIsleDestination);
+                    if(Vector3.Distance(transform.position, secondaryIsleDestination) < 3f)
+                    {
+                        GetNextIsle();
+                    }
                 }
                 else
                 {
@@ -743,7 +748,7 @@ public class ShopperBehavior : MonoBehaviour
 		//UpdateIsleTravelFlags(currentIsleIndex);
         State = (int)ShoppingState.GoingToObject;
 	}
-	private void switchLaneSide()
+	public void switchLaneSide()
 	{
         //UpdateIsleTravelFlags(currentIsleIndex);
         secondaryIsleDestination = _shelfComp.getOtherWaypoint(transform, currentIsleIndex); //if random then secondaryDestination check will fail
@@ -902,17 +907,22 @@ public class ShopperBehavior : MonoBehaviour
     }
 	private int howManyShoppersThisWay(Vector3 Target)
 	{
-        int layerMask = 1 << 8; //8 == IpadDetection, aiming to get capsule collier of shoppers
-		int count = 0;
+        int layermask = LayerMask.GetMask("IpadDetection");
+        int count = 0;
         RaycastHit[] hits;
-		Ray ray = new Ray(transform.position + new Vector3(0,1,0), Target + new Vector3(0, 1, 0));
-		hits = Physics.RaycastAll(ray, layerMask);
+		Ray ray = new Ray(transform.position + new Vector3(0,1,0), transform.forward/*(Target - transform.position)*/);
+        hits = Physics.RaycastAll(ray, 5f, layermask, QueryTriggerInteraction.Collide);
 
-		foreach(var hit in hits) {
+        Debug.DrawRay(transform.position + new Vector3(0, 1, 0),
+        /*Target - transform.position*/transform.forward,
+        Color.green, 3f);
+
+        foreach (var hit in hits) {
 			if (hit.transform.CompareTag("Player")) count++; 
 		}
+        //Debug.Log("COUNT: " + count);
 		return count;
-	}
+    }
 
 	private int getRandomFirstIsleTarget()
 	{
@@ -972,9 +982,12 @@ public class ShopperBehavior : MonoBehaviour
                     ray = new Ray(transform.position, 
                           ipad.transform.parent.position - transform.position);
 
-                    /*Debug.DrawRay(transform.position,
-                        ipad.transform.parent.position - transform.position, 
-                        Color.green, 3f);*/
+                    /*
+                    Debug.DrawRay(transform.position,
+                    ipad.transform.parent.position - transform.position, 
+                    Color.green, 3f);
+                    */
+
                     int layermask = LayerMask.GetMask("IpadDetection");
                     RaycastHit[] hits;
                     hits = Physics.RaycastAll(ray, ipadDist, layermask, QueryTriggerInteraction.Collide);
@@ -1827,7 +1840,7 @@ public class ShopperBehavior : MonoBehaviour
             if (i != currentIsleIndex)
             {
                 val = (1f / System.Math.Abs((float)currentIsleIndex - (float)i));
-                val = val - (isleDataSO.shoppersCount[i] * (val / 3));
+                val = val - (aiManager.intitalIsleShopperCount[i] * (val / 3)); 
                 if (val < 0) val = 0;
                 isleIndexes[i] = val + isleIndexes[i - 1];
                 summation += val;
@@ -1835,7 +1848,7 @@ public class ShopperBehavior : MonoBehaviour
             else
             {
                 val = 4f;
-                val = val - (isleDataSO.shoppersCount[i] * (val / 3));
+                val = val - (aiManager.intitalIsleShopperCount[i] * (val / 3));
                 if (val < 0) val = 0;
                 isleIndexes[i] = val + isleIndexes[i - 1];
                 summation += val;
@@ -1851,11 +1864,12 @@ public class ShopperBehavior : MonoBehaviour
                 destinationSet = true;
                 nextIsleIndex = i;
                 IsleDestination = _shelfComp.FindClosestIsleWaypoint(transform.position, nextIsleIndex);
-                isleDataSO.RegisterShopper(this, i);
+                aiManager.intitalIsleShopperCount[i]++;
                 State = (int)ShoppingState.ShelfChanging;
                 return;
             }
         }
 
     }
+
 }

@@ -151,6 +151,7 @@
     <Compile Include="Assets\_Scripts\VR\interaction\TutorialObjComponent.cs" />
     <Compile Include="Assets\RootMotion\Shared Scripts\PropertyAttributes.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Tools\AimController.cs" />
+    <Compile Include="Assets\_Scripts\VR\interaction\TriggerInitialIsleChoice.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\Aim IK\Scripts\TerrainOffset.cs" />
     <Compile Include="Assets\_Scripts\VR\player\BindPositionToTarget.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\InteractionSystem\Posers\HandPoser.cs" />
@@ -327,7 +328,6 @@
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverCCD.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Grounder\GroundingPelvis.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverVRUtilities.cs" />
-    <Compile Include="Assets\_Scripts\VR\interaction\TriggerInitialIsleChoice.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

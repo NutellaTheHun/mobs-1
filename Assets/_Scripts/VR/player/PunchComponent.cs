@@ -15,6 +15,14 @@ public class PunchComponent : MonoBehaviour
 
     [SerializeField] HumanComponent humanComponent;
 
+    private bool isPunching = false;
+    public AudioClip hitSound;
+    AudioSource m_AudioSource;
+    public float minPitch;
+    public float maxPitch;
+    public float minVolume;
+    public float maxVolume;
+
     bool isFist = false;
     bool isFast = false;
     bool hasPunched = false;
@@ -25,7 +33,8 @@ public class PunchComponent : MonoBehaviour
 
     void Start()
     {
-
+        m_AudioSource = GetComponentInParent<AudioSource>();
+        m_AudioSource.clip = hitSound;
     }
 
     // Update is called once per frame
@@ -60,6 +69,7 @@ public class PunchComponent : MonoBehaviour
             if (other.CompareTag("Player") && !hasPunched)
             {
                 //Debug.Log("PUNCH");
+                PunchSound();
                 humanComponent.setIsPunch(true);
                 hasPunched = true;
             }
@@ -71,6 +81,25 @@ public class PunchComponent : MonoBehaviour
         if (hasPunched) { hasPunched = false; }
         humanComponent.setIsPunch(false);
 
+    }
+
+    public void PunchSound()
+    {
+        if (!isPunching)
+        {
+            isPunching = true;
+            m_AudioSource.pitch = Random.Range(minPitch, maxPitch);
+            m_AudioSource.volume = Random.Range(minVolume, maxVolume);
+            StartCoroutine(PlayPunchSound());
+        }
+
+    }
+
+    IEnumerator PlayPunchSound()
+    {
+        m_AudioSource.Play();
+        yield return new WaitForSeconds(0.2f);
+        isPunching = false;
     }
 
 }

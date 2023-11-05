@@ -22,6 +22,7 @@ public class AIManager : MonoBehaviour
     private GameObject Crowd;
     private List<float[]> IsleIndexStates = new List<float[]>();
     private List<float> IsleIndexSummationStates= new List<float>();
+    public int[] intitalIsleShopperCount = new int[11];
     public enum State
     {
         beginning,

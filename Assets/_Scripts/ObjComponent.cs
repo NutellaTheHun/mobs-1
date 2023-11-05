@@ -256,12 +256,13 @@ public class ObjComponent : MonoBehaviour {
 
     public void HumanObjPickupSuccess()
     {
-        if (_isleComponent != null)
+        /*if (_isleComponent != null)
         {
             _isleComponent.UpdateIsleCount(sideOfIsle);
-        }
-
-        Destroy(transform.parent.gameObject);
+        }*/
+        isleDataSO.RemoveIpad(this, isleIndex);
+        onIpadConsumed.Invoke();
+        removeIpad();
     }
 
     public void addShopperToDesiredObjList(ShopperBehavior shopperBehavior)

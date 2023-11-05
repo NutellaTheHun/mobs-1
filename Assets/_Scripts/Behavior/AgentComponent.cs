@@ -221,7 +221,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 		// impact vanishes to zero over time
 		Impact = Vector3.Lerp(Impact, Vector3.zero, 2 * Time.deltaTime);
 
-		//AffectUpdate(); //our method
+		AffectUpdate(); //our method
 				//_expressionColor = _affectComponent.GetExpressionColor();
 				//UpdateIndicator();
 
