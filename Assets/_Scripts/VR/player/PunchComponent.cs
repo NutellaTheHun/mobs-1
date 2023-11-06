@@ -70,7 +70,8 @@ public class PunchComponent : MonoBehaviour
             {
                 //Debug.Log("PUNCH");
                 PunchSound();
-                humanComponent.setIsPunch(true);
+                humanComponent.setIsPunch(true); //not needed probably
+                humanComponent.PunchDamage(0.1f);
                 hasPunched = true;
             }
         }
@@ -91,6 +92,7 @@ public class PunchComponent : MonoBehaviour
             m_AudioSource.pitch = Random.Range(minPitch, maxPitch);
             m_AudioSource.volume = Random.Range(minVolume, maxVolume);
             StartCoroutine(PlayPunchSound());
+
         }
 
     }

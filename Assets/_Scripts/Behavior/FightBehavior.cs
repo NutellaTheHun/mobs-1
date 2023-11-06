@@ -229,7 +229,7 @@ public class FightBehavior : MonoBehaviour
 			{
 
 				//The winner gets the items
-				if(Opponent.GetComponent<HumanComponent>().Damage > _agentComponent.Damage) 
+				if(Opponent.GetComponent<HumanComponent>().IsWounded()) 
 				{	//opponent yields to me
 					Opponent.GetComponent<HumanShoppingBehavior>().YieldObjects(this.gameObject);
 				}

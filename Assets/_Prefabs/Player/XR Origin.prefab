@@ -141,8 +141,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c461bb93ea43b41a6d21ec8ed69c50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HardFootStep: {fileID: 8300000, guid: 3b09d59f4499d45428baa7a21e954296, type: 3}
-  SoftFootStep: {fileID: 0}
+  FootSteps: []
+  minPitch: 0
+  maxPitch: 0
+  minVolume: 0
+  maxVolume: 0
 --- !u!1 &6841225115560806969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1283,6 +1286,11 @@ MonoBehaviour:
   punchSpeedMin: 1.2
   selection: 1
   humanComponent: {fileID: 6841225116020495507}
+  hitSound: {fileID: 0}
+  minPitch: 0
+  maxPitch: 0
+  minVolume: 0
+  maxVolume: 0
   FistVelocityProperty:
     m_UseReference: 1
     m_Action:
@@ -2443,6 +2451,11 @@ MonoBehaviour:
   punchSpeedMin: 1.2
   selection: 0
   humanComponent: {fileID: 6841225116020495507}
+  hitSound: {fileID: 0}
+  minPitch: 0
+  maxPitch: 0
+  minVolume: 0
+  maxVolume: 0
   FistVelocityProperty:
     m_UseReference: 1
     m_Action:
@@ -3122,6 +3135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: add17db085d094b659a51889074967a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objPickupSound: {fileID: 0}
   CurrentObjs: {fileID: 0}
   _rightHand: {fileID: 0}
   _leftHand: {fileID: 0}

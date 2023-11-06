@@ -152,7 +152,8 @@ public class HumanComponent : MonoBehaviour, GeneralStateComponent
 	public void AddDamage(float amount)
 	{
 		Damage += amount * Random.Range(0, 2) * Time.deltaTime;
-	}
+        //Debug.Log("Player Damage: " + Damage);
+    }
 	public float GetDamage() {
 		return Damage;
     }
@@ -189,6 +190,14 @@ public class HumanComponent : MonoBehaviour, GeneralStateComponent
 	public bool getIsPunch() { return isPunch; }
 
 	public void setIsPunch(bool val) { isPunch = val;}
+
+	public void PunchDamage(float amount)
+	{
+		if(GetComponent<HumanFightBehavior>() != null)
+		{
+            GetComponent<HumanFightBehavior>().DamageOpponent(amount);
+        }
+	}
 
 	//void OnControllerColliderHit() {
 

@@ -432,7 +432,9 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 
 	public void AddDamage(float amount)
 	{
-		Damage += amount * Random.Range(0, 2) * Time.deltaTime;
+		//Damage += amount * Random.Range(0, 2) * Time.deltaTime;
+		Damage += amount;
+		Debug.Log("Agent Damage: " + Damage);
 	}
 
 	public float GetDamage() {

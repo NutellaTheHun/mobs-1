@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.XR.Oculus;
 using UnityEngine;
 
 public class HumanFightBehavior : MonoBehaviour
@@ -66,21 +68,20 @@ public class HumanFightBehavior : MonoBehaviour
 			else
 				humanComponent.AddDamage(0.1f);
 			//if(Random.RandomRange(0, 1) < 0.2f)
-			//	_audioSource.PlayOneShot(_getHitSound);
 
 
 			if(humanComponent.getIsPunch())
             {/*Input.GetKey(KeyCode.F) */
 
-                GetComponent<HumanShoppingBehavior>().Stats.PunchCnt++; //Nathan comment, spamming f will add punch count but if statement below actually faciliates punch, higher count than actuall punches possible
-
+                //int x = GetComponent<HumanShoppingBehavior>().Stats.PunchCnt++; //Nathan comment, spamming f will add punch count but if statement below actually faciliates punch, higher count than actuall punches possible
+				//Debug.Log("PUNCH COUNT: " + x);
 				if(Time.time - _lastPunchTime >= 0.2f) { //Don't allow punching continuously
 					_lastPunchTime = Time.time;
 		
 					//_humanAnimationSelector.SelectAction("PUNCH");
 					//_opponentAnimationSelector.SelectAction("RECEIVEPUNCH");
 
-					opponentComponent.AddDamage(0.5f);
+					//opponentComponent.AddDamage(0.5f);
 				}
 			}
 						
@@ -93,9 +94,25 @@ public class HumanFightBehavior : MonoBehaviour
 
 	public void FinishFight()
 	{
-		humanComponent.TimeLastFight = Time.time;
+       /* //The winner gets the items
+        if (humanComponent.IsWounded())
+        {   //opponent yields to me
+            Opponent.GetComponent<HumanShoppingBehavior>().YieldObjects(this.gameObject);
+        }
+        else
+        {   //agent yield to opponent
+            GetComponent<ShopperBehavior>().YieldObjects(Opponent);
+        }*/
+        humanComponent.TimeLastFight = Time.time;
 		opponentComponent.TimeLastFight = Time.time;
 		//_agentHealthbar.SetActive(false);		
 		DestroyImmediate(this);
 	}
+
+    public void DamageOpponent(float amount)
+    {
+        opponentComponent.AddDamage(amount);
+        GetComponent<HumanShoppingBehavior>().Stats.PunchCnt++;
+        Debug.Log("PUNCH COUNT: " + GetComponent<HumanShoppingBehavior>().Stats.PunchCnt);
+    }
 }

@@ -92,8 +92,9 @@ public class ShopperBehavior : MonoBehaviour
 	private int islesChecked = 0;
 	IsleVolumeManager isleManager;
 	private Vector3 IsleDestination;
-	private Vector3 secondaryIsleDestination;
-	private bool switchingLaneSides = false;
+    private int currentSwitchingIsle;
+    private Vector3 secondaryIsleDestination;
+	public bool switchingLaneSides = false;
     public int islesTravelledSignature = 0;
     private bool destinationSet;
     public Transform targetObject;
@@ -353,7 +354,7 @@ public class ShopperBehavior : MonoBehaviour
 				}
 			}
 		}
-		else
+		/*else
         {	//Fighting
             CurrentObjs.SetActive(false); 
 			//Fighting other AI
@@ -383,7 +384,7 @@ public class ShopperBehavior : MonoBehaviour
                 }
 
             }
-        }
+        }*/
     }
 
 	//Arrange positions of object
@@ -441,7 +442,8 @@ public class ShopperBehavior : MonoBehaviour
 		{
 			case (int)ShoppingState.GoingToObject:
 			{
-                    if(_acquiredObjCnt == _desiredObjCnt)
+                    IsShopperCrowdedComponent.SetActive(true);
+                    if (_acquiredObjCnt == _desiredObjCnt)
                     {
                         PayOrLeave();
                         return;
@@ -472,6 +474,8 @@ public class ShopperBehavior : MonoBehaviour
                         if (targetDist < 1f)
                         {
                             _desiredObj = targetObject;
+                            _desiredObj.GetComponentInChildren<ObjComponent>().addShopperListener(this);
+                            _agentComponent.LookAtTargetSmooth(_desiredObj, 2);
                             State = (int)ShoppingState.PickingUpObject;
                         }
                     }
@@ -697,14 +701,41 @@ public class ShopperBehavior : MonoBehaviour
 				else if (switchingLaneSides)
 				{
                     _agentComponent.SteerTo(secondaryIsleDestination);
-                    if(Vector3.Distance(transform.position, secondaryIsleDestination) < 3f)
-                    {
-                        GetNextIsle();
-                    }
+                    /* if (Vector3.Distance(transform.position, secondaryIsleDestination) < 3f)
+                     {
+                         switchingLaneSides = false;
+                         secondaryIsleDestination = Vector3.zero;
+                         IsleDestination = _shelfComp.FindClosestIsleWaypoint(transform.position, nextIsleIndex);
+                         _agentComponent.SteerTo(IsleDestination);
+                     }
+                     else
+                     {
+                         _agentComponent.SteerTo(secondaryIsleDestination);
+                     }*/
+
+                    /* if(Vector3.Distance(transform.position, secondaryIsleDestination) < 1f)
+                     {
+                         secondaryIsleDestination = Vector3.zero;
+                         switchingLaneSides = false;
+                         GetNextIsle();
+                     }*/
                 }
                 else
                 {
-                    _agentComponent.SteerTo(IsleDestination);
+                    
+                    if(IsleDestination == Vector3.zero)
+                    {
+                        GetNextIsle();
+                        _agentComponent.SteerTo(IsleDestination);
+                    }
+                    else
+                    {
+                        _agentComponent.SteerTo(IsleDestination);
+                    }
+                   /* if (Vector3.Distance(transform.position, IsleDestination) < 1f)
+                    {
+                        ShopInIsle();
+                    }*/
                 }
                 
 				break;
@@ -750,20 +781,11 @@ public class ShopperBehavior : MonoBehaviour
 	}
 	public void switchLaneSide()
 	{
-        //UpdateIsleTravelFlags(currentIsleIndex);
+        currentSwitchingIsle = currentIsleIndex;
         secondaryIsleDestination = _shelfComp.getOtherWaypoint(transform, currentIsleIndex); //if random then secondaryDestination check will fail
-		IsleDestination = _shelfComp.getOtherWaypoint(IsleDestination, nextIsleIndex);
         _agentComponent.SteerTo(secondaryIsleDestination);
 		switchingLaneSides = true;
         State = (int)ShoppingState.ShelfChanging;
-    }
-
-	private void GreedyShop(Transform targetIpad)
-	{
-		_desiredObj = targetIpad;
-        //UpdateIsleTravelFlags(currentIsleIndex);
-        State = (int)ShoppingState.GoingToObject;
-		//going into state with desiredObj should be meaninfully different
     }
 
     //evaluation at WP on route to change sides or shop depending on ipad/shopper ratio
@@ -782,14 +804,22 @@ public class ShopperBehavior : MonoBehaviour
 	{
         currentIsleIndex = wp.GetComponentInParent<IsleComponent>().IsleIndex;
 
-        if (Vector3.Distance(wp.position, secondaryIsleDestination) < 1f)
-		{
-			switchingLaneSides = false;
-            secondaryIsleDestination = Vector3.zero;
-            return;
-		}
-       
-        if (Vector3.Distance(wp.position, IsleDestination) < 1f)
+        if (switchingLaneSides)
+        {
+            if (Vector3.Distance(wp.position, secondaryIsleDestination) < 2f)
+            {
+                switchingLaneSides = false;
+                secondaryIsleDestination = Vector3.zero;
+                if (currentIsleIndex != nextIsleIndex)
+                {
+                    IsleDestination = _shelfComp.FindClosestIsleWaypoint(transform.position, nextIsleIndex);
+                    _agentComponent.SteerTo(IsleDestination);
+                    return;
+                }     
+            }
+        }
+
+        if (Vector3.Distance(wp.position, IsleDestination) < 2f)
 		{
 			destinationSet = false;
 		}
@@ -797,7 +827,6 @@ public class ShopperBehavior : MonoBehaviour
         float distTolerance = 1.3f;
 		float shopperRatioTolerance = 3;
 
-        currentIsleIndex = wp.GetComponentInParent<IsleComponent>().IsleIndex;
         float ipadCount = isleDataSO.ipadCount[currentIsleIndex]; 
         
 
@@ -840,7 +869,7 @@ public class ShopperBehavior : MonoBehaviour
                 if ((Vector3.Distance(closestIpad.position, transform.position) * distTolerance) < //keeps throwing null reference
                Vector3.Distance(closestIpad.position, nextClosestShopper.position))
                 {
-                    islesChecked++;
+                    //islesChecked++;
                     ShopInIsle();
                     return;
                 }
@@ -855,18 +884,28 @@ public class ShopperBehavior : MonoBehaviour
 
             int shopperLaneCount = howManyShoppersThisWay(_shelfComp.getWaypoint(nextIsleIndex));
             //int remainingIsles = nextIsleIndex - currentIsleIndex;
-
-            if (shopperLaneCount > shopperIsleCount)
+            if(Math.Abs(currentIsleIndex - nextIsleIndex) > 2)
             {
-                UpdateIsleTravelFlags(currentIsleIndex);
-                switchLaneSide();
-                return;
-                //GoToOtherSide
-                //mainly to other side?
+                if (shopperLaneCount > shopperIsleCount)
+                {
+                    if(currentSwitchingIsle != currentIsleIndex)
+                    {
+                        UpdateIsleTravelFlags(currentIsleIndex);
+                        switchLaneSide();
+                        return;
+                    }
+                    //GoToOtherSide
+                    //mainly to other side?
+                }
             }
+          
 
             UpdateIsleTravelFlags(currentIsleIndex);
-            GetNextIsle();
+            if(currentIsleIndex == nextIsleIndex)
+            {
+                GetNextIsle();
+            }
+            
             return;
                     
         }
@@ -1055,16 +1094,6 @@ public class ShopperBehavior : MonoBehaviour
     {
         float[] isleIndexes = new float[NUMOFISLES];
         float summation = 0;
-        /*
-        if(currentIsleIndex != 0)//remove
-        {
-            isleIndexes[0] = 1f / (float)currentIsleIndex;
-        }
-        else
-        {
-            isleIndexes[0] = 0;
-        }
-        */
         
         if (!hasAlreadyTraversedIsle(0))
         {
@@ -1128,8 +1157,11 @@ public class ShopperBehavior : MonoBehaviour
         _navmeshAgent.avoidancePriority = 0;
         //_agentComponent.LookAt(_desiredObj.parent.transform.position, 0.5f);
         yield return new WaitForSeconds(0.2f);
-        _animationController.PlayPickupAnimation(_desiredObj.GetComponentInChildren<ObjComponent>().height);
-        _acquiredObjCnt++;
+        if(_desiredObj != null)
+        {
+            _animationController.PlayPickupAnimation(_desiredObj.GetComponentInChildren<ObjComponent>().height);
+            _acquiredObjCnt++;
+        }
         //_aquiredObjUI.setAquiredObjCount(_acquiredObjCnt);
         //return new WaitForSeconds(0.1f);
 		//State = (int)ShoppingState.GoingToObject;
@@ -1442,11 +1474,15 @@ public class ShopperBehavior : MonoBehaviour
 			   Gizmos.DrawLine(_shelves[i].v4, _shelves[i].v1);
 		       }*/
         Gizmos.color = Color.blue;
-		if (LineDestination != null)
+		if (IsleDestination != null)
 		{
-            Gizmos.DrawSphere(LineDestination, 0.2f);
+            Gizmos.DrawSphere(IsleDestination, 0.2f);
         }
-
+        Gizmos.color = Color.green;
+        if (secondaryIsleDestination != null)
+        {
+            Gizmos.DrawSphere(secondaryIsleDestination, 0.2f);
+        }
 
     }
 	/*

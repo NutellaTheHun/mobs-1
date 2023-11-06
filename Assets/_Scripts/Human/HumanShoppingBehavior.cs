@@ -15,7 +15,7 @@ public class UserStats {
     public float TotalDistance = 0f; //Total distance traversed in the store
     public int CollectedItemCnt = 0; //Items collected from the shelves
     public int TotalItemCnt = 0; //Total item cnt
-
+    public int TotalTimeFighting = 0;
     public UserStats() {
         TimeSpent = Time.time;
     }
