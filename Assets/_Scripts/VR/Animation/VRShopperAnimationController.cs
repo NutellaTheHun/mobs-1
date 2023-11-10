@@ -31,7 +31,7 @@ public class VRShopperAnimationController : MonoBehaviour
     [SerializeField] private int beginningAnimationFrequency;
 
     private string[] punchSequence;
-    private bool beginningComplete;
+    public bool beginningComplete;
 
     public enum State
     {

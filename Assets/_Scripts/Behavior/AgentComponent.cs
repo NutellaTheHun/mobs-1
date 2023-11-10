@@ -128,7 +128,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
     public void StaggerStart()
     {
         Random.InitState(gameObject.GetInstanceID());
-        float num = Random.Range(0f, 4f);
+        float num = Random.Range(0f, 3f);
 		//Debug.Log(transform.name + " " + num);
 		StartCoroutine(EnableNavMeshAgent(num));
     }

@@ -24,6 +24,8 @@ public class AIManager : MonoBehaviour
     private List<float> IsleIndexSummationStates= new List<float>();
     public int[] intitalIsleShopperCount = new int[11];
     private GameObject StoreMusic;
+    private bool hasStarted = false;
+
     public enum State
     {
         beginning,
@@ -41,7 +43,7 @@ public class AIManager : MonoBehaviour
         Crowd = GameObject.Find("Crowd");
         shoppers = GameObject.FindGameObjectsWithTag("Player").ToList<GameObject>();
         InitializeManager();
-        StartCoroutine(MoveShoppersIntoPosition());
+        //StartCoroutine(MoveShoppersIntoPosition());
     }
 
     private void CalculateIsleIndexStates()
@@ -83,19 +85,25 @@ public class AIManager : MonoBehaviour
     IEnumerator MoveShoppersIntoPosition()
     {
 
-        yield return new WaitForSeconds(2);
-        Crowd.transform.position = new Vector3(-26.28f, 8.4f, 14.2f);
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
+        Crowd.transform.position = new Vector3(-26.28f, 5.8f, 12.35f);
+        StoreMusic.SetActive(true);
+        //yield return new WaitForSeconds(1);
         foreach (GameObject shopper in shoppers)
         {
             shopper.GetComponent<AgentComponent>().StaggerStart();
         }
-        StoreMusic.SetActive(true);
+        hasStarted = true;
+        yield return null;
     }
 
     void Update()
     {
-        CheckQuirkAnimationChance();
+        if(hasStarted)
+        {
+            CheckQuirkAnimationChance();
+        }
+        
     }
 
     private void CheckQuirkAnimationChance()

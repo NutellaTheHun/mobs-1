@@ -363,6 +363,7 @@
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverCCD.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Grounder\GroundingPelvis.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverVRUtilities.cs" />
+    <Compile Include="Assets\_Scripts\VR\doorTriggerFirstIsle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

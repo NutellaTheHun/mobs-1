@@ -71,7 +71,7 @@ public class PunchComponent : MonoBehaviour
                 //Debug.Log("PUNCH");
                 PunchSound();
                 humanComponent.setIsPunch(true); //not needed probably
-                humanComponent.PunchDamage(0.1f);
+                humanComponent.PunchDamage(0.06f);
                 hasPunched = true;
             }
             

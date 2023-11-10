@@ -6,27 +6,35 @@ public class TriggerInitialIsleChoice : MonoBehaviour
 {
     ShopperBehavior sb;
     bool active = true;
+    int shoppersSequence;
+    public int door1count = 0;
+    public int door2count = 0;
     // Start is called before the first frame update
     void Start()
     {
-        sb = GetComponentInParent<ShopperBehavior>();
+      //  sb = GetComponentInParent<ShopperBehavior>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /*
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("AnimationMovingState"))
         {
             if (active)
             {
-                sb.ChooseInitialIsle();
+                if (sb.door1Set)
+                {
+                    door1count++;
+                    shoppersSequence = door1count;
+                }
+                else
+                {
+                    door2count++;
+                    shoppersSequence = door2count;
+                }
+                sb.ChooseInitialIsle(shoppersSequence);
                 active = false;
             }
         }
     }
+    */
 }

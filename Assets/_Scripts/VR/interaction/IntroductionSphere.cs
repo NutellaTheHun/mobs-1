@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using static UnityEngine.Rendering.DebugUI;
 
 public class IntroductionSphere : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class IntroductionSphere : MonoBehaviour
 
     private GameObject LeftIpad;
     private GameObject RightIpad;
-
+    private GameObject Table;
     private GameObject IpadInstruction;
     private GameObject PaymentInstruction;
     private GameObject ExitInstruction;
@@ -38,7 +39,7 @@ public class IntroductionSphere : MonoBehaviour
     void Start()
     {
         User = GameObject.Find("XR Origin").GetComponentInChildren<HumanShoppingBehavior>();
-
+        Table = GameObject.Find("Table");
         AIManager = GameObject.Find("AIManager").GetComponent<AIManager>();
 
         PaymentCollider = GameObject.Find("TutorialPaymentCollider");
@@ -150,10 +151,11 @@ public class IntroductionSphere : MonoBehaviour
         User.ResetShoppingStats();
         User.ResetPaymentSystem();
         yield return new WaitForSeconds(4);
-
+        Table.SetActive(false);
         Vector3 ActiveRadius = Sphere.transform.localScale;
         float modifier = 0;
-        float frequency = 1f;
+        float frequency = 1.3f;
+        AIManager.MoveShoppersIntoScene();
         while (ActiveRadius.x < 174)
         {
             modifier += Time.deltaTime * frequency;
@@ -162,7 +164,7 @@ public class IntroductionSphere : MonoBehaviour
             yield return null;
         }
 
-        AIManager.MoveShoppersIntoScene();
+       
         Destroy(this.gameObject);
     }
 }
