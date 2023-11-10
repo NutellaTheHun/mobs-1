@@ -137,6 +137,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Collider: {fileID: 0}
+  pulses: 3
+  currentPulses: 0
   ClosestTarget: {fileID: 0}
 --- !u!1 &4043110210069878360
 GameObject:
@@ -279,8 +281,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c461bb93ea43b41a6d21ec8ed69c50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HardFootStep: {fileID: 8300000, guid: 3b09d59f4499d45428baa7a21e954296, type: 3}
-  SoftFootStep: {fileID: 0}
+  FootSteps: []
+  minPitch: 0
+  maxPitch: 0
+  minVolume: 0
+  maxVolume: 0
 --- !u!1 &4043110210289505427
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,6 +451,7 @@ Transform:
   - {fileID: 5820507019976904855}
   - {fileID: 2555353740914655552}
   - {fileID: 2510589789356044050}
+  - {fileID: 3454846119711056548}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -769,21 +775,22 @@ MonoBehaviour:
   CurrentObjs: {fileID: 0}
   _desiredObjCnt: 0
   _totalObjCnt: 0
-  _rightHand: {fileID: 0}
-  _leftHand: {fileID: 0}
-  _closestShelfPos: {x: 0, y: 0, z: 0}
-  _shelfInd: 0
-  _shelfOrder: 
   NextInLinePositionCollider: {fileID: 4043110210289505427}
   ShopperAheadInLine: {fileID: 0}
   ShopperBehindInLine: {fileID: 0}
   isWaitingBehindSomeone: 0
   hasPaid: 0
   FindClosestIpad: {fileID: 4043110210030681018}
-  _isleCountData: {fileID: 11400000, guid: fa45ba9bbe2146049bf0a54cf2aaadba, type: 2}
-  _ipadCountData: {fileID: 11400000, guid: 03030874192690d4da4f58d298838307, type: 2}
   _state: 3
-  LineDestination: {x: 0, y: 0, z: 0}
+  isPickingUpObj: 0
+  currentIsleIndex: 0
+  nextIsleIndex: 0
+  switchingLaneSides: 0
+  islesTravelledSignature: 0
+  targetObject: {fileID: 0}
+  assignedAvoidancePriority: 0
+  isleDataSO: {fileID: 0}
+  isWaitingOnAnimation: 0
 --- !u!114 &3904306273294462438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,11 +807,58 @@ MonoBehaviour:
   _state: 0
   isAnimated: 0
   IsInIsle: 0
+  isInteracting: 0
   handsAnimationFrequency: 13
   waveAnimationFrequency: 17
   headSetAnimationFrequency: 18
   quickAnimationFrequency: 37
   beginningAnimationFrequency: 28
+--- !u!1 &5868397979408343688
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3454846119711056548}
+  - component: {fileID: 1387496636101317972}
+  m_Layer: 8
+  m_Name: IpadDetection
+  m_TagString: IpadConsumer
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3454846119711056548
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5868397979408343688}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4043110210668586156}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1387496636101317972
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5868397979408343688}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.2
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6584111388911202474
 GameObject:
   m_ObjectHideFlags: 0

@@ -74,6 +74,7 @@ public class PunchComponent : MonoBehaviour
                 humanComponent.PunchDamage(0.1f);
                 hasPunched = true;
             }
+            
         }
     }
 

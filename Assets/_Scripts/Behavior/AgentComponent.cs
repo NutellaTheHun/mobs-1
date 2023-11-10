@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering.LookDev;
+//using UnityEditor.Rendering.LookDev;
 
 //[RequireComponent (typeof (AffectComponent))]
 public class AgentComponent : MonoBehaviour, GeneralStateComponent
@@ -18,7 +18,6 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 	//public GameObject IndicatorAgent;
 	//public GameObject IndicatorParticle;
 	//public GameObject IndicatorCircle;
-
 
 	public int Id;
 	public float WalkingSpeed = 1f;//0.02f;//1f; //Computed according to Personality
@@ -83,7 +82,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 
 		_visibilityDist = col.radius; //* 2f;
 		_prevPos = transform.position;
-		_navMeshAgent.obstacleAvoidanceType = UnityEngine.AI.ObstacleAvoidanceType.HighQualityObstacleAvoidance;//ObstacleAvoidanceType.NoObstacleAvoidance; 
+		//_navMeshAgent.obstacleAvoidanceType = UnityEngine.AI.ObstacleAvoidanceType.HighQualityObstacleAvoidance;//ObstacleAvoidanceType.NoObstacleAvoidance; 
 		_timeLastPosChange = Time.time;
 
 		Impact = Vector3.zero;
@@ -91,7 +90,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 
 	void Start()
 	{
-        StaggerStart(); //Enables nav mesh agent component to help stagger the crowd of shoppers into the store
+        //StaggerStart(); //Enables nav mesh agent component to help stagger the crowd of shoppers into the store, ONLY FOR TESTING, function is otherwise called in AIManager
         //Added by Nathan Brilmayer FOR VR
         _shopperAnimationController = GetComponent<VRShopperAnimationController>();
         _animator = GetComponentInChildren<Animator>();
@@ -434,7 +433,7 @@ public class AgentComponent : MonoBehaviour, GeneralStateComponent
 	{
 		//Damage += amount * Random.Range(0, 2) * Time.deltaTime;
 		Damage += amount;
-		Debug.Log("Agent Damage: " + Damage);
+		//Debug.Log("Agent Damage: " + Damage);
 	}
 
 	public float GetDamage() {

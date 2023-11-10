@@ -59,87 +59,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   position: 1
---- !u!1 &4043110210030681018
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4043110210030681019}
-  - component: {fileID: 4043110210030681017}
-  - component: {fileID: 4043110210030681016}
-  m_Layer: 6
-  m_Name: FindClosestIpad
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &4043110210030681019
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4043110210030681018}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4043110210668586156}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &4043110210030681017
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4043110210030681018}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.3
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4043110210030681016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4043110210030681018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d54756e256db1640b6a1278f4fd84cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TargettedTag: Ipad
-  MinimumRange: 0.3
-  MaximumRange: 30
-  Frequency: 50
-  FireEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5975085333537315055}
-        m_TargetAssemblyTypeName: ShopperBehavior, Assembly-CSharp
-        m_MethodName: GetClosestObj
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  Collider: {fileID: 0}
-  pulses: 3
-  currentPulses: 0
-  ClosestTarget: {fileID: 0}
 --- !u!1 &4043110210069878360
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,8 +200,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c461bb93ea43b41a6d21ec8ed69c50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HardFootStep: {fileID: 8300000, guid: 3b09d59f4499d45428baa7a21e954296, type: 3}
-  SoftFootStep: {fileID: 0}
+  FootSteps: []
+  minPitch: 0
+  maxPitch: 0
+  minVolume: 0
+  maxVolume: 0
 --- !u!1 &4043110210289505427
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,14 +365,13 @@ Transform:
   m_Children:
   - {fileID: 4043110210289505424}
   - {fileID: 4043110210596447954}
-  - {fileID: 4043110210030681019}
   - {fileID: 4043110210069878361}
   - {fileID: 4605383299178774297}
   - {fileID: 7565433901110553916}
   - {fileID: 9138743536662498668}
   - {fileID: 2391535452601162787}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4285505180507476650
 Animator:
@@ -777,11 +698,12 @@ MonoBehaviour:
   ShopperBehindInLine: {fileID: 0}
   isWaitingBehindSomeone: 0
   hasPaid: 0
-  FindClosestIpad: {fileID: 4043110210030681018}
+  FindClosestIpad: {fileID: 0}
   _state: 3
   isPickingUpObj: 0
   currentIsleIndex: 0
   nextIsleIndex: 0
+  switchingLaneSides: 0
   islesTravelledSignature: 0
   targetObject: {fileID: 0}
   assignedAvoidancePriority: 0
@@ -1005,7 +927,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9138743536662498668
 Transform:
   m_ObjectHideFlags: 0

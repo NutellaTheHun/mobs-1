@@ -23,6 +23,7 @@ public class AIManager : MonoBehaviour
     private List<float[]> IsleIndexStates = new List<float[]>();
     private List<float> IsleIndexSummationStates= new List<float>();
     public int[] intitalIsleShopperCount = new int[11];
+    private GameObject StoreMusic;
     public enum State
     {
         beginning,
@@ -35,12 +36,12 @@ public class AIManager : MonoBehaviour
     }
     void Start()
     {
-        
+        StoreMusic = GameObject.Find("StoreMusic");
         CalculateIsleIndexStates();
         Crowd = GameObject.Find("Crowd");
         shoppers = GameObject.FindGameObjectsWithTag("Player").ToList<GameObject>();
         InitializeManager();
-        //StartCoroutine(MoveShoppersIntoPosition());
+        StartCoroutine(MoveShoppersIntoPosition());
     }
 
     private void CalculateIsleIndexStates()
@@ -83,12 +84,13 @@ public class AIManager : MonoBehaviour
     {
 
         yield return new WaitForSeconds(2);
-        Crowd.transform.position = new Vector3(-26.0800018f, 8.4f, 14.1999998f);
+        Crowd.transform.position = new Vector3(-26.28f, 8.4f, 14.2f);
         yield return new WaitForSeconds(1);
         foreach (GameObject shopper in shoppers)
         {
             shopper.GetComponent<AgentComponent>().StaggerStart();
         }
+        StoreMusic.SetActive(true);
     }
 
     void Update()

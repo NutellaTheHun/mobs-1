@@ -27,7 +27,7 @@ public class FindClosestTargetCollision : MonoBehaviour
         currentPulses = pulses;
         ActiveRadius = MinimumRange;
         Collider.radius = ActiveRadius;
-        shelfIndex = GetComponentInParent<ShopperBehavior>().getCurrentIsleIndex();//must replace with currentIndex
+      //  shelfIndex = GetComponentInParent<ShopperBehavior>().getCurrentIsleIndex();//must replace with currentIndex
     }
 
     // Update is called once per frame
@@ -88,7 +88,7 @@ public class FindClosestTargetCollision : MonoBehaviour
     internal void PrimeEvent()
     {
         EventFired = false;
-        shelfIndex = GetComponentInParent<ShopperBehavior>().getCurrentIsleIndex();
+        //shelfIndex = GetComponentInParent<ShopperBehavior>().getCurrentIsleIndex();
         ClosestTarget = null;
     }
 

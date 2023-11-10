@@ -9,7 +9,7 @@ using static ShopperBehavior;
 public class ObjComponent : MonoBehaviour {
     [SerializeField]
     private bool _achieved = false;
-    public bool _desiringShopperIsClose = false;
+    //public bool _desiringShopperIsClose = false;
     //Mesh Renderer
     MeshRenderer _meshRenderer;
     //XR Grab Interactable
@@ -30,7 +30,7 @@ public class ObjComponent : MonoBehaviour {
 
     private ShopperBehavior ClosestAgent;
     public GameObject AchievingAgent;
-    private List<ShopperBehavior> ShoppersDesiringThisObj;
+   // private List<ShopperBehavior> ShoppersDesiringThisObj;
     public ShopperBehavior targetAgent;
     private int targetShoppersAvoidancePriority;
     public bool isDesired;
@@ -54,6 +54,7 @@ public class ObjComponent : MonoBehaviour {
         Low
     }
     public ShelfSide sideOfIsle;
+   
     public enum ShelfSide
     {
         None,
@@ -96,7 +97,7 @@ public class ObjComponent : MonoBehaviour {
         }
         */
     }
-
+    /*
     private void SetClosestShopper()
     {
         ShopperBehavior closest = null;
@@ -127,7 +128,8 @@ public class ObjComponent : MonoBehaviour {
         ClosestAgent = closest;
         RefocusOtherShoppers();
     }
-
+    */
+    /*
     private void RefocusOtherShoppers()
     {
        foreach(ShopperBehavior shopper in ShoppersDesiringThisObj )
@@ -139,8 +141,7 @@ public class ObjComponent : MonoBehaviour {
             }
         }
     }
-
-
+    */
    
     void OnTriggerEnter(Collider collider) {
         if (!isDesired)
@@ -169,47 +170,22 @@ public class ObjComponent : MonoBehaviour {
                     isDesired = true;
                     addShopperListener(targetAgent);
                     targetAgent.PickUpIpad(transform.parent.transform);
-                    //achieving agent here?
                 }
             }
         }
-        
-       /* if (collider.gameObject.CompareTag("Player") || collider.gameObject.CompareTag("RealPlayer")) {
-          
-            if (!_collidingAgents.Contains(collider)) {
-                _collidingAgents.Add(collider.gameObject);
-             //   if(collider.gameObject.GetComponent<ShopperBehavior>().DeactiveObjs.Contains(this.gameObject) == false) //if agent sees this object, add it to the seen list
-             //       collider.gameObject.GetComponent<ShopperBehavior>().DeactiveObjs.Add(this.gameObject);
-
-                
-                Vector3 v1 = collider.gameObject.transform.position;
-                Vector3 v2 = this.gameObject.transform.position;
-                v1.y = v2.y = 0f;
-                float dist = Vector3.Distance(v1, v2);
-                if (dist < minDist) {
-                    minDist = dist;
-                    ClosestAgent = collider.gameObject;
-
-                }
-            }
-        }*/
 
     }
 
     
 
     void OnTriggerExit(Collider collider) {
-        /*if (collider.gameObject.CompareTag("Player")|| collider.gameObject.CompareTag("RealPlayer")) {
-            _collidingAgents.Remove(collider.gameObject);
-            UpdateClosestAgent();
-        }*/
         if(collider.GetComponentInParent<ShopperBehavior>() == targetAgent)
         {
             isDesired = false;
             targetAgent = null;
         }
     }
-
+    
     void UpdateClosestAgent() {
 
         minDist = 1000000f;
@@ -224,7 +200,7 @@ public class ObjComponent : MonoBehaviour {
             }
         }
     }
-
+    
      public void ObjPickupSuccess()
      {
         AchievingAgent.GetComponent<ShopperBehavior>().resetTargets();
@@ -264,7 +240,7 @@ public class ObjComponent : MonoBehaviour {
         onIpadConsumed.Invoke();
         removeIpad();
     }
-
+    /*
     public void addShopperToDesiredObjList(ShopperBehavior shopperBehavior)
     {
         if (!ShoppersDesiringThisObj.Contains(shopperBehavior))
@@ -293,7 +269,7 @@ public class ObjComponent : MonoBehaviour {
             
         }
     }
-
+    */
     public void reset()
     {
         targetAgent = null;

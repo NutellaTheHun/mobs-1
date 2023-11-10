@@ -5,28 +5,32 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/UserDemographics.unity
     guid: b2b5647c253434113a5025d4710de79c
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/UserPersonalitySurvey.unity
     guid: 8215412a2584c409cb86f57518a37b87
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/UserPreStudySurvey.unity
     guid: 815e77aedfd774fcaa907cd11f046e9e
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Warmup.unity
     guid: 7cf8d71ecf64a4e879db34718ef22540
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Sales.unity
     guid: 3965a05aa2da7483fbb78342ef43a0b5
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/UserPostStudySurvey.unity
     guid: 427738b7e769847149a3f49c8304773d
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/End.unity
     guid: 6d03bfa24ebae4fe88b706fbd74c3e3b
+  - enabled: 1
+    path: Assets/_Scenes/SuperStore.unity
+    guid: d11e9856e08603a498305927a181e6ac
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 38c3b070997a7c74fa6ac1cd241958d9, type: 2}
+    com.htc.upm.wave.xrsdk.xrsettings: {fileID: 11400000, guid: 343e3d136c135c043ad676e962ab4144, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: e776dc0b519663349a37a258c93b5f24, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 12df5e5ff697f53499a81de90550225c, type: 2}

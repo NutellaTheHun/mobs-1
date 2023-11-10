@@ -15,7 +15,7 @@ public class UserStats {
     public float TotalDistance = 0f; //Total distance traversed in the store
     public int CollectedItemCnt = 0; //Items collected from the shelves
     public int TotalItemCnt = 0; //Total item cnt
-    public int TotalTimeFighting = 0;
+    public float TotalTimeFightingSeconds = 0f;
     public UserStats() {
         TimeSpent = Time.time;
     }
@@ -224,17 +224,17 @@ public class HumanShoppingBehavior : MonoBehaviour {
 
     }
 
-private void OnTriggerExit(Collider collider) {
-
+private void OnTriggerExit(Collider collider) 
+    {
         if(collider.CompareTag("PaymentZone"))
+        {
             collider.transform.Find("Dialog").gameObject.SetActive(false);
-
+        }
+           
         //Assign the closest ipad
         if(_ipadColliders.Contains(collider)) {
             _ipadColliders.Remove(collider);
-        }
-        
-        
+        }      
     }
 
 
@@ -256,10 +256,16 @@ private void OnTriggerExit(Collider collider) {
                 StartCoroutine(DisplayEndOfWarmupScene());
         }
 
-        if(_humanComponent.IsFighting())
+        if (_humanComponent.IsFighting())
+        {
+            Stats.TotalTimeFightingSeconds += Time.deltaTime;
             CurrentObjs.SetActive(false); //don't show items when fighting
+        }
         else
+        {
             CurrentObjs.SetActive(true); //don't show items when fighting
+        }
+            
     }
 
     public int getCollectedCount()
@@ -409,11 +415,5 @@ private void OnTriggerExit(Collider collider) {
         m_audioSource.Play();
     }
 
-   /* IEnumerator PlayPickupSound()
-    {
-        m_AudioSource.Play();
-        yield return new WaitForSeconds(0.2f);
-        isPunching = false;
-    }*/
     //**************************************
 }

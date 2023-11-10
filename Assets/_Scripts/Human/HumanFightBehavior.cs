@@ -113,6 +113,6 @@ public class HumanFightBehavior : MonoBehaviour
     {
         opponentComponent.AddDamage(amount);
         GetComponent<HumanShoppingBehavior>().Stats.PunchCnt++;
-        Debug.Log("PUNCH COUNT: " + GetComponent<HumanShoppingBehavior>().Stats.PunchCnt);
+        //Debug.Log("PUNCH COUNT: " + GetComponent<HumanShoppingBehavior>().Stats.PunchCnt);
     }
 }
