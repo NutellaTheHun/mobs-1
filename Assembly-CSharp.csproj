@@ -90,6 +90,7 @@
     <Compile Include="Assets\_Scripts\GroupBuilder.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\_DEMOS\FBBIK\Scripts\OffsetEffector.cs" />
     <Compile Include="Assets\_Scripts\VR\player\InteractableIsTag.cs" />
+    <Compile Include="Assets\_Scripts\VR\doorTriggerFirstIsle.cs" />
     <Compile Include="Assets\_Scripts\VR\ScriptableObjects\scripts\IsleDataSO.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\FBBIKHeadEffector.cs" />
     <Compile Include="Assets\_Scripts\Human\HumanFightBehavior.cs" />
@@ -363,7 +364,6 @@
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverCCD.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\Grounder\GroundingPelvis.cs" />
     <Compile Include="Assets\RootMotion\FinalIK\IK Solvers\IKSolverVRUtilities.cs" />
-    <Compile Include="Assets\_Scripts\VR\doorTriggerFirstIsle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
