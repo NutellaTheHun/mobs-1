@@ -152,6 +152,7 @@ public class IntroductionSphere : MonoBehaviour
         User.ResetPaymentSystem();
         yield return new WaitForSeconds(4);
         Table.SetActive(false);
+        PaymentCollider.SetActive(false);
         Vector3 ActiveRadius = Sphere.transform.localScale;
         float modifier = 0;
         float frequency = 1.3f;

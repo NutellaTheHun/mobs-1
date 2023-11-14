@@ -58,6 +58,7 @@ public class HumanShoppingBehavior : MonoBehaviour {
     
     int _fixedUpdateCnt = 0;
 
+    private EyeDilationToCSV eyeRecorder;
 
     //Author Nathan Brilmayer, for VR to check if proper item is grabbed
     bool desiredObjInHand = false;
@@ -96,6 +97,7 @@ public class HumanShoppingBehavior : MonoBehaviour {
         //_animator = transform.Find("FpsArm2").GetComponent<Animator>();
         _animator = GetComponent<Animator>();
 
+        eyeRecorder = GameObject.Find("SRanipal").GetComponent<EyeDilationToCSV>();
 
         _currSceneName = SceneManager.GetActiveScene().name;
 
@@ -206,7 +208,7 @@ public class HumanShoppingBehavior : MonoBehaviour {
                 if (_currSceneName == "Warmup" && CurrentObjs.transform.childCount >= _missionItemCnt || _currSceneName == "Sales" || _currSceneName == "SuperStore") {
                     _hasPaid = true;
                     _missionMsg = "Payment  complete. \nYou may exit the store.";
-
+                    eyeRecorder.toCSV();
                     collider.transform.Find("Dialog").gameObject.SetActive(true);
                 }
                 else {
@@ -247,7 +249,7 @@ private void OnTriggerExit(Collider collider)
             SceneManager.LoadScene("UserPostStudySurvey");
         }
 
-        IpadCntText.text = CurrentObjs.transform.childCount.ToString();
+        //IpadCntText.text = CurrentObjs.transform.childCount.ToString();
 
         if(_hasCompletedShopping){
             if(_currSceneName == "Sales") 

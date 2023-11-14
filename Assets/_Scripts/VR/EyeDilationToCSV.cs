@@ -16,7 +16,6 @@ public class EyeDilationToCSV : MonoBehaviour
     private static EyeData eyeData = new EyeData();
     private bool eye_callback_registered = false;
     bool isLeftEyeActive = false;
-    bool isRightEyeAcitve = false;
     [System.Serializable]
     public class EyeDilationData
     {
@@ -31,7 +30,7 @@ public class EyeDilationToCSV : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        fileName = Application.dataPath + "/dilation.csv";
+        fileName = Application.persistentDataPath + "/dilation.csv";
         if (!SRanipal_Eye_Framework.Instance.EnableEye)
         {
             enabled = false;
@@ -66,9 +65,9 @@ public class EyeDilationToCSV : MonoBehaviour
         if (SRanipal_Eye_Framework.Status == SRanipal_Eye_Framework.FrameworkStatus.WORKING)
         {
             isLeftEyeActive = eyeData.verbose_data.left.GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_PUPIL_DIAMETER_VALIDITY);
-            isRightEyeAcitve = eyeData.verbose_data.right.GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_PUPIL_DIAMETER_VALIDITY);
+            //isRightEyeAcitve = eyeData.verbose_data.right.GetValidity(SingleEyeDataValidity.SINGLE_EYE_DATA_PUPIL_DIAMETER_VALIDITY);
         }
-        if (isLeftEyeActive || isRightEyeAcitve)
+        if (isLeftEyeActive)
         {
             if (eye_callback_registered == true)
                 if(SRanipal_Eye.GetVerboseData(out data))
