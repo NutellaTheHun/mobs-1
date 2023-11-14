@@ -245,7 +245,7 @@ public class ShopperBehavior : MonoBehaviour
             opponent.GetComponent<ShopperBehavior>().AddAquiredObjs(_acquiredObjCnt);
         }
         _acquiredObjCnt = 0;
-
+        _aquiredObjUI.setAquiredObjCount(_acquiredObjCnt);
     }
 
     void PickedObject()

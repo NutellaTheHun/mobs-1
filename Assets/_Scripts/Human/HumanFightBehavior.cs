@@ -89,9 +89,6 @@ public class HumanFightBehavior : MonoBehaviour
 		}
 	}
 
-	
-
-
 	public void FinishFight()
 	{
        /* //The winner gets the items

@@ -194,7 +194,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 63
+  controlID: 163
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -267,8 +267,8 @@ MonoBehaviour:
     y: 0
     width: 513
     height: 534
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -319,8 +319,8 @@ MonoBehaviour:
     y: 0
     width: 342
     height: 947
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 20}
   m_Panes:
   - {fileID: 20}
@@ -948,9 +948,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 28daffff
-      m_LastClickedID: -9688
-      m_ExpandedIDs: d8b0ffff00fbffffd2bf0000
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: 369cffffccbeffff00fbffffc0bf0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1015,22 +1015,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/_Scripts/VR
+    - Assets/_Scripts/Behavior
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/_Scripts/VR
+  - Assets/_Scripts/Behavior
   m_LastFoldersGridSize: 16
   m_LastProjectPath: D:\Git-Repos\FundaMobs
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 180}
-    m_SelectedIDs: 842e0100
-    m_LastClickedID: 77444
-    m_ExpandedIDs: 00000000802e0100822e0100842e0100862e0100882e01008a2e01008c2e01008e2e0100d02f0100da2f0100
+    m_SelectedIDs: 08300100
+    m_LastClickedID: 77832
+    m_ExpandedIDs: 00000000b62d0100b82d0100ba2d0100bc2d0100be2d0100c02d0100c22d0100c42d0100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1058,7 +1058,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000802e0100822e0100842e0100862e0100882e01008a2e01008c2e01008e2e0100
+    m_ExpandedIDs: 00000000b62d0100b82d0100ba2d0100bc2d0100be2d0100c02d0100c22d0100c42d0100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1089,18 +1089,18 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: c62300003a9f0000a29c00004a3e00003643000016ad0000eccc0000122102000ca00000ce3c0000ac200200684b0000d2c1000034a2010012c10000a6c80000de2f0100a41b01008c240100ec3c010074420100406b040052430000682101005e3a0100403b090000000000d0fd0700220508007606080010fd0700ba310100d0310100542f0100a6310100c03201001c250100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: EyeDilationToCSV
-      m_OriginalName: EyeDilationToCSV
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 9828
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 12}
     m_CreateAssetUtility:
@@ -1149,7 +1149,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 270
+  m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:
